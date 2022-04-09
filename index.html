@@ -1,5 +1,5 @@
 <!--
-  TODO: check ics.js 
+  TODO: Maybe new container for flexbox item inside grid? Look @105
 -->
 
 <!DOCTYPE html>
@@ -33,23 +33,111 @@
 --width-mobile: 375px;
 --width-desktop: 1440px;
 }
+input {
+  background: inherit;
+	color: inherit;
+	border: none;
+	padding: inherit;
+	font: inherit;
+  cursor: inherit;
+  outline: none;
+  min-width: 0;
+}
 
 body {
   margin: 0;
   padding: 0;
   font-family: 'Rubik', sans-serif;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--light-gray);
+  box-sizing: content-box;
 }
-body p {
+ main {
+  width: 100%;
+  height: 100%;
   font-size: 16px;
 }
-</style>
 
+.comment-user-grid-container {
+  display: grid;
+  grid-template-columns: 5% 1fr;
+  grid-template-rows: 20% 1fr;
+  background-color: var(--white);
+}
+.comment-rate {
+  grid-row: 1 / 2;
+}
+.comment-rate-flexbox {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  background-color: var(--light-gray);
+  border: solid var(--light-gray);
+  border-radius: 3px 3px;
+}
+input.comment-rate-element {
+  color: var(--light-grayish-blue);
+}
+span.comment-rate-element {
+  color: var(--moderate-blue);
+  background-color: inherit;
+  text-align: center;
+  font-size: 80%;
+  font-weight: 500;
+}
+
+.comment-user-flexbox-container {
+  grid-column: 2 / 2;
+  display: flex;
+  margin-top: 10px;
+  padding-top: 10;
+}
+
+</style>
 
 </head>
 <body>
-
   <!-- Pull dynamic content from the data.json file -->
+  <main>
+    <div class="comment-container">
+      <div id="user-amyrobson" class="comment-user-grid-container">
+        <div class="comment-user-grid-element comment-rate">
+          <div class="comment-rate-flexbox">
+            <input class="comment-rate-element" type="button" value="+">
+            <span class="comment-rate-element">12</span>
+            <input class="comment-rate-element" type="button" value="-">
+          </div>
+        </div>
+        <div class="comment-user-grid-element comment-user-flexbox-container">
+          <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-amyrobson.png" alt="user avatar amyrobson">
+          <span class="comment-user-flexbox-element comment-uid">amyrobson</span>
+          <span class="comment-user-flexbox-element comment-date">3 days ago</span>
+          <span class="comment-user-flexbox-element comment-reply">reply</span>
+        </div>
+        <div class="comment-user-grid-element comment-content"></div>
+      </div>
+
+      <div id="user-maxblagun" class="comment-user-grid-container">
+        <div class="comment-user-grid-element comment-rate">
+          <div class="comment-rate-flexbox">
+            <input class="comment-rate-element" type="button" value="+">
+            <span class="comment-rate-element">5</span>
+            <input class="comment-rate-element" type="button" value="-">
+          </div>
+        </div>
+        <div class="comment-user-grid-element comment-user-flexbox-container">
+          <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-maxblagun.png" alt="user avatar maxblagun">
+          <span class="comment-user-flexbox-element comment-uid"></span>
+          <span class="comment-user-flexbox-element comment-date"></span>
+          <span class="comment-user-flexbox-element comment-reply"></span>
+        </div>
+        <div class="comment-user-grid-element comment-content"></div>
+      </div>
+    </div>
+  </main>
   
+
   <footer class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
     Coded by <a href="https://github.com/ecesarini-frontend-mentor/">ecesarini</a>.
