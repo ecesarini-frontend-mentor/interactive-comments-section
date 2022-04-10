@@ -60,25 +60,21 @@ body {
 }
 
 .comment-user-grid-container {
-  margin: 10px;
   display: grid;
   grid-template-columns: 15% 1fr;
-  grid-template-rows: 25% 1fr;
+  grid-template-rows: 30% 1fr;
   background-color: var(--white);
 }
 .comment-rate {
-  grid-row: 1 / 3;
-  align-self: center;
+  grid-row: 1 / 2;
 }
 .comment-rate-flexbox {
   display: flex;
-  height: 100%;
-  margin: auto;
   flex-direction: column;
+  margin: 10px;
   background-color: var(--light-gray);
   border: solid var(--light-gray);
   border-radius: 3px 3px;
-  justify-content: space-between;
 }
 input.comment-rate-element {
   color: var(--light-grayish-blue);
@@ -98,10 +94,7 @@ span.comment-rate-element {
   padding-top: 10;
 }
 .comment-user-flexbox-container .comment-avatar {
-  width: 20px;
-}
-.comment-user-grid-container .comment-content {
-  grid-column: 2 / 2;
+  width: 100%;
 }
 
 </style>
@@ -111,7 +104,6 @@ span.comment-rate-element {
   <!-- Pull dynamic content from the data.json file -->
   <main>
     <div class="comment-container">
-
       <div id="user-amyrobson" class="comment-user-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
@@ -126,7 +118,7 @@ span.comment-rate-element {
           <span class="comment-user-flexbox-element comment-date">3 days ago</span>
           <span class="comment-user-flexbox-element comment-reply">reply</span>
         </div>
-        <div class="comment-user-grid-element comment-content">Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.</div>
+        <div class="comment-user-grid-element comment-content"></div>
       </div>
 
       <div id="user-maxblagun" class="comment-user-grid-container">
@@ -145,7 +137,6 @@ span.comment-rate-element {
         </div>
         <div class="comment-user-grid-element comment-content"></div>
       </div>
-
     </div>
   </main>
   
@@ -157,12 +148,3 @@ span.comment-rate-element {
   <script src="ics.js"></script>
 </body>
 </html>
-
-<!-- Inserted by Reload -->
-<script src="/reload/reload.js"></script>
-<!-- End Reload -->
-
-
-<!-- Inserted by Reload -->
-<script src="/reload/reload.js"></script>
-<!-- End Reload -->
