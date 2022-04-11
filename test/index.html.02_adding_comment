@@ -1,6 +1,5 @@
 <!--
-  FIXED: html css design
-  TODO: add nested comment vertical line; JS.
+  TODO: Maybe new container for flexbox item inside grid? Look @105
 -->
 
 <!DOCTYPE html>
@@ -63,14 +62,11 @@ body {
 .comment-container {
   width: 75%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 15% 15% 1fr;
-  grid-template-rows: auto;
   margin: 10% auto;
 }
 
-.comment-user-main-grid-container {
-  grid-column: 1 / 4;
+.comment-user-grid-container {
+  argin-bottom: 5%;
   margin: var(--gap) 0;
   padding: 0 var(--gap);
   display: grid;
@@ -97,14 +93,6 @@ body {
 }
 input.comment-rate-element {
   color: var(--light-grayish-blue);
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.comment-rate-element-plus {
-  background-image: url(images/icon-plus.svg)
-}
-.comment-rate-element-minus {
-  background-image: url(images/icon-minus.svg);
 }
 span.comment-rate-element {
   color: var(--moderate-blue);
@@ -113,7 +101,6 @@ span.comment-rate-element {
   font-size: 80%;
   font-weight: 500;
 }
-
 
 .comment-user-flexbox-container {
   grid-column: 2 / 2;
@@ -146,14 +133,10 @@ span.comment-rate-element {
   content: url(images/icon-reply.svg);
   padding-right: 3px;
 }
-.comment-user-main-grid-container .comment-content {
+.comment-user-grid-container .comment-content {
   grid-column: 2 / 2;
   margin-bottom: var(--gap);
   color: var(--grayish-blue);
-}
-
-.comment-user-nested-grid-container {
-  grid-column: 2 / 4;
 }
 
 </style>
@@ -164,12 +147,12 @@ span.comment-rate-element {
   <main>
     <div class="comment-container">
 
-      <div id="user-amyrobson" class="comment-user-main-grid-container">
+      <div id="user-amyrobson" class="comment-user-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
-            <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
-            <span class="comment-rate-element comment-rate-element-value">12</span>
-            <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
+            <input class="comment-rate-element" type="button" value="+">
+            <span class="comment-rate-element">12</span>
+            <input class="comment-rate-element" type="button" value="-">
           </div>
         </div>
         <div class="comment-user-grid-element comment-user-flexbox-container">
@@ -181,58 +164,21 @@ span.comment-rate-element {
         <div class="comment-user-grid-element comment-content">Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.</div>
       </div>
 
-      <div id="user-maxblagun" class="comment-user-main-grid-container">
+      <div id="user-maxblagun" class="comment-user-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
-            <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
-            <span class="comment-rate-element comment-rate-element-value">5</span>
-            <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
+            <input class="comment-rate-element" type="button" value="+">
+            <span class="comment-rate-element">5</span>
+            <input class="comment-rate-element" type="button" value="-">
           </div>
         </div>
         <div class="comment-user-grid-element comment-user-flexbox-container">
           <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-maxblagun.png" alt="user avatar maxblagun">
-          <span class="comment-user-flexbox-element comment-uid"> </span>
-          <span class="comment-user-flexbox-element comment-date"> </span>
-          <span class="comment-user-flexbox-element comment-reply">Reply</span>
+          <span class="comment-user-flexbox-element comment-uid"></span>
+          <span class="comment-user-flexbox-element comment-date"></span>
+          <span class="comment-user-flexbox-element comment-reply"></span>
         </div>
-        <div class="comment-user-grid-element comment-content">Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!</div>
-      </div>
-
-      <!-- subcomment session -->
-      <div class="comment-user-nested-grid-container">
-        <div id="user-ramsemiron" class="comment-user-main-grid-container">
-          <div class="comment-user-grid-element comment-rate">
-            <div class="comment-rate-flexbox">
-              <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
-              <span class="comment-rate-element comment-rate-element-value">12</span>
-              <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
-            </div>
-          </div>
-          <div class="comment-user-grid-element comment-user-flexbox-container">
-            <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-ramsesmiron.png" alt="user avatar ramsemiron">
-            <span class="comment-user-flexbox-element comment-uid">ramsemiron</span>
-            <span class="comment-user-flexbox-element comment-date">4 days ago</span>
-            <span class="comment-user-flexbox-element comment-reply">Reply</span>
-          </div>
-          <div class="comment-user-grid-element comment-content">If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.</div>
-        </div>
-        
-        <div id="user-juliusomo" class="comment-user-main-grid-container">
-          <div class="comment-user-grid-element comment-rate">
-            <div class="comment-rate-flexbox">
-              <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
-              <span class="comment-rate-element comment-rate-element-value">12</span>
-              <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
-            </div>
-          </div>
-          <div class="comment-user-grid-element comment-user-flexbox-container">
-            <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-juliusomo.png" alt="user avatar juliusomo">
-            <span class="comment-user-flexbox-element comment-uid">juliusomo</span>
-            <span class="comment-user-flexbox-element comment-date">2 days ago</span>
-            <span class="comment-user-flexbox-element comment-reply">Reply</span>
-          </div>
-          <div class="comment-user-grid-element comment-content">I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.</div>
-        </div>
+        <div class="comment-user-grid-element comment-content"></div>
       </div>
 
     </div>
