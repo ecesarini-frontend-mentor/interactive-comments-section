@@ -1,6 +1,6 @@
 <!--
-  TODO: Manage SVG as input (https://codepen.io/noahblon/post/coloring-svgs-in-css-background-images). Populate by JS.
-  FIXED: adding comment section, binding CSS grid. 
+  TODO: adding comment section, binding CSS grid. 
+        Populate by JS.
 -->
 
 <!DOCTYPE html>
@@ -146,11 +146,19 @@ span.comment-rate-element {
 #user-juliusomo .comment-user-flexbox-container .comment-reply {
   margin-left: unset;
 }
+.comment-user-flexbox-container .comment-reply::before {
+  content: url(images/icon-reply.svg);
+  padding-right: 3px;
+}
 .comment-user-flexbox-container .comment-delete {
   margin-left: auto;
   padding-right: var(--gap);
   color: var(--soft-red);
   font-weight: 700;
+}
+.comment-user-flexbox-container .comment-delete::before {
+  content: url(images/icon-delete.svg);
+  padding-right: 3px;
 }
 .comment-user-main-grid-container .comment-content {
   grid-column: 2 / 2;
@@ -224,12 +232,8 @@ span.comment-rate-element {
 }
 
 /* Mouse Event */
-
-/*input.comment-rate-element-plus:hover, input.comment-rate-element-minus:hover {
+input.comment-rate-element-plus:hover, input.comment-rate-element-minus:hover {
   background-color: var(--dark-blue);
-}
-  -webkit-mask-image: url(images/icon-plus.svg);
-    mask-image: url(images/icon-plus.svg);
 }
 .comment-user-flexbox-container .comment-reply:hover,
 .comment-user-flexbox-container .comment-reply:hover::before {
@@ -238,7 +242,7 @@ span.comment-rate-element {
 .comment-user-flexbox-container .comment-delete:hover,  
 .comment-user-flexbox-container .comment-delete:hover::before {
   color: var(--pale-red);
-}*/
+}
 
 </style>
 
