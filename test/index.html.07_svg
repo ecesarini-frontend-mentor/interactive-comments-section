@@ -1,6 +1,6 @@
 <!--
-  TODO: "./ics.js" to handle behaviour
-  FIXED: Manage SVG as input (https://codepen.io/noahblon/post/coloring-svgs-in-css-background-images). Populate by JS.
+  TODO: Manage SVG as input (https://codepen.io/noahblon/post/coloring-svgs-in-css-background-images). Populate by JS.
+  FIXED: adding comment section, binding CSS grid. 
 -->
 
 <!DOCTYPE html>
@@ -36,16 +36,6 @@
 
   --gap: 15px;
 }
-button {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
-}
-
 input {
   background: inherit;
   color: inherit;
@@ -111,6 +101,12 @@ input.comment-rate-element {
   background-repeat: no-repeat;
   background-position: center;
 }
+.comment-rate-element-plus {
+  background-image: url(images/icon-plus.svg)
+}
+.comment-rate-element-minus {
+  background-image: url(images/icon-minus.svg);
+}
 span.comment-rate-element {
   color: var(--moderate-blue);
   background-color: inherit;
@@ -118,6 +114,7 @@ span.comment-rate-element {
   font-size: 80%;
   font-weight: 700;
 }
+
 
 .comment-user-flexbox-container {
   grid-column: 2 / 2;
@@ -130,7 +127,7 @@ span.comment-rate-element {
   padding-left: var(--gap);
 }
 .comment-user-flexbox-container .comment-avatar {
-  width: 2em;
+  width: 3vw;
   padding-left: 0;
 }
 .comment-user-flexbox-container .comment-uid {
@@ -140,14 +137,13 @@ span.comment-rate-element {
 .comment-user-flexbox-container .comment-date {
   color: var(--grayish-blue);
 }
-.comment-user-flexbox-container .comment-reply,
-.comment-user-flexbox-container .comment-edit {
+.comment-user-flexbox-container .comment-reply {
   margin-left: auto;
   padding-right: var(--gap);
   color: var(--moderate-blue);
   font-weight: 700;
 }
-.comment-user-flexbox-container .comment-edit {
+#user-juliusomo .comment-user-flexbox-container .comment-reply {
   margin-left: unset;
 }
 .comment-user-flexbox-container .comment-delete {
@@ -156,13 +152,9 @@ span.comment-rate-element {
   color: var(--soft-red);
   font-weight: 700;
 }
-.comment-user-flexbox-container img {
-  margin-right: 3px;
-}
-
 .comment-user-main-grid-container .comment-content {
   grid-column: 2 / 2;
-  margin: var(--gap) 0;
+  margin-bottom: var(--gap);
   color: var(--grayish-blue);
 }
 
@@ -231,6 +223,23 @@ span.comment-rate-element {
   border-radius: 4px;
 }
 
+/* Mouse Event */
+
+/*input.comment-rate-element-plus:hover, input.comment-rate-element-minus:hover {
+  background-color: var(--dark-blue);
+}
+  -webkit-mask-image: url(images/icon-plus.svg);
+    mask-image: url(images/icon-plus.svg);
+}
+.comment-user-flexbox-container .comment-reply:hover,
+.comment-user-flexbox-container .comment-reply:hover::before {
+  color: var(--grayish-blue);
+}
+.comment-user-flexbox-container .comment-delete:hover,  
+.comment-user-flexbox-container .comment-delete:hover::before {
+  color: var(--pale-red);
+}*/
+
 </style>
 
 </head>
@@ -242,16 +251,16 @@ span.comment-rate-element {
       <div id="user-amyrobson" class="comment-user-main-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
-            <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
+            <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
             <span class="comment-rate-element comment-rate-element-value">12</span>
-            <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
+            <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
           </div>
         </div>
         <div class="comment-user-grid-element comment-user-flexbox-container">
           <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-amyrobson.png" alt="user avatar amyrobson">
           <span class="comment-user-flexbox-element comment-uid">amyrobson</span>
           <span class="comment-user-flexbox-element comment-date">3 days ago</span>
-          <button class="comment-user-flexbox-element comment-reply" type="button"><img src="images/icon-reply.svg" alt="Reply"><span>Reply</span></button>
+          <span class="comment-user-flexbox-element comment-reply">Reply</span>
         </div>
         <div class="comment-user-grid-element comment-content">Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.</div>
       </div>
@@ -259,16 +268,16 @@ span.comment-rate-element {
       <div id="user-maxblagun" class="comment-user-main-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
-            <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
+            <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
             <span class="comment-rate-element comment-rate-element-value">5</span>
-            <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
+            <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
           </div>
         </div>
         <div class="comment-user-grid-element comment-user-flexbox-container">
           <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-maxblagun.png" alt="user avatar maxblagun">
           <span class="comment-user-flexbox-element comment-uid">maxblagun</span>
           <span class="comment-user-flexbox-element comment-date">2 weeks ago</span>
-          <button class="comment-user-flexbox-element comment-reply" type="button"><img src="images/icon-reply.svg" alt="Reply"><span>Reply</span></button>
+          <span class="comment-user-flexbox-element comment-reply">Reply</span>
         </div>
         <div class="comment-user-grid-element comment-content">Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!</div>
       </div>
@@ -279,16 +288,16 @@ span.comment-rate-element {
         <div id="user-ramsemiron" class="comment-user-main-grid-container">
           <div class="comment-user-grid-element comment-rate">
             <div class="comment-rate-flexbox">
-              <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
+              <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
               <span class="comment-rate-element comment-rate-element-value">12</span>
-              <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
+              <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
             </div>
           </div>
           <div class="comment-user-grid-element comment-user-flexbox-container">
             <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-ramsesmiron.png" alt="user avatar ramsemiron">
             <span class="comment-user-flexbox-element comment-uid">ramsemiron</span>
             <span class="comment-user-flexbox-element comment-date">4 days ago</span>
-            <button class="comment-user-flexbox-element comment-reply" type="button"><img src="images/icon-reply.svg" alt="Reply"><span>Reply</span></button>
+            <span class="comment-user-flexbox-element comment-reply">Reply</span>
           </div>
           <div class="comment-user-grid-element comment-content">If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.</div>
         </div>
@@ -296,17 +305,17 @@ span.comment-rate-element {
         <div id="user-juliusomo" class="comment-user-main-grid-container">
           <div class="comment-user-grid-element comment-rate">
             <div class="comment-rate-flexbox">
-              <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
+              <input class="comment-rate-element comment-rate-element-plus" type="button" value="">
               <span class="comment-rate-element comment-rate-element-value">12</span>
-              <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
+              <input class="comment-rate-element comment-rate-element-minus" type="button" value="">
             </div>
           </div>
           <div class="comment-user-grid-element comment-user-flexbox-container">
             <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-juliusomo.png" alt="user avatar juliusomo">
             <span class="comment-user-flexbox-element comment-uid">juliusomo</span>
             <span class="comment-user-flexbox-element comment-date">2 days ago</span>
-            <button class="comment-user-flexbox-element comment-delete" type="button"><img src="images/icon-delete.svg" alt="Delete"><span>Delete</span></button> 
-            <button class="comment-user-flexbox-element comment-edit" type="button"><img src="images/icon-edit.svg" alt="Edit"><span>Edit</span></button>
+            <span class="comment-user-flexbox-element comment-delete">Delete</span>            
+            <span class="comment-user-flexbox-element comment-reply">Reply</span>
           </div>
           <div class="comment-user-grid-element comment-content">I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.</div>
         </div>
@@ -317,7 +326,7 @@ span.comment-rate-element {
         <img class="comment-user-add-comment-avatar" src="images/avatars/image-juliusomo.png" alt="juliusomo adding comment">
         <div class="comment-user-add-comment-flexbox">
           <textarea class="add-comment-textarea" placeholder=" Add a comment..."></textarea>
-          <button class="add-comment-send-button" type="button">SEND</button>
+          <input class="add-comment-send-button" type="button" value="SEND"></div>
         </div>
       </div>
 
@@ -332,3 +341,12 @@ span.comment-rate-element {
   <script src="ics.js"></script>
 </body>
 </html>
+
+<!-- Inserted by Reload -->
+<script src="/reload/reload.js"></script>
+<!-- End Reload -->
+
+
+<!-- Inserted by Reload -->
+<script src="/reload/reload.js"></script>
+<!-- End Reload -->

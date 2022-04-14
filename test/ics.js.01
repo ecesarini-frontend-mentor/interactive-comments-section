@@ -1,0 +1,8 @@
+function init() {
+    //const data = fetch("./data.json").then((response) => {/*return"*/ response.json();}); // Arrow functions need return inside {}
+    const data = fetch("./data.json").then((res) => res.json());
+    
+    console.log(data);
+}
+
+init();
