@@ -45,9 +45,6 @@ button {
 	cursor: pointer;
 	outline: inherit;
 }
-object {
-  cursor: pointer;
-}
 
 input {
   background: inherit;
@@ -144,7 +141,7 @@ span.comment-rate-element {
   color: var(--grayish-blue);
 }
 .comment-user-flexbox-container .comment-reply,
-.comment-user-flexbox-container .comment-edit { 
+.comment-user-flexbox-container .comment-edit {
   margin-left: auto;
   padding-right: var(--gap);
   color: var(--moderate-blue);
@@ -159,7 +156,7 @@ span.comment-rate-element {
   color: var(--soft-red);
   font-weight: 700;
 }
-.comment-user-flexbox-container object {
+.comment-user-flexbox-container img {
   margin-right: 3px;
 }
 
@@ -245,16 +242,16 @@ span.comment-rate-element {
       <div id="user-amyrobson" class="comment-user-main-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
-            <button class="comment-rate-element comment-rate-element-plus" type="button"><object type="image/svg+xml" data="images/icon-plus.svg" class="vote"></object></button>
+            <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
             <span class="comment-rate-element comment-rate-element-value">12</span>
-            <button class="comment-rate-element comment-rate-element-minus" type="button"><object type="image/svg+xml" data="images/icon-minus.svg" class="vote"></object></button>
+            <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
           </div>
         </div>
         <div class="comment-user-grid-element comment-user-flexbox-container">
           <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-amyrobson.png" alt="user avatar amyrobson">
           <span class="comment-user-flexbox-element comment-uid">amyrobson</span>
           <span class="comment-user-flexbox-element comment-date">3 days ago</span>
-          <button class="comment-user-flexbox-element comment-reply" type="button"><object type="image/svg+xml" data="images/icon-reply.svg" class="interact"></object><span>Reply</span></button>
+          <button class="comment-user-flexbox-element comment-reply" type="button"><img src="images/icon-reply.svg" alt="Reply"><span>Reply</span></button>
         </div>
         <div class="comment-user-grid-element comment-content">Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.</div>
       </div>
@@ -262,16 +259,16 @@ span.comment-rate-element {
       <div id="user-maxblagun" class="comment-user-main-grid-container">
         <div class="comment-user-grid-element comment-rate">
           <div class="comment-rate-flexbox">
-            <button class="comment-rate-element comment-rate-element-plus" type="button"><object type="image/svg+xml" data="images/icon-plus.svg" class="vote"></object></button>
+            <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
             <span class="comment-rate-element comment-rate-element-value">5</span>
-            <button class="comment-rate-element comment-rate-element-minus" type="button"><object type="image/svg+xml" data="images/icon-minus.svg" class="vote"></object></button>
+            <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
           </div>
         </div>
         <div class="comment-user-grid-element comment-user-flexbox-container">
           <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-maxblagun.png" alt="user avatar maxblagun">
           <span class="comment-user-flexbox-element comment-uid">maxblagun</span>
           <span class="comment-user-flexbox-element comment-date">2 weeks ago</span>
-          <button class="comment-user-flexbox-element comment-reply" type="button"><object type="image/svg+xml" data="images/icon-reply.svg" class="interact"></object><span>Reply</span></button>
+          <button class="comment-user-flexbox-element comment-reply" type="button"><img src="images/icon-reply.svg" alt="Reply"><span>Reply</span></button>
         </div>
         <div class="comment-user-grid-element comment-content">Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!</div>
       </div>
@@ -282,16 +279,16 @@ span.comment-rate-element {
         <div id="user-ramsemiron" class="comment-user-main-grid-container">
           <div class="comment-user-grid-element comment-rate">
             <div class="comment-rate-flexbox">
-              <button class="comment-rate-element comment-rate-element-plus" type="button"><object type="image/svg+xml" data="images/icon-plus.svg" class="vote"></object></button>
+              <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
               <span class="comment-rate-element comment-rate-element-value">12</span>
-              <button class="comment-rate-element comment-rate-element-minus" type="button"><object type="image/svg+xml" data="images/icon-minus.svg" class="vote"></object></button>
+              <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
             </div>
           </div>
           <div class="comment-user-grid-element comment-user-flexbox-container">
             <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-ramsesmiron.png" alt="user avatar ramsemiron">
             <span class="comment-user-flexbox-element comment-uid">ramsemiron</span>
             <span class="comment-user-flexbox-element comment-date">4 days ago</span>
-            <button class="comment-user-flexbox-element comment-reply" type="button"><object type="image/svg+xml" data="images/icon-reply.svg" class="interact"></object><span>Reply</span></button>
+            <button class="comment-user-flexbox-element comment-reply" type="button"><img src="images/icon-reply.svg" alt="Reply"><span>Reply</span></button>
           </div>
           <div class="comment-user-grid-element comment-content">If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.</div>
         </div>
@@ -299,17 +296,17 @@ span.comment-rate-element {
         <div id="user-juliusomo" class="comment-user-main-grid-container">
           <div class="comment-user-grid-element comment-rate">
             <div class="comment-rate-flexbox">
-              <button class="comment-rate-element comment-rate-element-plus" type="button"><object type="image/svg+xml" data="images/icon-plus.svg" class="vote"></object></button>
+              <button class="comment-rate-element comment-rate-element-plus" type="button"><img src="images/icon-plus.svg" alt="Vote up"></button>
               <span class="comment-rate-element comment-rate-element-value">12</span>
-              <button class="comment-rate-element comment-rate-element-minus" type="button"><object type="image/svg+xml" data="images/icon-minus.svg" class="vote"></object></button>
+              <button class="comment-rate-element comment-rate-element-minus" type="button"><img src="images/icon-minus.svg" alt="Vote down"></button>
             </div>
           </div>
           <div class="comment-user-grid-element comment-user-flexbox-container">
             <img class="comment-user-flexbox-element comment-avatar" src="images/avatars/image-juliusomo.png" alt="user avatar juliusomo">
             <span class="comment-user-flexbox-element comment-uid">juliusomo</span>
             <span class="comment-user-flexbox-element comment-date">2 days ago</span>
-            <button class="comment-user-flexbox-element comment-delete" type="button"><object type="image/svg+xml" data="images/icon-delete.svg" class="interact"></object><span>Delete</span></button> 
-            <button class="comment-user-flexbox-element comment-edit" type="button"><object type="image/svg+xml" data="images/icon-edit.svg" class="interact"></object><span>Edit</span></button>
+            <button class="comment-user-flexbox-element comment-delete" type="button"><img src="images/icon-delete.svg" alt="Delete"><span>Delete</span></button> 
+            <button class="comment-user-flexbox-element comment-edit" type="button"><img src="images/icon-edit.svg" alt="Edit"><span>Edit</span></button>
           </div>
           <div class="comment-user-grid-element comment-content">I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.</div>
         </div>
