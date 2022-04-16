@@ -9,32 +9,22 @@ class IcsStyle {
     }
 
     init() {
-        
-        this.evClk.forEach( ev => 
-            this.elClk.forEach( el => el.addEventListener(ev, this) )    
+        this.elClk.forEach( el => {
+            el.addEventListener('mouseover', this);
+            el.addEventListener('mousout', this);
+            }
         );
-        /*this.elClk.forEach( el => 
-            this.evClk.forEach( ev => el.addEventListener(ev, this) )    
-        );*/
-        /*this.elClk.forEach( el => {
-                el.addEventListener('mouseover', this);
-                el.addEventListener('mousout', this);
-                            
-            });*/ // all 3 work
-        
+            //el => el.add
+            //);
     }
     handleEvent(e) {
-        let ect = e.currentTarget,
-            svg = ect.querySelector('object').contentDocument.querySelector('path')
-        switch(ect.type) {
-            case 'button':
-                this.styleClkd(e, svg, colorOrig);
-                break;
-        }
+        let ect = e.currentTarget;
+        if(ect.type === 'button') this.styleClkd(e);
     }    
-    styleClkd(e, svg, colorOrig) {
+    styleClkd(e) {
         let ect = e.currentTarget,
-            check = (arguments.length < 3)? true : false;
+            svg = ect.querySelector('object').contentDocument.querySelector('path'),
+            svgOrigColor = ect.querySelector('object').contentDocument.querySelector('path').getAttribute('fill');
         switch(e.type) {
             case 'mouseover':
                 ect.style.color = 'red';
@@ -42,7 +32,7 @@ class IcsStyle {
                 break;
             case 'mouseout':
                 ect.style.color = '';
-                svg.setAttribute('fill', colorOrig);
+                svg.setAttribute('fill', svgOrigColor);
                 break;
         }
     }
@@ -50,7 +40,7 @@ class IcsStyle {
 
 function init() {
     let elClk = document.querySelectorAll('button'),
-        evClk = ['mouseover', 'mouseout', 'mouseleave'];
+        evClk = ['mouseover', 'mouseout'];
 
     new IcsStyle(elClk, evClk);
     //const data = fetch("./data.json").then((response) => {/*return"*/ response.json();}); // Arrow functions need return inside {}

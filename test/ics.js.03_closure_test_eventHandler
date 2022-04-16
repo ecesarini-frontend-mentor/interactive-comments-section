@@ -9,7 +9,6 @@ class IcsStyle {
     }
 
     init() {
-        
         this.evClk.forEach( ev => 
             this.elClk.forEach( el => el.addEventListener(ev, this) )    
         );
@@ -20,29 +19,28 @@ class IcsStyle {
                 el.addEventListener('mouseover', this);
                 el.addEventListener('mousout', this);
                             
-            });*/ // all 3 work
-        
+            });*/
     }
     handleEvent(e) {
         let ect = e.currentTarget,
-            svg = ect.querySelector('object').contentDocument.querySelector('path')
-        switch(ect.type) {
-            case 'button':
-                this.styleClkd(e, svg, colorOrig);
-                break;
+            svg = ect.querySelector('object').contentDocument.querySelector('path');
+        if(ect.type === 'button')  {
+            this.styleClkd(e, svg);
         }
     }    
-    styleClkd(e, svg, colorOrig) {
+    styleClkd(e, svg) {
         let ect = e.currentTarget,
-            check = (arguments.length < 3)? true : false;
+            colorOrig = null;
         switch(e.type) {
             case 'mouseover':
+                colorOrig = svg.getAttribute('fill');
                 ect.style.color = 'red';
                 svg.setAttribute('fill', 'red');
                 break;
             case 'mouseout':
                 ect.style.color = '';
                 svg.setAttribute('fill', colorOrig);
+                colorOrig = null;
                 break;
         }
     }
