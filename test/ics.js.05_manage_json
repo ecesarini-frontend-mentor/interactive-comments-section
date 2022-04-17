@@ -1,5 +1,4 @@
 // FIXED: style function: mouseout event doesn't change 'fill' on elements, error 'mouseout' event depending on 'add-comment' button which can't refer on querySelector('object')."
-// TODO: handle json (breakpoint ics.js@92:);
 
 class IcsStyle {
     constructor(elClk, evClk, colorVote, colorReplyAndEdit, colorDelete) {
@@ -8,7 +7,7 @@ class IcsStyle {
         this.colorVote = colorVote;
         this.colorReplyAndEdit = colorReplyAndEdit;
         this.colorDelete = colorDelete;
-        this.colorOrig = ''; // New undefined variable that lets you catch svg original color;
+        this.colorOrig = '';
         this.init();
     }
 
@@ -66,30 +65,13 @@ class IcsStyle {
         switch(e.type) {
             case 'mousedown':
                 ect.style.color = 'white';
-                ect.style.fontWeight = '700';
                 ect.style.backgroundColor = this.colorVote;
                 ect.style.border = 'none';
                 break;
             case 'mouseup':
-            case 'mouseout':
                 ect.style = '';
                 break;
         }
-    }
-}
-
-class IcsInteract {
-    constructor(data) {
-        this.data = data;
-        this.init();
-    }
-
-    init() {
-        this.getData(this.data);
-    }
-    async getData(data) {
-        let json = await fetch(data).then(res => res.json()).then( data => data);
-        console.log(json);
     }
 }
 
@@ -102,7 +84,12 @@ function init() {
 
     window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new IcsInteract('./data.json');
+    //const data = fetch("./data.json").then((response) => {/*return"*/ response.json();}); // Arrow functions need return inside {}
+    /*let getData = async function() {
+        let data = await fetch("./data.json").then(res => res.json()).then( data => data);
+        return data;
+    }
+    return console.log(getData());*/
 }
 
 init();
