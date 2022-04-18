@@ -1,5 +1,6 @@
 <!--
-TODO: check https://www.frontendmentor.io/solutions/interactive-comments-section-plain-vanilla-css-and-js-HkG7W6lNq
+  TODO: "./ics.js" to handle behaviour
+  FIXED: Manage SVG as input (https://codepen.io/noahblon/post/coloring-svgs-in-css-background-images). Populate by JS.
 -->
 
 <!DOCTYPE html>

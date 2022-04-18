@@ -1,4 +1,5 @@
-// TODO: index.html TODO reference, best way?
+// FIXED: style function: mouseout event doesn't change 'fill' on elements, error 'mouseout' event depending on 'add-comment' button which can't refer on querySelector('object')."
+// TODO: handle json (breakpoint ics.js@92:);
 
 class IcsStyle {
     constructor(elClk, evClk, colorVote, colorReplyAndEdit, colorDelete) {
@@ -32,8 +33,7 @@ class IcsStyle {
         }
     }    
     checkClass(el, cName) {
-            //return (el.className.indexOf(cName) !== -1)? true : false;
-            return (el.classList.contains(cName))? true : false;
+            return (el.className.indexOf(cName) !== -1)? true : false;
     }        
     styleVoteReplyEdit(e, svg) {
         let ect = e.currentTarget;
@@ -78,41 +78,18 @@ class IcsStyle {
     }
 }
 
-class PopulateOnLoad {
+class IcsInteract {
     constructor(data) {
         this.data = data;
-        this.jsonData = null;
         this.init();
     }
-    
-    async getData(data) {
-        this.jsonData = await fetch(data).then(res => res.json()).then( data => data);
-        //console.log(json);
-    }
+
     init() {
         this.getData(this.data);
     }
-
-    createComments() {
-        let usersHTML = document.querySelectorAll('.comment-user-main-grid-container'),
-            users = [];
-        
-        for (let i in this.jsonData.comments) {
-            users.push()
-        }
-        /*for(let elem in usersHTML) {
-            for(let i in this.jsonData.comments) {
-                elem
-            }
-        }*/
-    }
-
-    populate() {
-        let comments = this.jsonData.comments;
-
-        for(let i in comments) {
-
-        }
+    async getData(data) {
+        let json = await fetch(data).then(res => res.json()).then( data => data);
+        console.log(json);
     }
 }
 
@@ -125,7 +102,7 @@ function init() {
 
     window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new PopulateOnLoad('./data.json');
+    new IcsInteract('./data.json');
 }
 
 init();
