@@ -3,9 +3,7 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
 
-    TODO: make ManageComments depending on 'data.json'; 
-        new methods-handling 'nested-container' ('addElement', 'drawUp');
-        @189;
+    TODO: make PopulateOnLoad depending on 'data.json'
 */
 
 class IcsStyle {
@@ -86,7 +84,7 @@ class IcsStyle {
     }
 }
 
-class ManageComments {
+class PopulateOnLoad {
     constructor(jFile) {
         this.jFile = jFile;
         this.jsonData = null;
@@ -96,9 +94,7 @@ class ManageComments {
     
     init() {
         this.getData(this.jFile);
-        //this.drawUpElement(JSON.parse(sessionStorage['jsonData']), 'comment');
-        //this.addElement('comment');
-        this.drawUp(JSON.parse(sessionStorage['jsonData']));
+        this.entry();
     }    
     async getData(jFile) {
         this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
@@ -106,7 +102,7 @@ class ManageComments {
             try {
                 this.jsonData = await fetch(jFile).then(res => res.json()).then( data => data);
                 sessionStorage.setItem('jsonData', JSON.stringify(this.jsonData));
-                //this.drawUpDoc();
+                this.drawUpDoc();
             }
             catch(error) {
                 console.log(error);
@@ -114,82 +110,48 @@ class ManageComments {
         }
     }
 
-    addElement(commentOrReply) {
+    entry() {
         const qualifyEntry = {
             img(target, src) {
                 target.src = src;
                 target.setAttribute('alt', 'Avatar');
             },
         }
-        
-
         const comment = document.createElement('div'),
             commentUserGrid = document.createElement('div'),
             commentRate = document.createElement('div'),
             commentRatePlus = document.createElement('button'),
-            commentRatePlusObj = document.createElement('object'),
             commentRateValue = document.createElement('span'),
             commentRateMinus = document.createElement('button'),
-            commentRateMinusObj = document.createElement('object'),
             commentTopfb = document.createElement('div'),
             commentTopfbAvatar = new Image(),
             commentTopfbUid = document.createElement('span'),
             commentTopfbDate = document.createElement('span'),
             commentTopfbBtn = document.createElement('button'),
-            commentBottomContent = document.createElement('div'),
-            //only replies
-            commentRepliesGrid = document.createElement('div'),
-            commentRepliesLine = document.createElement('div');
-            
-        
-        qualifyEntry.img(commentTopfbAvatar, 'images/avatars/image-amyrobson.png');
+            commentBottomContent = document.createElement('div');
 
+        qualifyEntry.img(commentTopfbAvatar, 'images/avatars/image-amyrobson.png');
+        
         comment.classList.add('comment-user-main-grid-container');
         commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
         commentRate.classList.add('comment-rate-flexbox');
         commentRatePlus.classList.add('comment-rate-element', 'comment-rate-element-plus');
-        commentRatePlusObj.classList.add('vote');
-        commentRatePlusObj.setAttribute('type', 'image/svg+xml');
-        commentRatePlusObj.setAttribute('data', 'images/icon-plus.svg');
         commentRateValue.classList.add('comment-rate-element', 'comment-rate-element-value');
         commentRateMinus.classList.add('comment-rate-element', 'comment-rate-element-minus');
-        commentRateMinusObj.classList.add('vote');
-        commentRateMinusObj.setAttribute('type', 'image/svg+xml');
-        commentRateMinusObj.setAttribute('data', 'images/icon-minus.svg');
         commentTopfb.classList.add('comment-user-grid-element', 'comment-user-flexbox-container');
         commentTopfbAvatar.classList.add('comment-user-flexbox-element', 'comment-avatar');
         commentTopfbUid.classList.add('comment-user-flexbox-element', 'comment-uid');
         commentTopfbDate.classList.add('comment-user-flexbox-element', 'comment-date');
         commentTopfbBtn.classList.add('comment-user-flexbox-element');
         commentBottomContent.classList.add('comment-user-grid-element', 'comment-content');
-        //only replies
-        commentRepliesGrid.classList.add('comment-user-nested-grid-container');
-        commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
 
         comment.append(commentUserGrid, commentTopfb, commentBottomContent);
         commentUserGrid.append(commentRate);
-        commentRatePlus.append(commentRatePlusObj, commentRatePlusObj);
-        commentRateMinus.append(commentRateMinusObj, commentRateMinusObj);
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
         commentTopfb.append(commentTopfbAvatar, commentTopfbUid, commentTopfbDate, commentTopfbBtn);
 
-        if(commentOrReply === 'comment') { 
-            this.container.append(comment);
-        }
-        else if(commentOrReply === 'reply') {
-            this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
-        }
-    }
-    drawUp(jsonData) {
-        let cmt = jsonData.comments;
+        this.container.append(comment);
 
-        cmt.forEach( c => { 
-            let cr = c.replies;
-            this.addElement('comment');
-            /*if(cr.length !== 0 {
-                this.addElement('reply')
-            }*/
-        } );
     }
 }
 
@@ -202,7 +164,7 @@ function init() {
 
     window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new ManageComments('./data.json');
+    new PopulateOnLoad('./data.json');
 }
 
 init();
