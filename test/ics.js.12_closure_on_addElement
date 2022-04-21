@@ -2,10 +2,10 @@
     great design:  
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
-    FIXED:
-        promise on load;
+
     TODO: make ManageComments depending on 'data.json'; 
-          populate HTML fields (check out "@return (isReply)?");
+        new methods-handling 'nested-container' ('addElement', 'drawUp');
+        @189;
 */
 
 class IcsStyle {
@@ -117,7 +117,15 @@ class ManageComments {
         }
     }
 
-    addElement(isReply) {
+    addElement(commentOrReply) {
+        const qualifyEntry = {
+            img(target, src) {
+                target.src = src;
+                target.setAttribute('alt', 'Avatar');
+            },
+        }
+        
+
         const comment = document.createElement('div'),
             commentUserGrid = document.createElement('div'),
             commentRate = document.createElement('div'),
@@ -135,6 +143,9 @@ class ManageComments {
             //only replies
             commentRepliesGrid = document.createElement('div'),
             commentRepliesLine = document.createElement('div');
+            
+        
+        qualifyEntry.img(commentTopfbAvatar, 'images/avatars/image-amyrobson.png');
 
         comment.classList.add('comment-user-main-grid-container');
         commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
@@ -157,42 +168,32 @@ class ManageComments {
         //only replies
         commentRepliesGrid.classList.add('comment-user-nested-grid-container');
         commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
-        
+
         comment.append(commentUserGrid, commentTopfb, commentBottomContent);
         commentUserGrid.append(commentRate);
         commentRatePlus.append(commentRatePlusObj, commentRatePlusObj);
         commentRateMinus.append(commentRateMinusObj, commentRateMinusObj);
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
         commentTopfb.append(commentTopfbAvatar, commentTopfbUid, commentTopfbDate, commentTopfbBtn);
-        
-        return (isReply)? 
-            this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment) :
+
+        if(commentOrReply === 'comment') { 
             this.container.append(comment);
-
-        /*if(isReply) {
-            return this.container.append(comment);
-        } else {
-            return this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
-        }*/
-    }
-    drawUp() {
-        let cmt = this.jsonData.comments,
-            isReply = (cmt.replies.length === 0)? this.addElement(true) : this.addElement(false);
-
-        function fillText(cls, cntnt) {
-            let target = document.querySelector(`.+${cls}`)
-            return (target.classList.contains(cls))? target.innerText = cntnt : null;
         }
-        
-        cmt.forEach( c => {
-            if(cmt.replies.length === 0) {
-
-            } 
-
-
-        });
+        else if(commentOrReply === 'reply') {
+            this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
+        }
     }
+    drawUp(jsonData) {
+        let cmt = jsonData.comments;
 
+        cmt.forEach( c => { 
+            let cr = c.replies;
+            this.addElement('comment');
+            /*if(cr.length !== 0 {
+                this.addElement('reply')
+            }*/
+        } );
+    }
 }
 
 function init() {
