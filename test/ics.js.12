@@ -3,10 +3,9 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
-        drawUp() one field;
+        promise on load;
     TODO: make ManageComments depending on 'data.json'; 
           populate HTML fields (check out "@return (isReply)?");
-          understand why (@196, @175) don't append reply element after comment;
 */
 
 class IcsStyle {
@@ -16,7 +15,7 @@ class IcsStyle {
         this.colorVote = colorVote;
         this.colorReplyAndEdit = colorReplyAndEdit;
         this.colorDelete = colorDelete;
-        this.colorOrig = ''; // New empty variable that lets you catch svg original color;
+        this.colorOrig = ''; // New undefined variable that lets you catch svg original color;
         this.init();
     }
 
@@ -107,14 +106,14 @@ class ManageComments {
             try {
                 this.jsonData = await fetch(jFile).then(res => res.json()).then( data => data);
                 sessionStorage.setItem('jsonData', JSON.stringify(this.jsonData));
-                this.drawUp();
+                this.drawUp(this.jsonData);
             }
             catch(error) {
                 console.log(error);
             }
         }
         else {
-            this.drawUp();
+            this.drawUp(this.jsonData);
         }
     }
 
@@ -134,8 +133,8 @@ class ManageComments {
             commentTopfbBtn = document.createElement('button'),
             commentBottomContent = document.createElement('div'),
             //only replies
-            commentRepliesLine = document.createElement('div'),
-            commentRepliesGrid = document.createElement('div')
+            commentRepliesGrid = document.createElement('div'),
+            commentRepliesLine = document.createElement('div');
 
         comment.classList.add('comment-user-main-grid-container');
         commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
@@ -166,23 +165,19 @@ class ManageComments {
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
         commentTopfb.append(commentTopfbAvatar, commentTopfbUid, commentTopfbDate, commentTopfbBtn);
         
-        /*return (isReply)? 
-            //this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment):
-            this.container.append(commentRepliesGrid.append(commentRepliesLine.append(comment))):
-            this.container.append(comment);*/
-
-        if(isReply) {
-            let reply = commentRepliesLine.append(commentRepliesGrid.append(comment));
-            //reply.append(comment);
-            //this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
-            this.container.append(reply);
-        } else {
+        return (isReply)? 
+            this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment) :
             this.container.append(comment);
-        }
+
+        /*if(isReply) {
+            return this.container.append(comment);
+        } else {
+            return this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
+        }*/
     }
     drawUp() {
-        let cmt = this.jsonData.comments;
-            //isReply = (cmt.replies.length === 0)? this.addElement(true) : this.addElement(false);
+        let cmt = this.jsonData.comments,
+            isReply = (cmt.replies.length === 0)? this.addElement(true) : this.addElement(false);
 
         function fillText(cls, cntnt) {
             let target = document.querySelector(`.+${cls}`)
@@ -190,12 +185,11 @@ class ManageComments {
         }
         
         cmt.forEach( c => {
-            this.addElement(false);
-            if(c.replies.length > 0) {
-                c.replies.forEach( () => {
-                    this.addElement(true);
-                });
+            if(cmt.replies.length === 0) {
+
             } 
+
+
         });
     }
 
