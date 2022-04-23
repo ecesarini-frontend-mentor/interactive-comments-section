@@ -3,11 +3,10 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
-        understand why (@196, @175) don't append reply element after comment;
-    TODO:
-        nesting reply checkout; (@170);
-        make ManageComments depending on 'data.json'; 
-        populate HTML fields (check out "@return (isReply)?");
+        drawUp() one field;
+    TODO: make ManageComments depending on 'data.json'; 
+          populate HTML fields (check out "@return (isReply)?");
+          understand why (@196, @175) don't append reply element after comment;
 */
 
 class IcsStyle {
@@ -136,7 +135,7 @@ class ManageComments {
             commentBottomContent = document.createElement('div'),
             //only replies
             commentRepliesLine = document.createElement('div'),
-            commentRepliesGrid = document.createElement('div');
+            commentRepliesGrid = document.createElement('div')
 
         comment.classList.add('comment-user-main-grid-container');
         commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
@@ -166,11 +165,6 @@ class ManageComments {
         commentRateMinus.append(commentRateMinusObj, commentRateMinusObj);
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
         commentTopfb.append(commentTopfbAvatar, commentTopfbUid, commentTopfbDate, commentTopfbBtn);
-        //only replies
-        commentRepliesLine.append(comment);
-        commentRepliesGrid.append(commentRepliesLine);
-
-
         
         /*return (isReply)? 
             //this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment):
@@ -178,14 +172,10 @@ class ManageComments {
             this.container.append(comment);*/
 
         if(isReply) {
-            //let reply = commentRepliesGrid.append(commentRepliesLine.append(comment));
-            //commentRepliesLine.append(comment);
-            //commentRepliesGrid.append(commentRepliesLine);
-            this.container.append(commentRepliesGrid);
-            //this.container.append(commentRepliesGrid.append(commentRepliesLine.append(comment)));
+            let reply = commentRepliesLine.append(commentRepliesGrid.append(comment));
             //reply.append(comment);
             //this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
-            //this.container.append(reply);
+            this.container.append(reply);
         } else {
             this.container.append(comment);
         }
