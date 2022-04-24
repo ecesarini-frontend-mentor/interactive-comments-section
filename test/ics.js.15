@@ -3,12 +3,11 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
+        understand why (@196, @175) don't append reply element after comment;
+    TODO:
         nesting reply checkout; (@170);
         make ManageComments depending on 'data.json'; 
         populate HTML fields (check out "@return (isReply)?");
-    TODO:
-        data.json(e.g. @36) is an array, so code stops working. 
-        manage array reply;
 */
 
 class IcsStyle {
@@ -120,8 +119,7 @@ class ManageComments {
         }
     }
 
-    addElement(isReply, cmtProp) {
-        //Create html elements
+    addElement(isReply) {
         const comment = document.createElement('div'),
             commentUserGrid = document.createElement('div'),
             commentRate = document.createElement('div'),
@@ -140,7 +138,6 @@ class ManageComments {
             commentRepliesLine = document.createElement('div'),
             commentRepliesGrid = document.createElement('div');
 
-        //Assign classes
         comment.classList.add('comment-user-main-grid-container');
         commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
         commentRate.classList.add('comment-rate-flexbox');
@@ -163,7 +160,6 @@ class ManageComments {
         commentRepliesGrid.classList.add('comment-user-nested-grid-container');
         commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
         
-        //Connect elements
         comment.append(commentUserGrid, commentTopfb, commentBottomContent);
         commentUserGrid.append(commentRate);
         commentRatePlus.append(commentRatePlusObj, commentRatePlusObj);
@@ -171,29 +167,32 @@ class ManageComments {
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
         commentTopfb.append(commentTopfbAvatar, commentTopfbUid, commentTopfbDate, commentTopfbBtn);
         //only replies
+        commentRepliesLine.append(comment);
         commentRepliesGrid.append(commentRepliesLine);
+
+
         
-        const fillAttributes = (obj) => {
-            commentRateValue.innerText = obj.score;
-            commentTopfbAvatar.src = obj.user.image.png;
-            commentTopfbUid.innerText = obj.user.username;
-            commentTopfbDate.innerText = obj.user.createdAt;
-            commentBottomContent.innerText = obj.content;
-        };
+        /*return (isReply)? 
+            //this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment):
+            this.container.append(commentRepliesGrid.append(commentRepliesLine.append(comment))):
+            this.container.append(comment);*/
 
         if(isReply) {
-            if(!this.container.lastElementChild.classList.contains('comment-user-nested-grid-container')) {
-                this.container.append(commentRepliesGrid);                
-            }
-            fillAttributes(cmtProp);
-            this.container.lastElementChild.append(comment);  // you gotta involve 'this.container' to let you manage html by javascript
+            //let reply = commentRepliesGrid.append(commentRepliesLine.append(comment));
+            //commentRepliesLine.append(comment);
+            //commentRepliesGrid.append(commentRepliesLine);
+            this.container.append(commentRepliesGrid);
+            //this.container.append(commentRepliesGrid.append(commentRepliesLine.append(comment)));
+            //reply.append(comment);
+            //this.container.append(commentRepliesGrid).append(commentRepliesLine).append(comment);
+            //this.container.append(reply);
         } else {
-            fillAttributes(cmtProp);
             this.container.append(comment);
         }
     }
     drawUp() {
         let cmt = this.jsonData.comments;
+            //isReply = (cmt.replies.length === 0)? this.addElement(true) : this.addElement(false);
 
         function fillText(cls, cntnt) {
             let target = document.querySelector(`.+${cls}`)
@@ -201,10 +200,10 @@ class ManageComments {
         }
         
         cmt.forEach( c => {
-            this.addElement(false, c);
+            this.addElement(false);
             if(c.replies.length > 0) {
                 c.replies.forEach( () => {
-                    this.addElement(true, c.replies);
+                    this.addElement(true);
                 });
             } 
         });
