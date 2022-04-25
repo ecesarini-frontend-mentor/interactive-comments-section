@@ -3,11 +3,12 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
+        nesting reply checkout; (@170);
+        make ManageComments depending on 'data.json'; 
+        populate HTML fields (check out "@return (isReply)?");
+    TODO:
         data.json(e.g. @36) is an array, so code stops working. 
         manage array reply;
-    TODO: 
-        problems about new function 'commentSec()' @220 'commentContainerImg = new Image()', and browser repsonse.
-
 */
 
 class IcsStyle {
@@ -120,8 +121,6 @@ class ManageComments {
     }
 
     addElement(isReply, cmtProp) {
-        let currentUser = JSON.parse(sessionStorage['jsonData']).currentUser.username;
-
         //Create html elements
         const comment = document.createElement('div'),
             commentUserGrid = document.createElement('div'),
@@ -131,10 +130,11 @@ class ManageComments {
             commentRateValue = document.createElement('span'),
             commentRateMinus = document.createElement('button'),
             commentRateMinusObj = document.createElement('object'),
-            commentTopFb = document.createElement('div'),
-            commentTopFbAvatar = new Image(),
-            commentTopFbUid = document.createElement('span'),
-            commentTopFbDate = document.createElement('span'),
+            commentTopfb = document.createElement('div'),
+            commentTopfbAvatar = new Image(),
+            commentTopfbUid = document.createElement('span'),
+            commentTopfbDate = document.createElement('span'),
+            commentTopfbBtn = document.createElement('button'),
             commentBottomContent = document.createElement('div'),
             //only replies
             commentRepliesLine = document.createElement('div'),
@@ -153,101 +153,61 @@ class ManageComments {
         commentRateMinusObj.classList.add('vote');
         commentRateMinusObj.setAttribute('type', 'image/svg+xml');
         commentRateMinusObj.setAttribute('data', 'images/icon-minus.svg');
-        commentTopFb.classList.add('comment-user-grid-element', 'comment-user-flexbox-container');
-        commentTopFbAvatar.classList.add('comment-user-flexbox-element', 'comment-avatar');
-        commentTopFbUid.classList.add('comment-user-flexbox-element', 'comment-uid');
-        commentTopFbDate.classList.add('comment-user-flexbox-element', 'comment-date');        
+        commentTopfb.classList.add('comment-user-grid-element', 'comment-user-flexbox-container');
+        commentTopfbAvatar.classList.add('comment-user-flexbox-element', 'comment-avatar');
+        commentTopfbUid.classList.add('comment-user-flexbox-element', 'comment-uid');
+        commentTopfbDate.classList.add('comment-user-flexbox-element', 'comment-date');
+        commentTopfbBtn.classList.add('comment-user-flexbox-element');
         commentBottomContent.classList.add('comment-user-grid-element', 'comment-content');
         //only replies
         commentRepliesGrid.classList.add('comment-user-nested-grid-container');
         commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
-
+        
         //Connect elements
-        comment.append(commentUserGrid, commentTopFb, commentBottomContent);
+        comment.append(commentUserGrid, commentTopfb, commentBottomContent);
         commentUserGrid.append(commentRate);
         commentRatePlus.append(commentRatePlusObj, commentRatePlusObj);
         commentRateMinus.append(commentRateMinusObj, commentRateMinusObj);
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
-        commentTopFb.append(commentTopFbAvatar, commentTopFbUid, commentTopFbDate);
-
+        commentTopfb.append(commentTopfbAvatar, commentTopfbUid, commentTopfbDate, commentTopfbBtn);
         //only replies
         commentRepliesGrid.append(commentRepliesLine);
         
-        const activeBtn = (btnType) => {
-            const commentTopFbBtn = document.createElement('button'),
-                commentTopFbBtnImage = document.createElement('object'),
-                commentTopFbBtnContent = document.createElement('span');
-
-            commentTopFbBtn.classList.add('comment-user-flexbox-element', `comment-${btnType}`);
-            commentTopFbBtnImage.classList.add('interact');
-            commentTopFbBtn.type = 'button';
-            commentTopFbBtnImage.type = 'image/svg+xml';
-            
-            commentTopFbBtnImage.data = `images/icon-${btnType}.svg`;
-            commentTopFbBtnContent.innerText = `${btnType[0].toUpperCase()}${btnType.slice(1)}`;
-            commentTopFbBtn.append(commentTopFbBtnImage, commentTopFbBtnContent);
-            
-            return commentTopFbBtn;
-        }
-
-        const qualifyUser = (obj) => {
+        const fillAttributes = (obj) => {
             commentRateValue.innerText = obj.score;
-            commentTopFbAvatar.src = obj.user.image.png;
-            commentTopFbUid.innerText = obj.user.username;
-            commentTopFbDate.innerText = obj.createdAt;
-            if(currentUser !== obj.user.username) {
-                commentTopFb.append(activeBtn('reply'));
-            } else {
-                commentTopFb.append(activeBtn('delete'), activeBtn('edit'));
-            }
+            commentTopfbAvatar.src = obj.user.image.png;
+            commentTopfbUid.innerText = obj.user.username;
+            commentTopfbDate.innerText = obj.user.createdAt;
             commentBottomContent.innerText = obj.content;
         };
 
         if(isReply) {
-            //if(!this.container.lastElementChild.classList.contains('comment-user-nested-grid-container')) {
-            if(!this.container.lastElementChild.matches('.comment-user-nested-grid-container')) {
+            if(!this.container.lastElementChild.classList.contains('comment-user-nested-grid-container')) {
                 this.container.append(commentRepliesGrid);                
             }
-            qualifyUser(cmtProp);
+            fillAttributes(cmtProp);
             this.container.lastElementChild.append(comment);  // you gotta involve 'this.container' to let you manage html by javascript
         } else {
-            qualifyUser(cmtProp);
+            fillAttributes(cmtProp);
             this.container.append(comment);
         }
     }
-
-    commentSec(appendElement) {
-        const commentContainer = document.createElement('div'),
-            commentContainerImg = new Image(),
-            commentContainerFb = document.createElement('div'),
-            commentContainerFbTextarea = document.createElement('textarea'),
-            commentContainerFbBtnSend = document.createElement('button');
-            
-        commentContainer.classList.add('comment-user-add-comment');
-        commentContainerImg.classList.add('comment-user-add-comment-avatar');
-        commentContainerFb.classList.add('comment-user-add-comment-flexbox');
-        commentContainerFbTextarea.classList.add('add-comment-textarea');
-        commentContainerFbTextarea.placeholder = ' Add a comment...';
-        commentContainerFbBtnSend.classList.add('add-comment-send-button');
-        commentContainerFbBtnSend.type = 'button';
-        commentContainerFbBtnSend.innerText = 'SEND';
-
-        commentContainer.append(commentContainerImg).append(commentContainerFb.append(commentContainerFbTextarea, commentContainerFbBtnSend));
-        return appendElement.append(commentContainer);
-    }
-
     drawUp() {
         let cmt = this.jsonData.comments;
+
+        function fillText(cls, cntnt) {
+            let target = document.querySelector(`.+${cls}`)
+            return (target.classList.contains(cls))? target.innerText = cntnt : null;
+        }
         
         cmt.forEach( c => {
             this.addElement(false, c);
             if(c.replies.length > 0) {
-                c.replies.forEach( r => {
-                    this.addElement(true, r);
+                c.replies.forEach( () => {
+                    this.addElement(true, c.replies);
                 });
             } 
         });
-        this.commentSec(this.container);
     }
 
 }

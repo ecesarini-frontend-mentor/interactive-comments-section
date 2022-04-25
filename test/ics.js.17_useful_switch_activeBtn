@@ -3,11 +3,12 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
+        nesting reply checkout; (@170);
+        make ManageComments depending on 'data.json'; 
+        populate HTML fields (check out "@return (isReply)?");
+    TODO:
         data.json(e.g. @36) is an array, so code stops working. 
         manage array reply;
-    TODO: 
-        problems about new function 'commentSec()' @220 'commentContainerImg = new Image()', and browser repsonse.
-
 */
 
 class IcsStyle {
@@ -185,8 +186,22 @@ class ManageComments {
             
             commentTopFbBtnImage.data = `images/icon-${btnType}.svg`;
             commentTopFbBtnContent.innerText = `${btnType[0].toUpperCase()}${btnType.slice(1)}`;
+
+            /*switch(btnType) {
+                case 'reply':
+                    commentTopFbBtnImage.data = 'images/icon-reply.svg';
+                    commentTopFbBtnContent.innerText = 'Reply';
+                    break;
+                case 'edit':
+                    commentTopFbBtnImage.data = 'images/icon-edit.svg';
+                    commentTopFbBtnContent.innerText = 'Edit';
+                    break;
+                case 'delete':
+                    commentTopFbBtnImage.data = 'images/icon-delete.svg';
+                    commentTopFbBtnContent.innerText = 'Delete';
+                    break;
+            }*/
             commentTopFbBtn.append(commentTopFbBtnImage, commentTopFbBtnContent);
-            
             return commentTopFbBtn;
         }
 
@@ -197,6 +212,7 @@ class ManageComments {
             commentTopFbDate.innerText = obj.createdAt;
             if(currentUser !== obj.user.username) {
                 commentTopFb.append(activeBtn('reply'));
+                //commentTopFb.append(commentTopFbBtn);  
             } else {
                 commentTopFb.append(activeBtn('delete'), activeBtn('edit'));
             }
@@ -215,27 +231,6 @@ class ManageComments {
             this.container.append(comment);
         }
     }
-
-    commentSec(appendElement) {
-        const commentContainer = document.createElement('div'),
-            commentContainerImg = new Image(),
-            commentContainerFb = document.createElement('div'),
-            commentContainerFbTextarea = document.createElement('textarea'),
-            commentContainerFbBtnSend = document.createElement('button');
-            
-        commentContainer.classList.add('comment-user-add-comment');
-        commentContainerImg.classList.add('comment-user-add-comment-avatar');
-        commentContainerFb.classList.add('comment-user-add-comment-flexbox');
-        commentContainerFbTextarea.classList.add('add-comment-textarea');
-        commentContainerFbTextarea.placeholder = ' Add a comment...';
-        commentContainerFbBtnSend.classList.add('add-comment-send-button');
-        commentContainerFbBtnSend.type = 'button';
-        commentContainerFbBtnSend.innerText = 'SEND';
-
-        commentContainer.append(commentContainerImg).append(commentContainerFb.append(commentContainerFbTextarea, commentContainerFbBtnSend));
-        return appendElement.append(commentContainer);
-    }
-
     drawUp() {
         let cmt = this.jsonData.comments;
         
@@ -247,7 +242,6 @@ class ManageComments {
                 });
             } 
         });
-        this.commentSec(this.container);
     }
 
 }
