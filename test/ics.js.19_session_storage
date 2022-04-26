@@ -3,11 +3,10 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
+        data.json(e.g. @36) is an array, so code stops working. 
+        manage array reply;
+    TODO: 
         problems about new function 'commentSec()' @220 'commentContainerImg = new Image()', and browser repsonse.
-    TODO:
-        check 'https://it.javascript.info/class-inheritance#sovrascrivere-il-costruttore' (inquire into 'super' and why HTML is duplicated);
-        HandleActivities extends BuildSession, @263;
-
 
 */
 
@@ -89,16 +88,16 @@ class IcsStyle {
     }
 }
 
-class BuildSession {
+class BuildSection {
     constructor(jFile) {
         this.jFile = jFile;
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
-        this.init();
+        this.initBuildSection();
     }
 
-    //INIT section
-    init() {
+    //initBuildSection section
+    initBuildSection() {
         this.getData(this.jFile);
     }
 
@@ -260,16 +259,15 @@ class BuildSession {
 }
 
 
-class HandleActivities extends BuildSession {
-    constructor(jFile) {
-        super(jFile);
-        //this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
-        //this.jsonData = this.getData('./data.json');
+class HandleActivities extends BuildSection {
+    constructor() {
+        super('./data.json');
+        this.jsonData = JSON.parse(localStorage.getItem('jsonData'));
         this.btn = document.querySelectorAll('button');
-        //this.initHA();
+        this.initHandleActivities();
     }
 
-    initHA() {
+    initHandleActivities() {
         this.btn.forEach( b => b.addEventListener('click', this));
     }
 
@@ -285,11 +283,10 @@ class HandleActivities extends BuildSession {
 
     qualifyResponse(btn) {
         function updateSessionStorage() {
-            
+
         }
         if(btn.matches('.add-comment-send-button')) {
             debugger;
-            //super.BuildSession(btn);
         }
     }
 
@@ -305,8 +302,8 @@ function init() {
 
     //window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new BuildSession('./data.json');
-    new HandleActivities('./data.json');
+    new BuildSection('./data.json');
+    new HandleActivities();
 }
 
 init();

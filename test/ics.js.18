@@ -3,11 +3,10 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
+        data.json(e.g. @36) is an array, so code stops working. 
+        manage array reply;
+    TODO: 
         problems about new function 'commentSec()' @220 'commentContainerImg = new Image()', and browser repsonse.
-    TODO:
-        check 'https://it.javascript.info/class-inheritance#sovrascrivere-il-costruttore' (inquire into 'super' and why HTML is duplicated);
-        HandleActivities extends BuildSession, @263;
-
 
 */
 
@@ -89,20 +88,20 @@ class IcsStyle {
     }
 }
 
-class BuildSession {
+class ManageComments {
     constructor(jFile) {
         this.jFile = jFile;
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
         this.init();
     }
-
-    //INIT section
+    
     init() {
         this.getData(this.jFile);
-    }
-
-    //BUILD section
+        //this.drawUpElement(JSON.parse(sessionStorage['jsonData']), 'comment');
+        //this.addElement('comment');
+        //this.drawUp(JSON.parse(sessionStorage['jsonData']));
+    }    
     async getData(jFile) {
         this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
@@ -119,23 +118,7 @@ class BuildSession {
             this.drawUp();
         }
     }
-    drawUp() {
-        let cmt = this.jsonData.comments;
-        
-        cmt.forEach( c => {
-            this.addElement(false, c);
-            if(c.replies.length > 0) {
-                c.replies.forEach( r => {
-                    this.addElement(true, r);
-                });
-            } 
-        });
-        this.commentSec(this.container);
-    }
 
-    //EVENT section
-
-    //ELEMENT section
     addElement(isReply, cmtProp) {
         let currentUser = JSON.parse(sessionStorage['jsonData']).currentUser.username;
 
@@ -246,55 +229,28 @@ class BuildSession {
         commentContainerFbTextarea.classList.add('add-comment-textarea');
         commentContainerFbTextarea.placeholder = ' Add a comment...';
         commentContainerFbBtnSend.classList.add('add-comment-send-button');
-
-        commentContainerImg.src = JSON.parse(sessionStorage['jsonData']).currentUser.image.png;
         commentContainerFbBtnSend.type = 'button';
         commentContainerFbBtnSend.innerText = 'SEND';
 
-        commentContainerFb.append(commentContainerFbTextarea, commentContainerFbBtnSend);
-        commentContainer.append(commentContainerImg, commentContainerFb);
-
+        commentContainer.append(commentContainerImg).append(commentContainerFb.append(commentContainerFbTextarea, commentContainerFbBtnSend));
         return appendElement.append(commentContainer);
     }
 
+    drawUp() {
+        let cmt = this.jsonData.comments;
+        
+        cmt.forEach( c => {
+            this.addElement(false, c);
+            if(c.replies.length > 0) {
+                c.replies.forEach( r => {
+                    this.addElement(true, r);
+                });
+            } 
+        });
+        this.commentSec(this.container);
+    }
+
 }
-
-
-class HandleActivities extends BuildSession {
-    constructor(jFile) {
-        super(jFile);
-        //this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
-        //this.jsonData = this.getData('./data.json');
-        this.btn = document.querySelectorAll('button');
-        //this.initHA();
-    }
-
-    initHA() {
-        this.btn.forEach( b => b.addEventListener('click', this));
-    }
-
-    handleEvent(e) {
-        let ect = e.currentTarget;        
-        switch(e.type) {
-            case 'click':
-                //if(ect.matches('.add-comment-send-button')) alert('hello, I\'m comment button');
-                this.qualifyResponse(ect);
-                break;
-        }
-    }
-
-    qualifyResponse(btn) {
-        function updateSessionStorage() {
-            
-        }
-        if(btn.matches('.add-comment-send-button')) {
-            debugger;
-            //super.BuildSession(btn);
-        }
-    }
-
-} 
-
 
 function init() {
     let elClk = document.querySelectorAll('button'),
@@ -305,8 +261,7 @@ function init() {
 
     //window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new BuildSession('./data.json');
-    new HandleActivities('./data.json');
+    new ManageComments('./data.json');
 }
 
 init();
