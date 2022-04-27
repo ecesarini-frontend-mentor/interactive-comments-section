@@ -3,10 +3,11 @@
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
         https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
     FIXED:
+        problems about new function 'commentSec()' @220 'commentContainerImg = new Image()', and browser repsonse.
+    TODO:
         check 'https://it.javascript.info/class-inheritance#sovrascrivere-il-costruttore' (inquire into 'super' and why HTML is duplicated);
         HandleActivities extends BuildSession, @263;
-    TODO:
-        HandleActivities @267 behaviour;
+
 
 */
 
@@ -18,7 +19,7 @@ class IcsStyle {
         this.colorReplyAndEdit = colorReplyAndEdit;
         this.colorDelete = colorDelete;
         this.colorOrig = ''; // New empty variable that lets you catch svg original color;
-        //this.init();
+        this.init();
     }
 
     init() {
@@ -89,12 +90,19 @@ class IcsStyle {
 }
 
 class BuildSession {
-    constructor() {
+    constructor(jFile) {
+        this.jFile = jFile;
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
+        this.init();
     }
-    //BUILD section
 
+    //INIT section
+    init() {
+        this.getData(this.jFile);
+    }
+
+    //BUILD section
     async getData(jFile) {
         this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
@@ -251,10 +259,11 @@ class BuildSession {
 
 }
 
+
 class HandleActivities extends BuildSession {
-    constructor() {
-        super();
-        this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
+    constructor(jFile) {
+        super(jFile);
+        //this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
         //this.jsonData = this.getData('./data.json');
         this.btn = document.querySelectorAll('button');
         //this.initHA();
@@ -274,19 +283,15 @@ class HandleActivities extends BuildSession {
         }
     }
 
-    qualifyResponse(appendElement) {
-        super.commentSec(appendElement);
-        this.commentSec(appendElement);
-    }
-    /*qualifyResponse(btn) {
+    qualifyResponse(btn) {
         function updateSessionStorage() {
             
         }
         if(btn.matches('.add-comment-send-button')) {
-            //debugger;
+            debugger;
             //super.BuildSession(btn);
         }
-    }*/
+    }
 
 } 
 
@@ -300,8 +305,8 @@ function init() {
 
     //window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new BuildSession().getData('./data.json');
-    let hA = new HandleActivities().initHA();
+    new BuildSession('./data.json');
+    new HandleActivities('./data.json');
 }
 
 init();
