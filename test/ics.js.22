@@ -6,9 +6,7 @@
         check 'https://it.javascript.info/class-inheritance#sovrascrivere-il-costruttore' (inquire into 'super' and why HTML is duplicated);
         HandleActivities extends BuildSession, @263;
     TODO:
-        @202: qualify user, not internal, handle object statefully (comment added or json to build reference);
-        @305: "cuObj.content = document.querySelector('.add-comment-textarea').innerText" doesn't catches textarea content. (handle by event)?;
-
+        HandleActivities @267 behaviour;
 
 */
 
@@ -96,7 +94,8 @@ class BuildSession {
         this.container = document.querySelector('.comment-container');
     }
     //BUILD section
-    async initBS(jFile) {
+
+    async getData(jFile) {
         this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
             try {
@@ -256,7 +255,9 @@ class HandleActivities extends BuildSession {
     constructor() {
         super();
         this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
+        //this.jsonData = this.getData('./data.json');
         this.btn = document.querySelectorAll('button');
+        //this.initHA();
     }
 
     initHA() {
@@ -267,30 +268,25 @@ class HandleActivities extends BuildSession {
         let ect = e.currentTarget;        
         switch(e.type) {
             case 'click':
-                if(ect.matches('.add-comment-send-button')) {
-                    //alert('hello, I\'m comment button');
-                    //this.qualifyResponse(ect);
-                    this.addElement(false, this.getCommentContent());
-                }
+                //if(ect.matches('.add-comment-send-button')) alert('hello, I\'m comment button');
+                this.qualifyResponse(ect);
                 break;
         }
     }
 
-    getCommentContent() {        
-        const cuObj = {};
-
-        /*cuObj.id = (this.jsonData.comments.replies)? 
-            this.jsonData.comments[this.jsonData.comments.length - 1].id + 1 :
-            this.jsonData.;*/
-        cuObj.id = '10';
-        cuObj.content = document.querySelector('.add-comment-textarea').innerText;
-        cuObj.createdAt = new Date().getSeconds();
-        cuObj.score = 0;
-        cuObj.user = this.jsonData.currentUser.image;
-        cuObj.replies = [];
-
-        return cuObj;
+    qualifyResponse(appendElement) {
+        super.commentSec(appendElement);
+        this.commentSec(appendElement);
     }
+    /*qualifyResponse(btn) {
+        function updateSessionStorage() {
+            
+        }
+        if(btn.matches('.add-comment-send-button')) {
+            //debugger;
+            //super.BuildSession(btn);
+        }
+    }*/
 
 } 
 
@@ -304,7 +300,7 @@ function init() {
 
     //window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new BuildSession().initBS('./data.json');
+    new BuildSession().getData('./data.json');
     let hA = new HandleActivities().initHA();
 }
 
