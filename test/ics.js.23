@@ -1,5 +1,16 @@
-/* FIXED: appended comment section on SEND click button; vanish textareacontent onclick;
-    TODO: handle createdAt by Date; get latest ID from jsonData; */
+/* FINDINGS:
+    great design:  
+        https://github.com/Richard2957/interactive-comments-section-main/blob/master/index.html 
+        https://github.com/Richard2957/interactive-comments-section-main/blob/master/ics.js
+    FIXED:
+        check 'https://it.javascript.info/class-inheritance#sovrascrivere-il-costruttore' (inquire into 'super' and why HTML is duplicated);
+        HandleActivities extends BuildSession, @263;
+    TODO:
+        @202: qualify user, not internal, handle object statefully (comment added or json to build reference);
+        @305: "cuObj.content = document.querySelector('.add-comment-textarea').innerText" doesn't catches textarea content. (handle by event)?;
+
+
+*/
 
 class IcsStyle {
     constructor(elClk, evClk, colorVote, colorReplyAndEdit, colorDelete) {
@@ -112,13 +123,13 @@ class BuildSession {
                 });
             } 
         });
-        this.container.append(this.commentSec());
+        this.commentSec(this.container);
     }
 
     //EVENT section
 
     //ELEMENT section
-    addElement(isReply, cmtProp, isInserted) {
+    addElement(isReply, cmtProp) {
         let currentUser = JSON.parse(sessionStorage['jsonData']).currentUser.username;
 
         //Create html elements
@@ -201,7 +212,7 @@ class BuildSession {
             }
             commentBottomContent.innerText = obj.content;
         };
-        
+
         if(isReply) {
             //if(!this.container.lastElementChild.classList.contains('comment-user-nested-grid-container')) {
             if(!this.container.lastElementChild.matches('.comment-user-nested-grid-container')) {
@@ -215,8 +226,7 @@ class BuildSession {
         }
     }
 
-    //commentSec(appendElement) {
-    commentSec() {
+    commentSec(appendElement) {
         const commentContainer = document.createElement('div'),
             commentContainerImg = new Image(),
             commentContainerFb = document.createElement('div'),
@@ -237,8 +247,7 @@ class BuildSession {
         commentContainerFb.append(commentContainerFbTextarea, commentContainerFbBtnSend);
         commentContainer.append(commentContainerImg, commentContainerFb);
 
-        //return appendElement.append(commentContainer);
-        return commentContainer;
+        return appendElement.append(commentContainer);
     }
 
 }
@@ -248,8 +257,6 @@ class HandleActivities extends BuildSession {
         super();
         this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
         this.btn = document.querySelectorAll('button');
-        this.commentBox = document.querySelector('.comment-user-add-comment');
-        this.commentBoxTextarea = this.commentBox.querySelector('.add-comment-textarea');
     }
 
     initHA() {
@@ -261,30 +268,25 @@ class HandleActivities extends BuildSession {
         switch(e.type) {
             case 'click':
                 if(ect.matches('.add-comment-send-button')) {
-                    this.addElement(false, this.getCommentObj());
-                    this.container.append(this.commentBox);
-                    this.commentBoxTextarea.value = 'Add a comment ...';
+                    //alert('hello, I\'m comment button');
+                    //this.qualifyResponse(ect);
+                    this.addElement(false, this.getCommentContent());
                 }
                 break;
         }
     }
 
-    getCommentObj() {
-        function getMaxId(countMyObjectID) {
-            Object.entries(countMyObjectID).forEach( entry => {
-
-            });
-        }
+    getCommentContent() {        
         const cuObj = {};
 
         /*cuObj.id = (this.jsonData.comments.replies)? 
             this.jsonData.comments[this.jsonData.comments.length - 1].id + 1 :
             this.jsonData.;*/
-        //cuObj.id = '10';
-        cuObj.content = this.commentBoxTextarea.value;
+        cuObj.id = '10';
+        cuObj.content = document.querySelector('.add-comment-textarea').innerText;
         cuObj.createdAt = new Date().getSeconds();
         cuObj.score = 0;
-        cuObj.user = this.jsonData.currentUser;
+        cuObj.user = this.jsonData.currentUser.image;
         cuObj.replies = [];
 
         return cuObj;
@@ -292,7 +294,8 @@ class HandleActivities extends BuildSession {
 
 } 
 
-function ics() {
+
+function init() {
     let elClk = document.querySelectorAll('button'),
         evClk = ['mouseover', 'mouseout', 'mousedown', 'mouseup'],
         moderateBlue = 'hsl(238, 40%, 52%)',
@@ -302,7 +305,7 @@ function ics() {
     //window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
     new BuildSession().initBS('./data.json');
-    new HandleActivities().initHA();
+    let hA = new HandleActivities().initHA();
 }
 
-ics();
+init();

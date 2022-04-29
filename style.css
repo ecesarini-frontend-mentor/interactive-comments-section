@@ -207,6 +207,9 @@ span.comment-rate-element {
   border: 3px solid var(--moderate-blue);
   font-weight: 500;
 }
+.comment-user-add-comment .add-comment-textarea:focus::placeholder {
+  color: transparent; /*when textarea is focused remove placeholder*/
+}
 .comment-user-add-comment .add-comment-send-button {
   width: 20%;
   height: 2em;
