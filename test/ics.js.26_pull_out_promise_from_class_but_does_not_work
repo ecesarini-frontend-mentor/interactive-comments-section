@@ -1,8 +1,5 @@
 /* FIXED: appended comment section on SEND click button; vanish textareacontent onclick;
-    TODO: inherited class HandleEvent doesn't trigger on page 'first load': fix this FIRST!!!
-        handle createdAt by Date; get latest ID from jsonData; 
-    
-    */
+    TODO: handle createdAt by Date; get latest ID from jsonData; */
 
 'use strict'
 
@@ -85,18 +82,18 @@ class IcsStyle {
 }
 
 class BuildSession {
-    constructor(jFile) {
-        this.jFile = jFile;
-        this.jsonData = null;
+    constructor(jData) {
+        //this.jFile = jFile;
+        this.jsonData = jData;
         this.container = document.querySelector('.comment-container');
         this.initBS();
     }
 
     initBS() {
-        this.getJsonData();
+        this.drawUp();
     }
     //BUILD section
-    async getJsonData() {
+    /*async getJsonData() {
         this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
             try {
@@ -111,7 +108,7 @@ class BuildSession {
         else {
             this.drawUp();
         }
-    }
+    }*/
     drawUp() {
         let cmt = this.jsonData.comments;
         
@@ -308,6 +305,20 @@ class HandleActivities extends BuildSession {
 } 
 
 function ics() {
+    let getJFile = async function(jFile) {
+        let jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
+        if(!jsonData) {
+            try {
+                jsonData = await fetch(jFile).then(res => res.json()).then( data => data);
+                sessionStorage.setItem('jsonData', JSON.stringify(jsonData));
+                return jsonData;
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+    };
+
     let elClk = document.querySelectorAll('button'),
         evClk = ['mouseover', 'mouseout', 'mousedown', 'mouseup'],
         moderateBlue = 'hsl(238, 40%, 52%)',
@@ -317,7 +328,7 @@ function ics() {
     //window.addEventListener('DOMContentLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
     //new BuildSession().initBS('./data.json');
-    new BuildSession('./data.json');
+    new BuildSession(getJFile('./data.json'));
     //debugger;
     //document.addEventListener('DOMContentLoaded', () => new HandleActivities());
     new HandleActivities();

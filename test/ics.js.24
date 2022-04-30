@@ -1,10 +1,5 @@
 /* FIXED: appended comment section on SEND click button; vanish textareacontent onclick;
-    TODO: inherited class HandleEvent doesn't trigger on page 'first load': fix this FIRST!!!
-        handle createdAt by Date; get latest ID from jsonData; 
-    
-    */
-
-'use strict'
+    TODO: handle createdAt by Date; get latest ID from jsonData; */
 
 class IcsStyle {
     constructor(elClk, evClk, colorVote, colorReplyAndEdit, colorDelete) {
@@ -85,22 +80,16 @@ class IcsStyle {
 }
 
 class BuildSession {
-    constructor(jFile) {
-        this.jFile = jFile;
+    constructor() {
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
-        this.initBS();
-    }
-
-    initBS() {
-        this.getJsonData();
     }
     //BUILD section
-    async getJsonData() {
+    async initBS(jFile) {
         this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
             try {
-                this.jsonData = await fetch(this.jFile).then(res => res.json()).then( data => data);
+                this.jsonData = await fetch(jFile).then(res => res.json()).then( data => data);
                 sessionStorage.setItem('jsonData', JSON.stringify(this.jsonData));
                 this.drawUp();
             }
@@ -257,18 +246,14 @@ class BuildSession {
 class HandleActivities extends BuildSession {
     constructor() {
         super();
-        //debugger;
-        //this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
+        this.jsonData = JSON.parse(sessionStorage.getItem('jsonData'));
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-comment');
-        this.commentBoxTextarea = document.querySelector('.add-comment-textarea');
-        this.initHA();
+        this.commentBoxTextarea = this.commentBox.querySelector('.add-comment-textarea');
     }
 
     initHA() {
         this.btn.forEach( b => b.addEventListener('click', this));
-        //alert(this.btn);
-        //this.btn.forEach( b => b.addEventListener('click', () => alert('ciao')));
     }
 
     handleEvent(e) {
@@ -314,13 +299,10 @@ function ics() {
         grayishBlue = 'hsl(211, 10%, 45%)',
         deepPink = 'hsl(328, 100%, 54%)';
 
-    //window.addEventListener('DOMContentLoaded', () => sessionStorage.clear());
+    //window.addEventListener('DOMContenLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    //new BuildSession().initBS('./data.json');
-    new BuildSession('./data.json');
-    //debugger;
-    //document.addEventListener('DOMContentLoaded', () => new HandleActivities());
-    new HandleActivities();
+    new BuildSession().initBS('./data.json');
+    new HandleActivities().initHA();
 }
 
 ics();

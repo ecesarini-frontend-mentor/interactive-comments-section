@@ -1,8 +1,5 @@
 /* FIXED: appended comment section on SEND click button; vanish textareacontent onclick;
-    TODO: inherited class HandleEvent doesn't trigger on page 'first load': fix this FIRST!!!
-        handle createdAt by Date; get latest ID from jsonData; 
-    
-    */
+    TODO: handle createdAt by Date; get latest ID from jsonData; */
 
 'use strict'
 
