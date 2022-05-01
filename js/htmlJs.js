@@ -1,95 +1,4 @@
-/*  
-    FIXED: 
-        inherited class HandleEvent doesn't trigger on page 'first load'. --> it depends on 'prmomise getJson'
-    TODO: 
-        vanish textarea after click;
-        store into localStorage input event;
-        order 'id' object from localStorage['jsonData']; catch the higher;
-        handle createdAt by Date; get latest ID from jsonData; 
-    
-*/
-
-'use strict'
-
-class IcsStyle {
-    constructor(elClk, evClk, colorVote, colorReplyAndEdit, colorDelete) {
-        this.elClk = elClk;
-        this.evClk = evClk;
-        this.colorVote = colorVote;
-        this.colorReplyAndEdit = colorReplyAndEdit;
-        this.colorDelete = colorDelete;
-        this.colorOrig = ''; // New empty variable that lets you catch svg original color;
-        //this.init();
-    }
-
-    init() {
-        this.evClk.forEach( ev => 
-            this.elClk.forEach( el => el.addEventListener(ev, this) )    
-        );        
-    }
-    handleEvent(e) {
-        let ect = e.currentTarget;
-
-        switch(ect.type) {
-            case 'button':
-                if(!this.checkClass(ect, 'add-comment-send-button')) {
-                    let svg = ect.querySelector('object').contentDocument.querySelector('path');
-                    this.styleVoteReplyEdit(e, svg);
-                }
-                else {
-                    this.styleSend(e);
-                }
-                break;
-        }
-    }    
-    checkClass(el, cName) {
-            //return (el.className.indexOf(cName) !== -1)? true : false;
-            return (el.classList.contains(cName))? true : false;
-    }        
-    styleVoteReplyEdit(e, svg) {
-        let ect = e.currentTarget;
-
-        switch(e.type) {
-            case 'mouseover':
-                this.colorOrig = svg.getAttribute('fill');
-                if (this.checkClass(ect, 'comment-rate-element')) {
-                    ect.style.color = this.colorVote;
-                    svg.setAttribute('fill', this.colorVote);
-                }
-                else if(this.checkClass(ect, 'comment-reply') || this.checkClass(ect, 'comment-edit')) {
-                    ect.style.color = this.colorReplyAndEdit;
-                    svg.setAttribute('fill', this.colorReplyAndEdit);
-                }
-                else if (this.checkClass(ect, 'comment-delete')) {
-                    ect.style.color = this.colorDelete;
-                    svg.setAttribute('fill', this.colorDelete);
-                }
-                break;
-            case 'mouseout':
-                ect.style.color = '';
-                svg.setAttribute('fill', this.colorOrig);
-                break;
-        }
-    }
-    styleSend(e) {
-        let ect = e.currentTarget;
-
-        switch(e.type) {
-            case 'mousedown':
-                ect.style.color = 'white';
-                ect.style.fontWeight = '700';
-                ect.style.backgroundColor = this.colorVote;
-                ect.style.border = 'none';
-                break;
-            case 'mouseup':
-            case 'mouseout':
-                ect.style = '';
-                break;
-        }
-    }
-}
-
-class BuildSession {
+export class BuildSession {
     constructor(jFile) {
         this.jFile = jFile;
         this.jsonData = null;
@@ -102,11 +11,11 @@ class BuildSession {
 
     // FETCH data
     async getJsonData() {
-        this.jsonData = JSON.parse(localStorage.getItem(['jsonData']));
+        this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
             try {
                 this.jsonData = await fetch(this.jFile).then(res => res.json()).then( data => data);
-                localStorage.setItem('jsonData', JSON.stringify(this.jsonData));
+                sessionStorage.setItem('jsonData', JSON.stringify(this.jsonData));
                 this.initBS();
             }
             catch(error) {
@@ -139,13 +48,7 @@ class BuildSession {
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-comment');
         this.commentBoxTextarea = document.querySelector('.add-comment-textarea');        
-        //this.btn.forEach( b => b.addEventListener('click', this));
-        this.btn.forEach( b => {
-                ['click'].forEach(
-                    e => b.addEventListener(e, this)
-                );
-            }
-        );
+        this.btn.forEach( b => b.addEventListener('click', this));
     }
     //EVENT section
     handleEvent(e) {
@@ -155,8 +58,7 @@ class BuildSession {
                 if(ect.matches('.add-comment-send-button')) {
                     this.addElement(false, this.getCommentObj());
                     this.container.append(this.commentBox);
-                    //this.commentBoxTextarea.value = 'Add a comment ...';
-                    this.commentBoxTextarea.value = this.commentBoxTextarea.placeholder;
+                    this.commentBoxTextarea.value = 'Add a comment ...';
                 }
                 break;
         }
@@ -167,21 +69,14 @@ class BuildSession {
 
             });
         }
-        function createdAt() {
-            let start = Date.now();
-
-            return now;
-        }
-
-
         const cuObj = {};
+
         /*cuObj.id = (this.jsonData.comments.replies)? 
             this.jsonData.comments[this.jsonData.comments.length - 1].id + 1 :
             this.jsonData.;*/
         //cuObj.id = '10';
         cuObj.content = this.commentBoxTextarea.value;
         cuObj.createdAt = new Date().getSeconds();
-        //cuObj.createdAt = createdAt();
         cuObj.score = 0;
         cuObj.user = this.jsonData.currentUser;
         cuObj.replies = [];
@@ -189,7 +84,7 @@ class BuildSession {
     }
     //ELEMENT section
     addElement(isReply, cmtProp, isInserted) {
-        let currentUser = JSON.parse(localStorage['jsonData']).currentUser.username;
+        let currentUser = JSON.parse(sessionStorage['jsonData']).currentUser.username;
         //Create html elements
         const comment = document.createElement('div'),
             commentUserGrid = document.createElement('div'),
@@ -295,7 +190,7 @@ class BuildSession {
         commentContainerFbTextarea.placeholder = ' Add a comment...';
         commentContainerFbBtnSend.classList.add('add-comment-send-button');
 
-        commentContainerImg.src = JSON.parse(localStorage['jsonData']).currentUser.image.png;
+        commentContainerImg.src = JSON.parse(sessionStorage['jsonData']).currentUser.image.png;
         commentContainerFbBtnSend.type = 'button';
         commentContainerFbBtnSend.innerText = 'SEND';
 
@@ -306,19 +201,3 @@ class BuildSession {
     }
 
 } 
-
-function ics() {
-    let elClk = document.querySelectorAll('button'),
-        evClk = ['mouseover', 'mouseout', 'mousedown', 'mouseup'],
-        moderateBlue = 'hsl(238, 40%, 52%)',
-        grayishBlue = 'hsl(211, 10%, 45%)',
-        deepPink = 'hsl(328, 100%, 54%)';
-
-    //window.addEventListener('DOMContentLoaded', () => localStorage.clear());
-    new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
-    new BuildSession('./data.json');
-    //document.addEventListener('DOMContentLoaded', () => new HandleActivities());
-    //new HandleActivities();
-}
-
-ics();

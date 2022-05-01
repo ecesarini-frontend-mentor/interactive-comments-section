@@ -1,13 +1,8 @@
-/*  
-    FIXED: 
-        inherited class HandleEvent doesn't trigger on page 'first load'. --> it depends on 'prmomise getJson'
-    TODO: 
-        vanish textarea after click;
-        store into localStorage input event;
-        order 'id' object from localStorage['jsonData']; catch the higher;
+/* FIXED: appended comment section on SEND click button; vanish textareacontent onclick;
+    TODO: inherited class HandleEvent doesn't trigger on page 'first load': fix this FIRST!!!
         handle createdAt by Date; get latest ID from jsonData; 
     
-*/
+    */
 
 'use strict'
 
@@ -102,11 +97,11 @@ class BuildSession {
 
     // FETCH data
     async getJsonData() {
-        this.jsonData = JSON.parse(localStorage.getItem(['jsonData']));
+        this.jsonData = JSON.parse(sessionStorage.getItem(['jsonData']));
         if(!this.jsonData) {
             try {
                 this.jsonData = await fetch(this.jFile).then(res => res.json()).then( data => data);
-                localStorage.setItem('jsonData', JSON.stringify(this.jsonData));
+                sessionStorage.setItem('jsonData', JSON.stringify(this.jsonData));
                 this.initBS();
             }
             catch(error) {
@@ -139,13 +134,7 @@ class BuildSession {
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-comment');
         this.commentBoxTextarea = document.querySelector('.add-comment-textarea');        
-        //this.btn.forEach( b => b.addEventListener('click', this));
-        this.btn.forEach( b => {
-                ['click'].forEach(
-                    e => b.addEventListener(e, this)
-                );
-            }
-        );
+        this.btn.forEach( b => b.addEventListener('click', this));
     }
     //EVENT section
     handleEvent(e) {
@@ -155,8 +144,7 @@ class BuildSession {
                 if(ect.matches('.add-comment-send-button')) {
                     this.addElement(false, this.getCommentObj());
                     this.container.append(this.commentBox);
-                    //this.commentBoxTextarea.value = 'Add a comment ...';
-                    this.commentBoxTextarea.value = this.commentBoxTextarea.placeholder;
+                    this.commentBoxTextarea.value = 'Add a comment ...';
                 }
                 break;
         }
@@ -167,21 +155,14 @@ class BuildSession {
 
             });
         }
-        function createdAt() {
-            let start = Date.now();
-
-            return now;
-        }
-
-
         const cuObj = {};
+
         /*cuObj.id = (this.jsonData.comments.replies)? 
             this.jsonData.comments[this.jsonData.comments.length - 1].id + 1 :
             this.jsonData.;*/
         //cuObj.id = '10';
         cuObj.content = this.commentBoxTextarea.value;
         cuObj.createdAt = new Date().getSeconds();
-        //cuObj.createdAt = createdAt();
         cuObj.score = 0;
         cuObj.user = this.jsonData.currentUser;
         cuObj.replies = [];
@@ -189,7 +170,7 @@ class BuildSession {
     }
     //ELEMENT section
     addElement(isReply, cmtProp, isInserted) {
-        let currentUser = JSON.parse(localStorage['jsonData']).currentUser.username;
+        let currentUser = JSON.parse(sessionStorage['jsonData']).currentUser.username;
         //Create html elements
         const comment = document.createElement('div'),
             commentUserGrid = document.createElement('div'),
@@ -295,7 +276,7 @@ class BuildSession {
         commentContainerFbTextarea.placeholder = ' Add a comment...';
         commentContainerFbBtnSend.classList.add('add-comment-send-button');
 
-        commentContainerImg.src = JSON.parse(localStorage['jsonData']).currentUser.image.png;
+        commentContainerImg.src = JSON.parse(sessionStorage['jsonData']).currentUser.image.png;
         commentContainerFbBtnSend.type = 'button';
         commentContainerFbBtnSend.innerText = 'SEND';
 
@@ -314,7 +295,7 @@ function ics() {
         grayishBlue = 'hsl(211, 10%, 45%)',
         deepPink = 'hsl(328, 100%, 54%)';
 
-    //window.addEventListener('DOMContentLoaded', () => localStorage.clear());
+    //window.addEventListener('DOMContentLoaded', () => sessionStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
     new BuildSession('./data.json');
     //document.addEventListener('DOMContentLoaded', () => new HandleActivities());
