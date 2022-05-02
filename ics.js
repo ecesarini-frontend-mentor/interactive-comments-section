@@ -2,15 +2,13 @@
     FIXED: 
         - inherited class HandleEvent doesn't trigger on page 'first load'. --> it depends on 'promise getJson';
         - use modules --> 'master.js' needs to be a module too;
-        - vanish textarea after click --> refres obj style: that is this.commentBoxTextarea.value = '';
+        - vanishing textarea after click --> refres obj style: that is this.commentBoxTextarea.value = '';
         - order 'id' object from localStorage['jsonData']; catch the higher; // to emprove depending on first TODO
     TODO: 
         - store into localStorage input event; // to emprove
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */
-
-'use strict'
 
 import {IcsStyle} from './js/icsstyle.js';
 import {BuildSession} from './js/icsbuildsession.js';
