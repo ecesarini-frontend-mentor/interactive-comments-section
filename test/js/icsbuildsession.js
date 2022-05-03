@@ -42,44 +42,30 @@ export class BuildSession {
                 });
             } 
         });
-        this.container.append(this.responseSec());
+        this.container.append(this.commentSec());
     }
     //EVENT section
+    listenEvents() {
+        this.btn = document.querySelectorAll('button');
+        this.commentBox = document.querySelector('.comment-user-add-comment');
+        this.commentBoxTextarea = document.querySelector('.add-comment-textarea');        
+        this.btn.forEach( b => b.addEventListener('click', this));
+    }
     storeEvents(obj) {
         let localJson = JSON.parse(localStorage['dataJson']);
 
         localJson.comments.push(obj);
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
-    listenEvents() {
-        this.btn = document.querySelectorAll('button');
-        this.commentBox = document.querySelector('.comment-user-add-response');
-        this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
-        this.btn.forEach( b => b.addEventListener('click', this));
-    }
     handleEvent(e) {
         let ect = e.currentTarget;        
         switch(e.type) {
             case 'click':
-                if(ect.matches('.add-response-send-button')) {
+                if(ect.matches('.add-comment-send-button')) {
                     this.addElement(false, this.getCommentObj());
                     this.container.append(this.commentBox);
-                    this.storeEvents(this.getCommentObj()); // order matters to update textarea
+                    this.storeEvents(this.getCommentObj(this)); // order matters
                     this.commentBoxTextarea.value = '';
-                }
-                else if(ect.matches('.comment-reply')) {
-                    let replyElement = this.container.querySelector('.comment-user-add-response'),
-                        replyElementBtn = replyElement.querySelector('button');
-
-
-                    replyElement.querySelector('textarea').placeholder = '...Reply';
-                    replyElementBtn.innerText = 'REPLY';
-                    ect.closest('.comment-user-main-grid-container').after(replyElement);
-                    replyElementBtn.addEventListener('click', () => {
-                        let cmtProp = this.getCommentObj();
-                        this.addElement(true, cmtProp);
-                    });
-
                 }
                 break;
         }
@@ -199,20 +185,20 @@ export class BuildSession {
         }
     }
 
-    //responseSec(appendElement) {
-    responseSec() {
+    //commentSec(appendElement) {
+    commentSec() {
         const commentContainer = document.createElement('div'),
             commentContainerImg = new Image(),
             commentContainerFb = document.createElement('div'),
             commentContainerFbTextarea = document.createElement('textarea'),
             commentContainerFbBtnSend = document.createElement('button');
             
-        commentContainer.classList.add('comment-user-add-response');
-        commentContainerImg.classList.add('comment-user-add-response-avatar');
-        commentContainerFb.classList.add('comment-user-add-response-flexbox');
-        commentContainerFbTextarea.classList.add('add-response-textarea');
+        commentContainer.classList.add('comment-user-add-comment');
+        commentContainerImg.classList.add('comment-user-add-comment-avatar');
+        commentContainerFb.classList.add('comment-user-add-comment-flexbox');
+        commentContainerFbTextarea.classList.add('add-comment-textarea');
         commentContainerFbTextarea.placeholder = ' Add a comment...';
-        commentContainerFbBtnSend.classList.add('add-response-send-button');
+        commentContainerFbBtnSend.classList.add('add-comment-send-button');
 
         commentContainerImg.src = JSON.parse(localStorage['dataJson']).currentUser.image.png;
         commentContainerFbBtnSend.type = 'button';
@@ -223,6 +209,5 @@ export class BuildSession {
 
         return commentContainer;
     }
-
 
 } 

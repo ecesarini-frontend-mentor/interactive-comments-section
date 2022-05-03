@@ -169,7 +169,7 @@ span.comment-rate-element {
 }
 
 /*CSS add comment */
-.comment-user-add-comment {
+.comment-user-add-response {
   grid-row: auto;
   grid-column: 1 / 4;
   margin: var(--gap) 0;
@@ -181,16 +181,16 @@ span.comment-rate-element {
   background-color: var(--white);
   border-radius: 5px;
 }
-.comment-user-add-comment .comment-user-add-comment-avatar {
+.comment-user-add-response .comment-user-add-response-avatar {
   width: 50%;
   margin: 0 auto;
   grid-column: 1 / 2;
 }
-.comment-user-add-comment .comment-user-add-comment-flexbox {
+.comment-user-add-response .comment-user-add-response-flexbox {
   grid-column: 2 / 3;
   display: flex;
 }
-.comment-user-add-comment .add-comment-textarea {
+.comment-user-add-response .add-response-textarea {
   resize: none;
   outline: none;
   margin-right: var(--gap);
@@ -203,14 +203,14 @@ span.comment-rate-element {
   border-radius: 3px;
   font-weight: 700;
 }
-.comment-user-add-comment .add-comment-textarea:focus {
+.comment-user-add-response .add-response-textarea:focus {
   border: 3px solid var(--moderate-blue);
   font-weight: 500;
 }
-.comment-user-add-comment .add-comment-textarea:focus::placeholder {
+.comment-user-add-response .add-response-textarea:focus::placeholder {
   color: transparent; /*when textarea is focused remove placeholder*/
 }
-.comment-user-add-comment .add-comment-send-button {
+.comment-user-add-response .add-response-send-button {
   width: 20%;
   height: 2em;
   padding: 3px 5px;
@@ -219,7 +219,7 @@ span.comment-rate-element {
   background-color: var(--moderate-blue);
   border-radius: 4px;
 }
-.comment-user-add-comment .add-comment-send-button:hover {
+.comment-user-add-response .add-response-send-button:hover {
   color: var(--moderate-blue);
   font-weight: 700;
   border: 3px solid var(--light-grayish-blue);

@@ -4,7 +4,9 @@
         - use modules --> 'master.js' needs to be a module too;
         - vanishing textarea after click --> refres obj style: that is this.commentBoxTextarea.value = '';
         - order 'id' object from localStorage['jsonData']; catch the higher; // to emprove depending on first TODO
-    TODO: 
+    TODO:
+        MAJOR: 
+            - just understand how display replies; // where, emphasis, etc.
         - store into localStorage input event; // to emprove
         - handle createdAt by Date; get latest ID from jsonData; 
     
