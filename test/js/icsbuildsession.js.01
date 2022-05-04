@@ -58,33 +58,27 @@ export class BuildSession {
         this.btn.forEach( b => b.addEventListener('click', this));
     }
     handleEvent(e) {
-        let ect = e.currentTarget,
-            replyElement = this.container.querySelector('.comment-user-add-response'),
-            replyElementBtn = replyElement.querySelector('button'),
-            mainGridContainer = ect.closest('.comment-user-main-grid-container');
-
+        let ect = e.currentTarget;        
         switch(e.type) {
             case 'click':
-                if(ect.matches('.add-response-send-button') && !replyElement.matches('.comment-user-add-reply')) {
+                if(ect.matches('.add-response-send-button')) {
                     this.addElement(false, this.getCommentObj());
                     this.container.append(this.commentBox);
                     this.storeEvents(this.getCommentObj()); // order matters to update textarea
                     this.commentBoxTextarea.value = '';
                 }
                 else if(ect.matches('.comment-reply')) {
-                    replyElement.classList.toggle('.comment-user-add-reply');
-                    //replyElementBtn.classList.toggle('.add-reply-send-button')
+                    let replyElement = this.container.querySelector('.comment-user-add-response'),
+                        replyElementBtn = replyElement.querySelector('button');
+
+
                     replyElement.querySelector('textarea').placeholder = '...Reply';
                     replyElementBtn.innerText = 'REPLY';
-                    mainGridContainer.after(replyElement);
+                    ect.closest('.comment-user-main-grid-container').after(replyElement);
                     replyElementBtn.addEventListener('click', () => {
                         let cmtProp = this.getCommentObj();
-                        this.addElement(true, cmtProp, mainGridContainer);
-                        replyElement.classList.toggle('.comment-user-add-reply');
-                        //replyElementBtn.classList.toggle('.add-reply-send-button');
-                        this.container.append(replyElement);
+                        this.addElement(true, cmtProp);
                     });
-
 
                 }
                 break;
@@ -113,7 +107,7 @@ export class BuildSession {
         return cuObj;
     }
     //ELEMENT section
-    addElement(buildReply, cmtProp, insertReplyTarget) {
+    addElement(isReply, cmtProp, isInserted) {
         let currentUser = JSON.parse(localStorage['dataJson']).currentUser.username;
         //Create html elements
         const comment = document.createElement('div'),
@@ -193,20 +187,15 @@ export class BuildSession {
             commentBottomContent.innerText = obj.content;
         }
         
-        if(!insertReplyTarget) {
-            if(buildReply) {
-                if(!this.container.lastElementChild.matches('.comment-user-nested-grid-container')) {
-                    this.container.append(commentRepliesGrid);                
-                }
-                qualifyUser(cmtProp);
-                this.container.lastElementChild.append(comment);  // you gotta involve 'this.container' to let you manage html by javascript
-            } else {
-                qualifyUser(cmtProp);
-                this.container.append(comment);
+        if(isReply) {
+            if(!this.container.lastElementChild.matches('.comment-user-nested-grid-container')) {
+                this.container.append(commentRepliesGrid);                
             }
+            qualifyUser(cmtProp);
+            this.container.lastElementChild.append(comment);  // you gotta involve 'this.container' to let you manage html by javascript
         } else {
             qualifyUser(cmtProp);
-            insertReplyTarget.after(comment);
+            this.container.append(comment);
         }
     }
 
