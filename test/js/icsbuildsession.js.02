@@ -5,8 +5,7 @@
         - vanishing textarea after click --> refres obj style: that is this.commentBoxTextarea.value = '';
         - order 'id' object from localStorage['jsonData']; catch the higher; // to emprove depending on first TODO
     TODO:
-        MAJOR:
-            - big mess about 'reply': append grid-line, object json, comments fly around: @getCommentObject dig into 'cuObj.content = this.commentBoxTextarea.value;'
+        MAJOR: 
             - @debug './js/icsbuildsession.js'@89@174 // just understand how display replies; // where, emphasis, etc.
         - store into localStorage input event; // to emprove
         - handle createdAt by Date; get latest ID from jsonData; 
@@ -23,11 +22,11 @@ function ics() {
         grayishBlue = 'hsl(211, 10%, 45%)',
         deepPink = 'hsl(328, 100%, 54%)';
 
+    //window.addEventListener('DOMContentLoaded', () => localStorage.clear());
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
     new BuildSession('./data.json');
     //document.addEventListener('DOMContentLoaded', () => new HandleActivities());
     //new HandleActivities();
 }
 
-window.addEventListener('DOMContentLoaded', () => localStorage.clear());
 ics();

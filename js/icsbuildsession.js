@@ -171,36 +171,44 @@ export class BuildSession {
                 qualifyUser(cmtProp);
                 this.container.append(comment);
             }
-        } else {
-            if(insertReplyTarget){
+        } 
+    
+        if(!isBuilding && insertReplyTarget) {
+            if(insertReplyTarget.parentElement.matches('.comment-container')) {
                 qualifyUser(cmtProp);
-                insertReplyTarget.after(comment);
+                insertReplyTarget.after(commentRepliesGrid);
+                insertReplyTarget.nextElementSibling.append(comment);
+            }
+            else if(insertReplyTarget.parentElement.matches('.comment-user-main-grid-container')) {
+                insertReplyTarget.append(comment);
             }
         }
+
     }
     handleEvent(e) {
         let ect = e.currentTarget,
             replyElement = this.container.querySelector('.comment-user-add-response'),
             replyElementBtn = replyElement.querySelector('button'),
-            mainGridContainer = ect.closest('.comment-user-main-grid-container');
+            commentTarget = ect.closest('.comment-user-main-grid-container');
 
         switch(e.type) {
             case 'click':
-                let cmtProp = this.getCommentObj();
                 if(ect.matches('.add-response-send-button') && !replyElement.matches('.comment-user-add-reply')) {
+                    let cmtProp = this.getCommentObj();
                     this.addElement(cmtProp, false, false);
                     this.container.append(this.commentBox);
                     this.storeEvents(this.getCommentObj()); // order matters to update textarea
                     this.commentBoxTextarea.value = '';
                 }
                 else if(ect.matches('.comment-reply')) {
+                    let cmtProp = this.getCommentObj();
                     replyElement.classList.toggle('.comment-user-add-reply');
                     //replyElementBtn.classList.toggle('.add-reply-send-button');
                     replyElement.querySelector('textarea').placeholder = '...Reply';
                     replyElementBtn.innerText = 'REPLY';
-                    mainGridContainer.after(replyElement);
+                    commentTarget.after(replyElement);
                     replyElementBtn.addEventListener('click', () => {
-                        this.addElement(cmtProp, false, true, mainGridContainer);
+                        this.addElement(cmtProp, false, true, commentTarget);
                             replyElement.classList.toggle('.comment-user-add-reply');
                             //replyElementBtn.classList.toggle('.add-reply-send-button');
                             //this.container.append(replyElement);
