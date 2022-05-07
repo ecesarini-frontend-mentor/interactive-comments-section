@@ -35,10 +35,10 @@ export class BuildSession {
         let cmt = this.jsonData.comments;
         
         cmt.forEach( c => {
-            this.buildContent(c, 'comment', this.container);
+            this.addElement(c, true, false);
             if(c.replies.length > 0) {
                 c.replies.forEach( r => {
-                    this.buildContent(r, 'reply', this.container);
+                    this.addElement(r, true, true);
                 });
             } 
         });
@@ -50,8 +50,6 @@ export class BuildSession {
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
     }
-
-
     // Events Oject
     storeEvents(obj) {
         let localJson = JSON.parse(localStorage['dataJson']);
@@ -60,7 +58,7 @@ export class BuildSession {
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
     // Commenter
-    qualifyUser() {
+    qualifyUser(obj) {
         const getMaxId = (obj) =>{
             let a = [];
             const getMax = (a,b) => Math.max(a, b);
@@ -98,39 +96,6 @@ export class BuildSession {
         commentTopFbBtn.append(commentTopFbBtnImage, commentTopFbBtnContent);
         
         return commentTopFbBtn;
-    }
-    // Build on first load
-    buildContent(obj, type, target) {
-        const comment = this.buildComment(),
-            commentRepliesGrid = document.createElement('div'),
-            commentRepliesLine = document.createElement('div');
-            
-        commentRepliesGrid.classList.add('comment-user-nested-grid-container');
-        commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
-        
-        comment.querySelector('.comment-content').innerText = obj.content;
-        comment.querySelector('.comment-date').innerText = obj.createdAt;
-        comment.querySelector('.comment-rate-element-value').innerText = obj.score;
-        comment.querySelector('.comment-uid').innerText = obj.username;
-        comment.querySelector('.comment-avatar').src = obj.user.image.png;
-        
-        switch(type) {
-            case 'comment': {
-                target.append(comment);
-                break;
-            }
-            case 'reply': {
-                if(!target.firstElementChild.matches(commentRepliesGrid.classList[0])) {
-                    target.append(commentRepliesLine);
-                }
-                //commentRepliesGrid.append(commentRepliesLine);
-                //commentRepliesGrid.append(commentRepliesLine);
-                commentRepliesGrid.append(comment);
-                target.append(commentRepliesGrid);
-                break;
-            }
-        }
-
     }
     // Build mew comment container
     buildComment() {
@@ -204,6 +169,17 @@ export class BuildSession {
         
         return comment;
     }
+    buildReplyByComment(comment) { // build reply container taking advantage of buildComment function;
+        const commentRepliesGrid = document.createElement('div'),
+            commentRepliesLine = document.createElement('div');
+       
+        commentRepliesGrid.classList.add('comment-user-nested-grid-container');
+        commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
+        
+        commentRepliesGrid.append(commentRepliesLine);
+        return commentRepliesGrid.append(comment);
+    }
+
 
     qualifyUser(obj) {
         commentRateValue.innerText = obj.score;
@@ -219,7 +195,7 @@ export class BuildSession {
     }
 
     //ELEMENT section
-    /*addElement(cmtProp, isBuilding, isReply, insertReplyTarget) {
+    addElement(cmtProp, isBuilding, isReply, insertReplyTarget) {
         let currentUser = JSON.parse(localStorage['dataJson']).currentUser.username;
 
         
@@ -247,7 +223,7 @@ export class BuildSession {
             }
         }
 
-    }*/
+    }
     handleEvent(e) {
         let ect = e.currentTarget,
             replyElement = this.container.querySelector('.comment-user-add-response'),
