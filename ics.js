@@ -1,13 +1,9 @@
 /*  
     FIXED: 
-        - inherited class HandleEvent doesn't trigger on page 'first load'. --> it depends on 'promise getJson';
-        - use modules --> 'master.js' needs to be a module too;
-        - vanishing textarea after click --> refres obj style: that is this.commentBoxTextarea.value = '';
-        - order 'id' object from localStorage['jsonData']; catch the higher; // to emprove depending on first TODO
     TODO:
         MAJOR:
+            - js/icsbuildsession-->jsbuildContent@103, (reply, edit, delete) buttons;
             - rearranging 'icsbuildsessions.js': comment container maintaining its own properties when you create new one; @172 manage request and be aware about @150 'activeBtn'
-            - big mess about 'reply': append grid-line, object json, comments fly around: @getCommentObject dig into 'cuObj.content = this.commentBoxTextarea.value;'
             - @debug './js/icsbuildsession.js'@89@174 // just understand how display replies; // where, emphasis, etc.
         - store into localStorage input event; // to emprove
         - handle createdAt by Date; get latest ID from jsonData; 
