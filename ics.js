@@ -1,8 +1,9 @@
 /*  
     FIXED: 
+        - js/icsbuildsession -->jsbuildContent@103, (reply, edit, delete) buttons;
     TODO:
         MAJOR:
-            - js/icsbuildsession-->jsbuildContent@103, (reply, edit, delete) buttons;
+            - handle event, by js/icsbuildsession@185 
             - rearranging 'icsbuildsessions.js': comment container maintaining its own properties when you create new one; @172 manage request and be aware about @150 'activeBtn'
             - @debug './js/icsbuildsession.js'@89@174 // just understand how display replies; // where, emphasis, etc.
         - store into localStorage input event; // to emprove
