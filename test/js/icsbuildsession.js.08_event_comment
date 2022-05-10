@@ -128,13 +128,6 @@ export class BuildSession {
     
     // Build on first load
     buildElement(obj, type, target) {
-        const isCurrentUser = () => {
-                if(obj.user.username !== currentUser) {
-                    this.interactButton('reply', currentUserFlexboxContainer);
-                } else {
-                   ['delete', 'edit'].forEach( i => this.interactButton(i, currentUserFlexboxContainer));
-                }
-        };         
         const comment = this.buildComment(),
             commentRepliesGrid = document.createElement('div'),
             commentRepliesLine = document.createElement('div'),
@@ -151,12 +144,19 @@ export class BuildSession {
         comment.querySelector('.comment-avatar').src = obj.user.image.png;
         
         switch(type) {
-            case 'comment':
-                isCurrentUser();
+            case 'comment': {
+                if(obj.username !== currentUser) {
+                    this.interactButton('reply', currentUserFlexboxContainer);
+                }
                 target.append(comment);
                 break;
-            case 'reply': 
-                isCurrentUser();
+            }
+            case 'reply': {
+                if(obj.user.username !== currentUser) {
+                    this.interactButton('reply', currentUserFlexboxContainer);
+                } else {
+                   ['delete', 'edit'].forEach( i => this.interactButton(i, currentUserFlexboxContainer));
+                }                
                 if(!target.lastElementChild.matches(`.${commentRepliesGrid.classList[0]}`)) {
                     target.append(commentRepliesGrid);
                     commentRepliesGrid.append(commentRepliesLine, comment);
@@ -164,6 +164,7 @@ export class BuildSession {
                     target.querySelector(`.${commentRepliesGrid.classList[0]}`).append(comment);
                 }
                 break;
+            }
         }
     }
     // Events:
@@ -190,13 +191,12 @@ export class BuildSession {
 
         switch(e.type) {
             case 'click':
-                let cmtObj = this.interactUser();
-                this.eventStore(cmtObj);
-                if(ect.matches('.add-response-send-button') && !commentTarget) {
-
-                    //this.eventStore(cmtObj); // order matters to update textarea
-                    this.buildElement(cmtObj, 'comment', this.container);
+                if(ect.matches('.add-response-send-button') && !replyElement.matches('.comment-user-add-reply')) {
+                    let cmtProp = this.interactUser();
+                    
                     this.container.append(this.commentBox);
+                    this.buildElement(cmtProp, 'comment', commentTarget);
+                    this.eventStore(this.interactUser()); // order matters to update textarea
                     this.commentBoxTextarea.value = '';
                 }
                 /*else if(ect.matches('.comment-reply')) {

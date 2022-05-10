@@ -1,12 +1,6 @@
 /*  
-    FIXED: 
-        - js/icsbuildsession -->jsbuildContent@103, (reply, edit, delete) buttons;
     TODO:
-        MAJOR:
-            - handle event, by js/icsbuildsession@185 
-            - rearranging 'icsbuildsessions.js': comment container maintaining its own properties when you create new one; @172 manage request and be aware about @150 'activeBtn'
-            - @debug './js/icsbuildsession.js'@89@174 // just understand how display replies; // where, emphasis, etc.
-        - store into localStorage input event; // to emprove
+        - js/icsbuildsession@193-->176: localstorage does not update id if you comment twice.
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */
@@ -27,5 +21,5 @@ function ics() {
     //new HandleActivities();
 }
 
-window.addEventListener('DOMContentLoaded', () => localStorage.clear());
+//window.addEventListener('DOMContentLoaded', () => localStorage.clear());
 ics();
