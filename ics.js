@@ -1,7 +1,6 @@
 /* 
-    FIXED:
-        - 'js/icsbuildsession'@193-->176: localstorage does not update id if you comment twice.
     TODO:
+        - style.css@161 doesn't expand grid line START FROM HERE;
         - reply event 'js/icsbuildsession.js'@200 doesn't work
         - handle createdAt by Date; get latest ID from jsonData; 
     

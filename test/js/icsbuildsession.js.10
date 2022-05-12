@@ -32,7 +32,7 @@ export class BuildSession {
             this.buildElement(c, 'comment', this.container);
             if(c.replies.length > 0) {
                 c.replies.forEach( r => {
-                    this.buildElement(r, 'reply', this.container, true);
+                    this.buildElement(r, 'reply', this.container);
                 });
             } 
         });
@@ -127,7 +127,7 @@ export class BuildSession {
     }
     
     // Build on first load
-    buildElement(obj, type, target, fromJson) {
+    buildElement(obj, type, target) {
         const isCurrentUser = () => {
                 if(obj.user.username !== currentUser) {
                     this.interactButton('reply', currentUserFlexboxContainer);
@@ -157,15 +157,11 @@ export class BuildSession {
                 break;
             case 'reply': 
                 isCurrentUser();
-                if(fromJson) {
-                    if(!target.lastElementChild.matches(`.${commentRepliesGrid.classList[0]}`)) {
-                        target.append(commentRepliesGrid);
-                        commentRepliesGrid.append(commentRepliesLine, comment);
-                    } else {
-                        target.querySelector(`.${commentRepliesGrid.classList[0]}`).append(comment);
-                    }
+                if(!target.lastElementChild.matches(`.${commentRepliesGrid.classList[0]}`)) {
+                    target.append(commentRepliesGrid);
+                    commentRepliesGrid.append(commentRepliesLine, comment);
                 } else {
-                    target.after(comment);
+                    target.querySelector(`.${commentRepliesGrid.classList[0]}`).append(comment);
                 }
                 break;
         }
@@ -204,13 +200,12 @@ export class BuildSession {
                 else if(ect.matches('.comment-reply')) {
                     let commentTarget = ect.closest('.comment-user-main-grid-container');
                     //let cmtObj = this.createCommentReplyObj();
-                   
+                    
                     //replyElement.classList.toggle('comment-user-add-reply');
-                    replyElementBtn.classList.toggle('.add-response-send-button');
                     replyElementBtn.classList.toggle('.add-reply-send-button');
                     replyElement.querySelector('textarea').placeholder = '...Reply';
                     replyElementBtn.innerText = 'REPLY';
-                    commentTarget.after(replyElement);
+                    //commentTarget.after(replyElement);
                     replyElementBtn.addEventListener('click', () => {
                         this.buildElement(cmtObj, 'reply', commentTarget);
                             replyElement.classList.toggle('comment-user-add-reply');
