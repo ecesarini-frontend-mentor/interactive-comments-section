@@ -185,6 +185,10 @@ export class BuildSession {
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
 
+    eventCommentReply(etype, obj, cls) {
+
+    }
+
     // event handler
     handleEvent(e) {
         let ect = e.currentTarget,
@@ -194,7 +198,7 @@ export class BuildSession {
         switch(e.type) {
             case 'click':
                 let cmtObj = this.createCommentReplyObj();
-                
+
                 if(ect.matches('.add-response-send-button')) { // && !replyElementBtn.matches('.add-reply-send-button')) {
                     this.eventStore(cmtObj); // order matters to update textarea
                     this.buildElement(cmtObj, 'comment', this.container);
@@ -209,19 +213,18 @@ export class BuildSession {
                     //let cmtObj = this.createCommentReplyObj();
                    
                     //replyElement.classList.toggle('comment-user-add-reply');
-                    replyElementBtn.classList.toggle('add-response-send-button');
-                    //replyElementBtn.classList.toggle('add-reply-send-button');
+                    replyElementBtn.classList.toggle('.add-response-send-button');
+                    replyElementBtn.classList.toggle('.add-reply-send-button');
                     replyElement.querySelector('textarea').placeholder = '...Reply';
                     replyElementBtn.innerText = 'REPLY';
                     commentTarget.after(replyElement);
-                    //replyElementBtn.classList.toggle('.add-reply-send-button');
                     replyElementBtn.addEventListener('click', () => {
-                        //cungc.style.gridRow = `1 / ${++replyCount}`;
-                        cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;
-                        replyElement.classList.toggle('comment-user-add-reply');
                         this.buildElement(cmtObj, 'reply', commentTarget);
-                        replyElement.classList.toggle('comment-user-add-reply');
-                        //this.container.append(replyElement);
+                            //cungc.style.gridRow = `1 / ${++replyCount}`;
+                            cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;
+                            replyElement.classList.toggle('comment-user-add-reply');
+                            //replyElementBtn.classList.toggle('.add-reply-send-button');
+                            //this.container.append(replyElement);
                         });
                 }
                 break;

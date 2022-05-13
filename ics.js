@@ -1,7 +1,9 @@
 /* 
-    TODO:
+    FIXED: 
         - style.css@161 doesn't expand grid line START FROM HERE;
-        - reply event 'js/icsbuildsession.js'@200 doesn't work
+    TODO:
+        - 'js/icsbuildsession.js'@212 evauluate class names toggles;
+        - reply event 'js/icsbuildsession.js'@200 doesn't work;
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */

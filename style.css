@@ -155,6 +155,7 @@ span.comment-rate-element {
   grid-column: 1 / 4;
   display: grid;
   grid-template-rows: 1fr;
+  /*grid-auto-rows: 1fr;*/
   grid-template-columns: 10% 1fr 1fr;
 }
 .comment-user-nested-grid-container .comment-user-nested-grid-container-line {
