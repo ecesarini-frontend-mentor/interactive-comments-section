@@ -2,8 +2,7 @@
     FIXED: 
         - style.css@161 doesn't expand grid line START FROM HERE;
     TODO:
-        - 'js/icsbuildsession.js'@212 evauluate class names toggles;
-        - reply event 'js/icsbuildsession.js'@200 doesn't work;
+        - @icsbuildsesssion.js-->handleEvent:@191: add a function that gets classes on click (between comment and reply);
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */
