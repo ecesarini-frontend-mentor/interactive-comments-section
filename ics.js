@@ -2,7 +2,7 @@
     FIXED: 
         - style.css@161 doesn't expand grid line START FROM HERE;
     TODO:
-        - @icsbuildsesssion.js-->handleEvent:@191: add a function that gets classes on click (between comment and reply);
+        - @icsbuildsesssion.js-->handleEvent:@191: make 'add-response-button' independent by reply or comment.
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */

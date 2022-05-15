@@ -177,13 +177,13 @@ export class BuildSession {
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
     }
-    eventsStore(obj) {
+    eventStore(obj) {
         let localJson = JSON.parse(localStorage['dataJson']);
 
         localJson.comments.push(obj);
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
-    eventsFilterCommentReply(ect, cls) {
+    eventCommenter(ect, cls) {
 
     }
     
@@ -195,65 +195,21 @@ export class BuildSession {
 
         switch(e.type) {
             case 'click':
-                let commentTarget, cmtObj, cungc = null;
-                //let commentTarget = ect.closest('.comment-user-nested-grid-container') || ect.closest('.comment-user-main-grid-container');
-                //let cungc = null;
-
-                if(ect.matches('.add-response-send-button')) { // && !replyElementBtn.matches('.add-reply-send-button')) {
-                    cmtObj = this.createCommentReplyObj();
-                    this.eventsStore(cmtObj); // order matters to update textarea
-                    this.buildElement(cmtObj, 'comment', this.container);
-                    this.container.append(this.commentBox);
-                    this.commentBoxTextarea.value = '';
-                }
-                else if(ect.matches('.comment-reply')) {
-                    //let commentTarget = ect.closest('.comment-user-main-grid-container');
-                    replyElementBtn.classList.toggle('add-response-send-button');
-                    replyElementBtn.classList.toggle('add-reply-send-button');
-                    replyElement.querySelector('textarea').placeholder = '...Reply';
-                    replyElementBtn.innerText = 'REPLY';
-                    commentTarget.after(replyElement);                    
-                }
-                else if(ect.matches('.add-reply-send-button')) {
-                    if(cungc) {
-                        commentTarget.after(replyElement);
-                    } else {
+                let cmtObj = null;
+                
+                if(ect.matches('.comment-reply')) {
+                    let cungc = ect.closest('.comment-user-nested-grid-container'),
+                        commentTarget = ect.closest('.comment-user-main-grid-container');
+                    if(!cungc) {
                         cungc = commentTarget.nextElementSibling;
                         commentTarget = cungc.lastElementChild;
-                        cungc.before(replyElement);
-                    }
-                    
-                    let replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1; 
-                        
-                    cmtObj = this.createCommentReplyObj();
-                    this.eventsStore(cmtObj);
-                    cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;
-                    //cungc.style.gridRow = `1 / ${++replyCount}`;
-                    //replyElement.classList.toggle('comment-user-add-reply');
-                    this.buildElement(cmtObj, 'reply', commentTarget);
-                    //replyElement.classList.toggle('comment-user-add-reply');
-                    //replyElement.querySelector('textarea').placeholder = '';
-                    replyElementBtn.classList.toggle('add-response-send-button');
-                    replyElementBtn.classList.toggle('add-reply-send-button');
-                    this.container.append(replyElement);
-
-                }
-
-                /*if(ect.matches('.comment-reply')) {
-                    
-                    cungc = ect.closest('.comment-user-nested-grid-container');
-                    if(cungc) {
-                        commentTarget.after(replyElement);
-                    } else {
-                        cungc = commentTarget.nextElementSibling;
-                        commentTarget = cungc.lastElementChild;
-                        cungc.before(replyElement);
                     }
                     let replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1; 
                     
                     replyElementBtn.classList.toggle('add-reply-send-button');
                     replyElement.querySelector('textarea').placeholder = '...Reply';
                     replyElementBtn.innerText = 'REPLY';
+                    commentTarget.after(replyElement);
                     //replyElementBtn.classList.toggle('.add-reply-send-button');
                     replyElementBtn.addEventListener('click', () => {
                         cmtObj = this.createCommentReplyObj();
@@ -262,10 +218,17 @@ export class BuildSession {
                         replyElement.classList.toggle('comment-user-add-reply');
                         this.buildElement(cmtObj, 'reply', commentTarget);
                         replyElement.classList.toggle('comment-user-add-reply');
-                        replyElement.querySelector('textarea').placeholder = '';
                         this.container.append(replyElement);
-                        })
-                }*/
+                        });
+                }
+                /*if(ect.matches('.add-response-send-button')) { // && !replyElementBtn.matches('.add-reply-send-button')) {
+                    cmtObj = this.createCommentReplyObj();
+                    this.eventStore(cmtObj); // order matters to update textarea
+                    this.buildElement(cmtObj, 'comment', this.container);
+                    this.container.append(this.commentBox);
+                    this.commentBoxTextarea.value = '';
+                }
+                else if(ect.matches('.comment-reply')) {*/
                 break;
         }
     }
