@@ -214,22 +214,20 @@ export class BuildSession {
                     commentTarget.after(replyElement);                    
                 }
                 else if(ect.matches('.add-reply-send-button')) {
+                    commentTarget = replyElement.previousElementSibling;
+                    
                     let cungc = replyElement.closest('.comment-user-nested-grid-container') || replyElement.nextElementSibling,
                         replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1;
-
-                    commentTarget = (replyElement.nextElementSibling === cungc) ?
-                        cungc.lastElementChild :
-                        replyElement.previousElementSibling;
                         
                     cmtObj = this.createCommentReplyObj();
                     this.eventsStore(cmtObj);
-                    cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;                    
+                    cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;
+                    
                     this.buildElement(cmtObj, 'reply', commentTarget);
+                    //replyElement.classList.toggle('comment-user-add-reply');
+                    //replyElement.querySelector('textarea').placeholder = '';
                     replyElementBtn.classList.toggle('add-reply-send-button');
                     replyElementBtn.classList.toggle('add-response-send-button');
-                    replyElement.querySelector('textarea').value = '';
-                    replyElement.querySelector('textarea').placeholder = ' Add a comment...';
-                    replyElementBtn.innerText = 'SEND';
                     this.container.append(replyElement);
 
                 }
