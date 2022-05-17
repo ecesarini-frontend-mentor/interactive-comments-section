@@ -3,6 +3,7 @@
         - @icsbuildsesssion.js-->handleEvent:@191: make 'add-response-button' independent by reply or comment.
     TODO:
         - reply (//Desktop/Screenshot 2022-05-17 001102.jpg) doesn't work: add look at screenshot and add way to fit it (clicking on 'reply'  about 'remyorbson').
+          look at js/icsbuildsession.js@218 to evaluate reply type.
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */

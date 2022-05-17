@@ -5,7 +5,6 @@ export class BuildSession {
         this.container = document.querySelector('.comment-container');
 
         this.btn = this.commentBox = this.commentBoxTextarea = null;
-        //this.replyContainer = null;
 
         this.getJsonData();
     } 
@@ -197,7 +196,7 @@ export class BuildSession {
 
         switch(e.type) {
             case 'click':
-                let cmtObj = null;
+                let cmtObj;
 
                 if(ect.matches('.add-response-send-button')) {
                     cmtObj = this.createCommentReplyObj();
@@ -208,21 +207,34 @@ export class BuildSession {
                 }
                 else if(ect.matches('.comment-reply')) {
                     commentTarget = ect.closest('.comment-user-main-grid-container');
-                    replyElement.classList.toggle('comment-reply-this');
                     replyElementBtn.classList.toggle('add-response-send-button');
                     replyElementBtn.classList.toggle('add-reply-send-button');
                     replyElement.querySelector('textarea').placeholder = '...Reply';
                     replyElementBtn.innerText = 'REPLY';
                     commentTarget.after(replyElement);
+                    /*if(commentTarget.nextElementSibling.matches('.comment-user-nested-grid-container')) {
+                        commentTarget.nextElementSibling.append(replyElement);
+                    } else {
+                        commentTarget.after(replyElement);
+                    }*/
                 }
-                else if(ect.matches('.add-reply-send-button') && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
-
-                    let cungc = replyElement.closest('.comment-user-nested-grid-container') || replyElement.nextElementSibling,
+                else if(ect.matches('.add-reply-send-button')) {
+                    /*let cungc = (replyElement.nextElementSibling.matches('.comment-user-nested-grid-container')) ?
+                        (replyElement.closest('.comment-user-nested-grid-container') || replyElement.nextElementSibling) :
+                        replyElement.previousElementSibling;
+                        replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1;*/
+                        
+                    let ct = replyElement.previousElementSibling,
+                        cungc = replyElement.closest('.comment-user-nested-grid-container') || replyElement.nextElementSibling,
                         replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1;
                     
-                    commentTarget = (replyElement.nextElementSibling === cungc) ?
-                        cungc.lastElementChild :
-                        replyElement.previousElementSibling;
+                    if(ct.matches('.comment-user-nested-grid-container')) { 
+                        commentTarget = ct;
+                    } else {
+                        commentTarget = (replyElement.nextElementSibling === cungc) ?
+                            cungc.lastElementChild :
+                            replyElement.previousElementSibling;
+                    }
                     cmtObj = this.createCommentReplyObj();
                     this.eventsStore(cmtObj);
                     cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;                    
@@ -232,7 +244,6 @@ export class BuildSession {
                     replyElement.querySelector('textarea').value = '';
                     replyElement.querySelector('textarea').placeholder = ' Add a comment...';
                     replyElementBtn.innerText = 'SEND';
-                    ect.closest('.comment-user-main-grid-container').classList.toggle('comment-reply-this');
                     this.container.append(replyElement);
 
                 }
