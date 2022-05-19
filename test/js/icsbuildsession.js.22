@@ -30,10 +30,10 @@ export class BuildSession {
     }
     drawUp() {
         this.jsonData.comments.forEach( c => {
-            this.buildElement(c, 'comment', this.container, 'fromJson');
+            this.buildElement(c, 'comment', this.container);
             if(c.replies.length > 0) {
                 c.replies.forEach( r => {
-                    this.buildElement(r, 'reply', this.container, 'fromJson');
+                    this.buildElement(r, 'reply', this.container, true);
                 });
             } 
         });
@@ -128,7 +128,7 @@ export class BuildSession {
     }
     
     // Build on first load
-    buildElement(obj, type, target, source) {
+    buildElement(obj, type, target, fromJson) {
         const isCurrentUser = () => {
                 if(obj.user.username !== currentUser) {
                     this.interactButton('reply', currentUserFlexboxContainer);
@@ -158,18 +158,14 @@ export class BuildSession {
                 break;
             case 'reply': 
                 isCurrentUser();
-                if(source === 'fromJson') {
+                if(fromJson) {
                     if(!target.lastElementChild.matches(`.${commentRepliesGrid.classList[0]}`)) {
                         target.append(commentRepliesGrid);
                         commentRepliesGrid.append(commentRepliesLine, comment);
                     } else {
                         target.querySelector(`.${commentRepliesGrid.classList[0]}`).append(comment);
                     }
-                }
-                else if(source === 'fromUser') {
-
-                } 
-                else {                    
+                } else {                    
                     target.after(comment);
                 }
                 break;
@@ -221,45 +217,27 @@ export class BuildSession {
                 }
                 else if(ect.matches('.add-reply-send-button')){ // && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
 
-                    let commentTrigger = document.querySelector('.comment-reply-this'),
-                        replyFirst = replyElement.nextElementSibling.matches('.comment-user-nested-grid-container'),
-                        replyNested = replyElement.closest('.comment-user-nested-grid-container'),
-                        replyCount = null;
-                        //commentTarget = null;
+                    let replyTargetContainer = document.querySelector('.comment-reply-this'),
+                        replyTargetNextChild = replyElement.querySelector('.comment-user-nested-grid-container') || replyTargetContainer;
 
                         //commentNestedContainer = replyElement.closest('.comment-user-nested-grid-container') || replyMainContainer,
                         //replyCount = commentNestedContainer.querySelectorAll('.comment-user-main-grid-container').length + 1;
                         //commentNestedContainer = replyMainContainer.closest('.comment-user-nested-grid-container'),
-                    cmtObj = this.createCommentReplyObj();
+                        //replyCount = (commentNestedContainer)? 0 : replyMainContainer.querySelectorAll('.comment-user-main-grid-container').length + 1;
                     
-                    if(replyFirst) {
-                        replyCount = replyFirst.querySelectorAll('.comment-user-main-grid-container').length + 1;
-                        commentTarget = commentTrigger.lastElementChild;
-                        this.buildElement(cmtObj, 'reply', commentTarget, true);
-
-                    }
-                    else if(replyNested) {
-                        replyCount = replyNested.querySelectorAll('.comment-user-main-grid-container').length + 1;
-                        if(replyFirst) {
-                        } else {
-                            commentTarget = commentTrigger;
-                            this.buildElement(cmtObj, 'reply', commentTarget);
-                            nestedContainer.firstChild.style.gridRow = `1 / ${++replyCount}`;
-                        }
-                    } else {
-                        commentTarget = commentTrigger;
-                        this.buildElement(cmtObj, 'reply', commentTarget, true);
-                    }
+                    commentTarget = (replyTargetNextChild) ?
+                        commentNestedContainer :
+                        replyTargetContainer;
+                    cmtObj = this.createCommentReplyObj();
                     this.eventsStore(cmtObj);
                     //commentNestedContainer.firstChild.style.gridRow = `1 / ${++replyCount}`;
-                    //this.buildElement(cmtObj, 'reply', commentTarget);
+                    this.buildElement(cmtObj, 'reply', commentTarget);
+                    commentTarget.classList.toggle('comment-reply-this');
                     replyElementBtn.classList.toggle('add-reply-send-button');
                     replyElementBtn.classList.toggle('add-response-send-button');
                     replyElement.querySelector('textarea').value = '';
                     replyElement.querySelector('textarea').placeholder = ' Add a comment...';
                     replyElementBtn.innerText = 'SEND';
-                    commentTarget.classList.toggle('comment-reply-this');
-                    this.container.append(replyElement);
                     //ect.closest('.comment-user-main-grid-container').classList.toggle('comment-reply-this');
 
                 }
