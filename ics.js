@@ -2,7 +2,7 @@
     FIXED:
         - @icsbuildsesssion.js-->handleEvent:@191: make 'add-response-button' independent by reply or comment.
     TODO:
-        - lot of work to do about 'icsbuilsession.js@131:buildElement(obj, type, target, source)': json processiong vs user action;
+        - control of the event on buildEvent: it works with reply-nested, not on first reply. Check icsbuildsession.js@168 deugging,
         - reply (//Desktop/Screenshot 2022-05-17 001102.jpg) doesn't work: add look at screenshot and add way to fit it (clicking on 'reply'  about 'remyorbson').
           look at js/icsbuildsession.js@218 to evaluate reply type.
         - handle createdAt by Date; get latest ID from jsonData; 
