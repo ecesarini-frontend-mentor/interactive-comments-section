@@ -241,42 +241,17 @@ export class BuildSession {
         }
 
     }
-    editor(ect, clk) {
-        const editElement = ect.closest('.comment-user-main-grid-container'),
-            editContent = editElement.querySelector('.comment-content'),
-            editCommentRatefb = editElement.querySelector('.comment-rate'),
-            editFlexBtnContainer = document.createElement('div'),
+    editor(ect) {
+        const element = ect.closest('.comment-user-main-grid-container'),
             editConfirm = document.createElement('button'),
-            editUndo = document.createElement('button');
-                
-
-        switch(clk) {
-            case 'edited':
-                editElement.classList.add('comment-user-main-grid-container-edit');
-                editContent.classList.add('comment-content-edit');
-                editCommentRatefb.classList.add('comment-rate-edit');
-                editFlexBtnContainer.classList.add('comment-edited-fb-button-container');
-                editConfirm.classList.add('edit-button', 'edit-button-confirm');
-                editUndo.classList.add('edit-button', 'edit-button-undo');
-
-                editConfirm.innerText = 'EDIT';
-                editUndo.innerText = 'UNDO';
-
-                editFlexBtnContainer.append(editConfirm, editUndo);
-                editElement.append(editFlexBtnContainer);
-            break;
-            case 'confirmEdit':
-                editElement.classList.remove('comment-user-main-grid-container-edit');
-                editContent.classList.remove('comment-content-edit');
-                editCommentRatefb.classList.remove('comment-rate-edit');
-                editFlexBtnContainer.remove();
-                break;
-        }
+            editUndo = document.createElement('button');            
+        let content = element.querySelector('.comment-content');
+        content.focus();
     }
-    //event handler
+    // event handler
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
-            editBtnClk = ['.comment-edit', '.confirmEdit'], 
+            editBtn = '.comment-edit',
             deleteBtn = '.comment-delete';
         let ect = e.currentTarget;
 
@@ -285,8 +260,11 @@ export class BuildSession {
                 responseBtn.map(r => {
                     if(ect.matches(r)) this.responser(ect);
                 });
-                if(ect.matches(editBtnClk[0])) this.editor(ect, 'edited');
-                else if (ect.matches(editBtnClk[1])) this.editor(ect, 'confirmEdit');
+                if(ect.matches(editBtn)) this.editor(ect);
+                /*response.filter( r => {
+                    ect.matches(r);
+                    this.responser(ect);
+                });*/
                 break;
         }
     }

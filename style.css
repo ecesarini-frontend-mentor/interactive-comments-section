@@ -212,7 +212,8 @@ span.comment-rate-element {
   color: transparent; /*when textarea is focused remove placeholder*/
 }
 .comment-user-add-response .add-response-send-button,
-.comment-user-add-response .add-reply-send-button {
+.comment-user-add-response .add-reply-send-button,
+.edit-button {
   width: 20%;
   width: 20%;
   height: 2em;
@@ -223,9 +224,48 @@ span.comment-rate-element {
   border-radius: 4px;
 }
 .comment-user-add-response .add-response-send-button:hover,
-.comment-user-add-response .add-reply-send-button:hover {
+.comment-user-add-response .add-reply-send-button:hover,
+.edit-button:hover {
   color: var(--moderate-blue);
   font-weight: 700;
   border: 3px solid var(--light-grayish-blue);
   background-color: var(--very-light-gray);
+}
+
+
+/* Javascript events */
+.comment-user-main-grid-container-edit {
+  grid-template-rows: 25% 1fr 0.5fr;
+}
+.comment-rate-edit {
+  grid-row: 1 / 4;
+}
+.comment-content-edit {
+  padding: 7px;
+  border: 2px solid var(--light-grayish-blue);
+  border-radius: 7px;
+}
+.comment-edited-fb-button-container {
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: flex-end;
+}
+.comment-edited-fb-button-container .edit-button {
+  margin-right: 10px;
+}
+.comment-edited-fb-button-container .edit-button .edit-button-undo {
+  margin-left: 25px;
+  color: var(--light-grayish-blue);
+  background-color: var(--white);
+  border: 2px solid var(--light-grayish-blue);
+}
+.comment-edited-fb-button-container .edit-button .edit-button-confirm:hover {
+  color: var(--moderate-blue);
+  background-color: var(--white);
+  border: 2px solid var(--moderate-blue);
+}
+.comment-edited-fb-button-container .edit-button.edit-button-undo:hover {
+  color: var(--moderate-blue);
+  background-color: var(--soft-red);
+  border: 2px solid var(--moderate-blue);
 }
