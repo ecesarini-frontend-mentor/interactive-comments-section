@@ -190,13 +190,10 @@ export class BuildSession {
     }
     // Events:
     eventsListener() {
-        let editContent = document.querySelector('.comment-content-edit');
-
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-response');
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
-        if(editContent) editContent.addEventListener('click', this);
     }
     eventsStore(obj) {
         let localJson = JSON.parse(localStorage['dataJson']);
@@ -266,13 +263,12 @@ export class BuildSession {
 
                 editFlexBtnContainer.append(editConfirm, editUndo);
                 if(!editElement.lastElementChild.matches(`.${editFlexBtnContainer.classList[0]}`)) {
-                    //editContent.classList.remove('comment-content-edit');
                     editElement.append(editFlexBtnContainer);
                 }
                 this.eventsListener();
             break;
             case 'editContent':
-                alert('ciao da editContent');
+                
                 break;
             case 'editConfirm':
                 editElement.classList.remove('comment-user-main-grid-container-edit');
@@ -288,12 +284,7 @@ export class BuildSession {
     //event handler
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
-            editBtnClk = [
-                ['.comment-edit', 'edited'],
-                ['.edit-button-confirm', 'editConfirm'],
-                ['.edit-button-undo', 'editUndo'],
-                ['.comment-user-content-edit', 'editContent']
-            ], 
+            editBtnClk = [['.comment-edit', 'edited'], ['.edit-button-confirm', 'editConfirm'], ['.edit-button-undo', 'editUndo']], 
             deleteBtn = '.comment-delete';
         let ect = e.currentTarget;
 

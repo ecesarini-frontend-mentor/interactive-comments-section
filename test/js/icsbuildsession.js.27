@@ -190,13 +190,10 @@ export class BuildSession {
     }
     // Events:
     eventsListener() {
-        let editContent = document.querySelector('.comment-content-edit');
-
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-response');
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
-        if(editContent) editContent.addEventListener('click', this);
     }
     eventsStore(obj) {
         let localJson = JSON.parse(localStorage['dataJson']);
@@ -252,6 +249,7 @@ export class BuildSession {
             editConfirm = document.createElement('button'),
             editUndo = document.createElement('button');
                 
+
         switch(clk) {
             case 'edited':
                 editElement.classList.add('comment-user-main-grid-container-edit');
@@ -265,35 +263,20 @@ export class BuildSession {
                 editUndo.innerText = 'UNDO';
 
                 editFlexBtnContainer.append(editConfirm, editUndo);
-                if(!editElement.lastElementChild.matches(`.${editFlexBtnContainer.classList[0]}`)) {
-                    //editContent.classList.remove('comment-content-edit');
-                    editElement.append(editFlexBtnContainer);
-                }
-                this.eventsListener();
+                editElement.append(editFlexBtnContainer);
             break;
-            case 'editContent':
-                alert('ciao da editContent');
-                break;
-            case 'editConfirm':
+            case 'confirmEdit':
                 editElement.classList.remove('comment-user-main-grid-container-edit');
                 editContent.classList.remove('comment-content-edit');
                 editCommentRatefb.classList.remove('comment-rate-edit');
                 editFlexBtnContainer.remove();
-                break;
-            case 'editUndo':
-                alert('ciao');
                 break;
         }
     }
     //event handler
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
-            editBtnClk = [
-                ['.comment-edit', 'edited'],
-                ['.edit-button-confirm', 'editConfirm'],
-                ['.edit-button-undo', 'editUndo'],
-                ['.comment-user-content-edit', 'editContent']
-            ], 
+            editBtnClk = ['.comment-edit', '.confirmEdit'], 
             deleteBtn = '.comment-delete';
         let ect = e.currentTarget;
 
@@ -302,9 +285,8 @@ export class BuildSession {
                 responseBtn.map(r => {
                     if(ect.matches(r)) this.responser(ect);
                 });
-                editBtnClk.map(e => {
-                    if(ect.matches(e[0])) this.editor(ect, e[1]);
-                });
+                if(ect.matches(editBtnClk[0])) this.editor(ect, 'edited');
+                else if (ect.matches(editBtnClk[1])) this.editor(ect, 'confirmEdit');
                 break;
         }
     }

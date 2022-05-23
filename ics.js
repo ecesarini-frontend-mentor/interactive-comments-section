@@ -5,7 +5,8 @@
         - reply (//Desktop/Screenshot 2022-05-17 001102.jpg) doesn't work: add look at screenshot and add way to fit it (clicking on 'reply'  about 'remyorbson').
           look at js/icsbuildsession.js@218 to evaluate reply type.
     TODO:
-        - manage: edit and delete: @icsbuildsession.js:@289, disinguish between "edit" & "cancel" on this.editor(appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
+        - manage: edit and delete: @icsbuildsession.js:@269, after you click on reply new element is added, but it's not well-handled by eventListener. Chectk this out.
+        - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
         - handle createdAt by Date; get latest ID from jsonData; 
     
 */

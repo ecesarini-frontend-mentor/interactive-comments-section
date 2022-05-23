@@ -253,13 +253,13 @@ span.comment-rate-element {
 .comment-edited-fb-button-container .edit-button {
   margin-right: 10px;
 }
-.comment-edited-fb-button-container .edit-button .edit-button-undo {
+.comment-edited-fb-button-container .edit-button.edit-button-undo {
   margin-left: 25px;
   color: var(--light-grayish-blue);
   background-color: var(--white);
   border: 2px solid var(--light-grayish-blue);
 }
-.comment-edited-fb-button-container .edit-button .edit-button-confirm:hover {
+.comment-edited-fb-button-container .edit-button.edit-button-confirm:hover {
   color: var(--moderate-blue);
   background-color: var(--white);
   border: 2px solid var(--moderate-blue);
