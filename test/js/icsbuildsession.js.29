@@ -83,7 +83,7 @@ export class BuildSession {
         
         return comment;
     }
-    createInteractButtons(type, target) {
+    interactButton(type, target) {
         const replyEditDeleteBtn = (btnType) => {
             const commentTopFbBtn = document.createElement('button'),
                 commentTopFbBtnImage = document.createElement('object'),
@@ -129,9 +129,9 @@ export class BuildSession {
     buildElement(obj, type, target) {
         const isCurrentUser = () => {
                 if(obj.user.username !== currentUser) {
-                    this.createInteractButtons('reply', currentUserFlexboxContainer);
+                    this.interactButton('reply', currentUserFlexboxContainer);
                 } else {
-                   ['delete', 'edit'].forEach( i => this.createInteractButtons(i, currentUserFlexboxContainer));
+                   ['delete', 'edit'].forEach( i => this.interactButton(i, currentUserFlexboxContainer));
                 }
         };         
         const comment = this.buildComment(),
@@ -248,25 +248,21 @@ export class BuildSession {
         const editElement = ect.closest('.comment-user-main-grid-container'),
             editContent = editElement.querySelector('.comment-content'),
             editCommentRatefb = editElement.querySelector('.comment-rate'),
-            editUndoContainer = editElement.lastElementChild;
-
+            editFlexBtnContainer = document.createElement('div'),
+            editConfirm = document.createElement('button'),
+            editUndo = document.createElement('button');
                 
         switch(clk) {
             case 'edited':
-                const editFlexBtnContainer = document.createElement('div'),
-                    editConfirm = document.createElement('button'),
-                    editUndo = document.createElement('button');
-                
                 editElement.classList.add('comment-user-main-grid-container-edit');
                 editContent.classList.add('comment-content-edit');
                 editCommentRatefb.classList.add('comment-rate-edit');
                 editFlexBtnContainer.classList.add('comment-edited-fb-button-container');
                 editConfirm.classList.add('edit-button', 'edit-button-confirm');
                 editUndo.classList.add('edit-button', 'edit-button-undo');
+
                 editConfirm.innerText = 'EDIT';
                 editUndo.innerText = 'UNDO';
-
-                editContent.setAttribute('contentEditable', true);
 
                 editFlexBtnContainer.append(editConfirm, editUndo);
                 if(!editElement.lastElementChild.matches(`.${editFlexBtnContainer.classList[0]}`)) {
@@ -275,14 +271,14 @@ export class BuildSession {
                 }
                 this.eventsListener();
             break;
+            case 'editContent':
+                alert('ciao da editContent');
+                break;
             case 'editConfirm':
-                let newContent = editContent.innerText;
-
                 editElement.classList.remove('comment-user-main-grid-container-edit');
-                editContent.setAttribute('contentEditable', false);
                 editContent.classList.remove('comment-content-edit');
                 editCommentRatefb.classList.remove('comment-rate-edit');
-                editUndoContainer.remove();
+                editFlexBtnContainer.remove();
                 break;
             case 'editUndo':
                 alert('ciao');
@@ -295,7 +291,8 @@ export class BuildSession {
             editBtnClk = [
                 ['.comment-edit', 'edited'],
                 ['.edit-button-confirm', 'editConfirm'],
-                ['.edit-button-undo', 'editUndo']
+                ['.edit-button-undo', 'editUndo'],
+                ['.comment-user-content-edit', 'editContent']
             ], 
             deleteBtn = '.comment-delete';
         let ect = e.currentTarget;

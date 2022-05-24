@@ -240,7 +240,8 @@ span.comment-rate-element {
 .comment-rate-edit {
   grid-row: 1 / 4;
 }
-.comment-content-edit {
+.comment-user-main-grid-container .comment-content-edit {
+  margin-top: 0;
   padding: 7px;
   border: 2px solid var(--light-grayish-blue);
   border-radius: 7px;

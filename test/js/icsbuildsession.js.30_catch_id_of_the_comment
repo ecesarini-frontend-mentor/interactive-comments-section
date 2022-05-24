@@ -278,8 +278,9 @@ export class BuildSession {
             case 'editConfirm':
                 let newContent = editContent.innerText;
 
+
+
                 editElement.classList.remove('comment-user-main-grid-container-edit');
-                editContent.setAttribute('contentEditable', false);
                 editContent.classList.remove('comment-content-edit');
                 editCommentRatefb.classList.remove('comment-rate-edit');
                 editUndoContainer.remove();

@@ -1,11 +1,11 @@
 /*  
     FIXED:
-        - @icsbuildsesssion.js-->handleEvent:@191: make 'add-response-button' independent by reply or comment.
-        - control of the event on buildEvent: it works with reply-nested, not on first reply. Check icsbuildsession.js@168 deugging,
         - reply (//Desktop/Screenshot 2022-05-17 001102.jpg) doesn't work: add look at screenshot and add way to fit it (clicking on 'reply'  about 'remyorbson').
           look at js/icsbuildsession.js@218 to evaluate reply type.
-    TODO:
         - manage: edit and delete: @icsbuildsession.js:@269, after you click on reply new element is added, but it's not well-handled by eventListener. Chectk this out.
+        - once clicked 'edit', comment field is editable;
+    TODO:
+        - at js/icsbulidsession.js@@ eventStore@201, editor@254@editConfirm : reply edited storage;
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
         - handle createdAt by Date; get latest ID from jsonData; 
     
