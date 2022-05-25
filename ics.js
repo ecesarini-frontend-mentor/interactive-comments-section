@@ -5,7 +5,7 @@
         - manage: edit and delete: @icsbuildsession.js:@269, after you click on reply new element is added, but it's not well-handled by eventListener. Chectk this out.
         - once clicked 'edit', comment field is editable;
     TODO:
-        - at js/icsbulidsession.js@@ eventStore@201, editor@254@editConfirm : reply edited storage;
+        - need to match 'edit response' with events. Take a look to '\\DESKTOP:/get_id.jpg' to debug. Target is dybamically get id from container hosting event repsonse.
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
         - handle createdAt by Date; get latest ID from jsonData; 
     

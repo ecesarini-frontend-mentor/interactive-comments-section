@@ -133,7 +133,7 @@ export class BuildSession {
                 } else {
                    ['delete', 'edit'].forEach( i => this.createInteractButtons(i, currentUserFlexboxContainer));
                 }
-        };
+        };         
         const comment = this.buildComment(),
             commentRepliesGrid = document.createElement('div'),
             commentRepliesLine = document.createElement('div'),
@@ -143,7 +143,6 @@ export class BuildSession {
         commentRepliesGrid.classList.add('comment-user-nested-grid-container');
         commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
         
-        comment.setAttribute('cid', obj.id);
         comment.querySelector('.comment-content').innerText = obj.content;
         comment.querySelector('.comment-date').innerText = obj.createdAt;
         comment.querySelector('.comment-rate-element-value').innerText = obj.score;
@@ -199,14 +198,10 @@ export class BuildSession {
         this.btn.forEach( b => b.addEventListener('click', this));
         if(editContent) editContent.addEventListener('click', this);
     }
-    eventsStore(obj, commentTarget) {
+    eventsStore(obj) {
         let localJson = JSON.parse(localStorage['dataJson']);
 
-        if(commentTarget) {
-            debugger;
-        } else {
-            localJson.comments.push(obj);
-        }
+        localJson.comments.push(obj);
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
     // Buttons behaviour:
@@ -237,7 +232,7 @@ export class BuildSession {
         else if(ect.matches('.add-reply-send-button')){ // && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
             let commentTarget = document.querySelector('.comment-reply-this');
             cmtObj = this.createCommentReplyObj();
-            this.eventsStore(cmtObj, commentTarget);
+            this.eventsStore(cmtObj);
             this.container.append(replyElement);
             this.buildElement(cmtObj, 'reply', commentTarget);
             replyElementBtn.classList.toggle('add-reply-send-button');
