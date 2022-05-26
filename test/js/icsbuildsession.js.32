@@ -200,14 +200,10 @@ export class BuildSession {
         if(editContent) editContent.addEventListener('click', this);
     }
     eventsStore(obj, commentTarget) {
-        let localJson = JSON.parse(localStorage['dataJson']),
-            localJsonComments = localJson.comments;
+        let localJson = JSON.parse(localStorage['dataJson']);
 
         if(commentTarget) {
-            for(let i in localJsonComments) {
-            //localJsonComments[i].id;
             debugger;
-            }
         } else {
             localJson.comments.push(obj);
         }
