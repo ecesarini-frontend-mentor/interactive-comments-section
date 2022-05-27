@@ -3,8 +3,8 @@ export class BuildSession {
         this.jFile = jFile;
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
+
         this.btn = this.commentBox = this.commentBoxTextarea = null;
-        this.replyJsonTarget = null;
 
         this.getJsonData();
     } 
@@ -104,7 +104,7 @@ export class BuildSession {
        return target.append(replyEditDeleteBtn(type));       
     }
     createCommentReplyObj() {
-        const getMaxId = (obj) => {
+        const getMaxId = (obj) =>{
             let a = [];
             const getMax = (a, b) => Math.max(a, b);
             obj.comments.forEach( c => {
@@ -199,15 +199,17 @@ export class BuildSession {
         this.btn.forEach( b => b.addEventListener('click', this));
         if(editContent) editContent.addEventListener('click', this);
     }
-    eventsStore(obj, replyJsonTarget) {
-        let localJson = JSON.parse(localStorage['dataJson']);
-            //rjt = (replyJsonTarget.)
+    eventsStore(obj, commentTarget) {
+        let localJson = JSON.parse(localStorage['dataJson']),
+            localJsonComments = localJson.comments;
 
-        if(!replyJsonTarget) {
-            localJson.comments.push(obj);
-        } else {
-            let cid = replyJsonTarget.getAttribute('cid');
+        if(commentTarget) {
+            for(let i in localJsonComments) {
+            //localJsonComments[i].id;
             debugger;
+            }
+        } else {
+            localJson.comments.push(obj);
         }
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
@@ -227,10 +229,6 @@ export class BuildSession {
         }
         else if(ect.matches('.comment-reply')) {
             commentTarget = ect.closest('.comment-user-main-grid-container');
-            //this.replyJsonTarget = commentTarget || ect.closest('.comment-user-main-grid-container');
-            this.replyJsonTarget = (!commentTarget.closest('.comment-user-nested-grid-container')) ? 
-                commentTarget :
-                commentTarget.parentElement.previousElementSibling;
             const targetUserName = commentTarget.querySelector('.comment-uid').innerText;
             commentTarget.classList.toggle('comment-reply-this');
             replyElementBtn.classList.toggle('add-response-send-button');
@@ -241,9 +239,9 @@ export class BuildSession {
             commentTarget.after(replyElement);
         }
         else if(ect.matches('.add-reply-send-button')){ // && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
-            commentTarget = document.querySelector('.comment-reply-this');
+            let commentTarget = document.querySelector('.comment-reply-this');
             cmtObj = this.createCommentReplyObj();
-            this.eventsStore(cmtObj, this.replyJsonTarget);
+            this.eventsStore(cmtObj, commentTarget);
             this.container.append(replyElement);
             this.buildElement(cmtObj, 'reply', commentTarget);
             replyElementBtn.classList.toggle('add-reply-send-button');
@@ -252,7 +250,6 @@ export class BuildSession {
             replyElement.querySelector('textarea').placeholder = ' Add a comment...';
             replyElementBtn.innerText = 'SEND';
             commentTarget.classList.toggle('comment-reply-this');
-            this.replyJsonTarget = null;
         }
 
     }
