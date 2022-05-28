@@ -212,7 +212,7 @@ export class BuildSession {
                             c.replies.push(obj);
                             break;
                         case 'edit':
-                            debugger;
+
                             break;
                     }
                 } else {
@@ -222,8 +222,8 @@ export class BuildSession {
                                     case 'reply':
                                         r.push(obj);
                                         break;
-                                    case 'edit':                                        
-                                    debugger;
+                                    case 'edit':
+
                                     break;
                                 }
                             }
@@ -338,7 +338,6 @@ export class BuildSession {
             case 'editConfirm':
                 let newContent = editContent.innerText;
 
-                this.eventsStore(null, editContent.parentElement, 'edit');
                 editElement.classList.remove('comment-user-main-grid-container-edit');
                 editContent.setAttribute('contentEditable', false);
                 editContent.classList.remove('comment-content-edit');

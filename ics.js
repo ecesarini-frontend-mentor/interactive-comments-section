@@ -1,9 +1,7 @@
 /*  
     TODO:
-        - this.json.data successfully draws up replies. Need to do the same about 'event reply'. It starts from 'this.eventsStore()'.
-            @202@208
-        - debugger @icsbuildsession.js@210: you can handle reply-container 'cid', redirecting to localStorage target;
-        - need to match 'edit response' with events. Take a look to '\\DESKTOP:/get_id.jpg' to debug. Target is dybamically get id from container hosting event repsonse.
+        - replies work;
+        - added 2 debugger inside icsbulidsession.js to dig into edited element;
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
         - handle createdAt by Date; get latest ID from jsonData; 
     

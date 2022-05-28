@@ -199,64 +199,15 @@ export class BuildSession {
         this.btn.forEach( b => b.addEventListener('click', this));
         if(editContent) editContent.addEventListener('click', this);
     }
-    eventsStore(obj, replyJsonTarget, storeActionType) {
+    eventsStore(obj, replyJsonTarget) {
         let localJson = JSON.parse(localStorage['dataJson']);
-        
-        const storeByActionType = (sbat) => {
-            let cid = Number.parseInt(replyJsonTarget.getAttribute('cid'));
-            
-            localJson.comments.forEach(c => {
-                if(c.id === cid) {
-                    switch(sbat) {
-                        case 'reply':
-                            c.replies.push(obj);
-                            break;
-                        case 'edit':
-                            debugger;
-                            break;
-                    }
-                } else {
-                        c.replies.filter(cr => cr.length > 0).forEach( r => {
-                            if(r.id === cid) {
-                                switch(sbat) {
-                                    case 'reply':
-                                        r.push(obj);
-                                        break;
-                                    case 'edit':                                        
-                                    debugger;
-                                    break;
-                                }
-                            }
-                        });
-                    
-                    switch(sbat) {
-                        case 'reply':
-
-                    }
-                }
-            });
-            /*switch(sbat) {
-                case 'reply':
-                    localJson.comments.forEach(c => { 
-                        if(c.id === cid) c.replies.push(obj);
-                        else {
-                            c.replies.filter(cr => cr.length > 0).forEach( r => {
-                                if(r.id === cid) r.push(obj);
-                            });
-                        }
-                    });
-                    break;
-                case 'edit':
-                    localJson.comments.foreach( c => {});
-                    break;
-            }*/
-        }
+            //rjt = (replyJsonTarget.)
 
         if(!replyJsonTarget) {
             localJson.comments.push(obj);
         } else {
-            storeByActionType(storeActionType);
-            //debugger;
+            let cid = replyJsonTarget.getAttribute('cid');
+            debugger;
         }
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
@@ -276,6 +227,7 @@ export class BuildSession {
         }
         else if(ect.matches('.comment-reply')) {
             commentTarget = ect.closest('.comment-user-main-grid-container');
+            //this.replyJsonTarget = commentTarget || ect.closest('.comment-user-main-grid-container');
             this.replyJsonTarget = (!commentTarget.closest('.comment-user-nested-grid-container')) ? 
                 commentTarget :
                 commentTarget.parentElement.previousElementSibling;
@@ -291,7 +243,7 @@ export class BuildSession {
         else if(ect.matches('.add-reply-send-button')){ // && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
             commentTarget = document.querySelector('.comment-reply-this');
             cmtObj = this.createCommentReplyObj();
-            this.eventsStore(cmtObj, this.replyJsonTarget, 'reply');
+            this.eventsStore(cmtObj, this.replyJsonTarget);
             this.container.append(replyElement);
             this.buildElement(cmtObj, 'reply', commentTarget);
             replyElementBtn.classList.toggle('add-reply-send-button');
@@ -338,7 +290,6 @@ export class BuildSession {
             case 'editConfirm':
                 let newContent = editContent.innerText;
 
-                this.eventsStore(null, editContent.parentElement, 'edit');
                 editElement.classList.remove('comment-user-main-grid-container-edit');
                 editContent.setAttribute('contentEditable', false);
                 editContent.classList.remove('comment-content-edit');
