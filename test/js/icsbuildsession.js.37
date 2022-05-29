@@ -203,32 +203,38 @@ export class BuildSession {
         let localJson = JSON.parse(localStorage['dataJson']);
         
         const storeByActionType = (sbat) => {
-            let cid = Number.parseInt(replyJsonTarget.getAttribute('cid')),
-                ljc = localJson.comments.find(c => c.id === cid),
-                ljr = localJson.comments.filter(c => c.replies.length > 0).forEach(cr => cr.replies.forEach(r => alert(r.id === cid))); //here
-                //debugger;
+            let cid = Number.parseInt(replyJsonTarget.getAttribute('cid'));
             
-            if(ljc) {
-                switch(sbat) {
-                    case 'reply':
-                        ljc.replies.push(obj);
-                        break;
-                    case 'edit':
-                        debugger;
-                        break;
+            localJson.comments.forEach(c => {
+                if(c.id === cid) {
+                    switch(sbat) {
+                        case 'reply':
+                            c.replies.push(obj);
+                            break;
+                        case 'edit':
+                            debugger;
+                            break;
+                    }
+                } else {
+                        c.replies.filter(cr => cr.length > 0).forEach( r => {
+                            if(r.id === cid) {
+                                switch(sbat) {
+                                    case 'reply':
+                                        r.push(obj);
+                                        break;
+                                    case 'edit':                                        
+                                    debugger;
+                                    break;
+                                }
+                            }
+                        });
+                    
+                    switch(sbat) {
+                        case 'reply':
+
+                    }
                 }
-            }
-            else if(ljr) {
-                switch(sbat) {
-                    case 'reply':
-                        ljr.push(obj);
-                        break;
-                    case 'edit':                                        
-                        debugger;
-                        break;
-                }
-            }
-        }
+            });
             /*switch(sbat) {
                 case 'reply':
                     localJson.comments.forEach(c => { 
@@ -244,6 +250,7 @@ export class BuildSession {
                     localJson.comments.foreach( c => {});
                     break;
             }*/
+        }
 
         if(!replyJsonTarget) {
             localJson.comments.push(obj);
@@ -331,7 +338,6 @@ export class BuildSession {
             case 'editConfirm':
                 let newContent = editContent.innerText;
 
-
                 this.eventsStore(null, editContent.parentElement, 'edit');
                 editElement.classList.remove('comment-user-main-grid-container-edit');
                 editContent.setAttribute('contentEditable', false);
@@ -340,7 +346,7 @@ export class BuildSession {
                 editUndoContainer.remove();
                 break;
             case 'editUndo':
-                //alert('ciao');
+                alert('ciao');
                 break;
         }
     }

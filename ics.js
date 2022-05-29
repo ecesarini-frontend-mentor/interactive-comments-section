@@ -1,6 +1,10 @@
 /*  
-    TODO:
+    FIXED:
         - replies work;
+
+    TODO:
+        - \\DESKTOP:'ics_edit_response.jpg' screenshoot, css doesn't respect margins;
+        - js/icsbuildsession.js@208: catching edit target, take a look;
         - added 2 debugger inside icsbulidsession.js to dig into edited element;
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
         - handle createdAt by Date; get latest ID from jsonData; 
