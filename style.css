@@ -235,7 +235,7 @@ span.comment-rate-element {
 
 /* Javascript events */
 .comment-user-main-grid-container-edit {
-  grid-template-rows: 25% 1fr 0.5fr;
+  grid-template-rows: 25% 1fr 1fr;
 }
 .comment-rate-edit {
   grid-row: 1 / 4;
@@ -252,7 +252,7 @@ span.comment-rate-element {
   justify-content: flex-end;
 }
 .comment-edited-fb-button-container .edit-button {
-  margin-right: 10px;
+  margin: auto 0;
 }
 .comment-edited-fb-button-container .edit-button.edit-button-undo {
   margin-left: 25px;
