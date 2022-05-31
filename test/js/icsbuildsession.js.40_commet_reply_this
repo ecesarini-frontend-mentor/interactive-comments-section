@@ -162,12 +162,10 @@ export class BuildSession {
                 break;
             case 'reply': 
                 isCurrentUser();
-                /*if(target === this.container) {
+                if(target.matches('.comment-container')) {
                     target.append(comment);
-                    break;
                 }
-                else if(target.matches('.comment-reply-this')) {*/
-                if(target.matches('.comment-reply-this')) {
+                else if(target.matches('.comment-reply-this')) {
                     let cungc, replyCount = undefined;
 
                     if(target.nextElementSibling.matches(`.${crgClass}`)) {

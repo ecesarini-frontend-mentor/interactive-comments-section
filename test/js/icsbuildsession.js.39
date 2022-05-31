@@ -5,6 +5,7 @@ export class BuildSession {
         this.container = document.querySelector('.comment-container');
         this.btn = this.commentBox = this.commentBoxTextarea = null;
         this.replyJsonTarget = null;
+
         this.getJsonData();
     } 
     // FETCH data
@@ -121,7 +122,6 @@ export class BuildSession {
         cuObj.id = getMaxId(JSON.parse(localStorage['dataJson'])) + 1; 
         cuObj.content = this.commentBoxTextarea.value;
         cuObj.createdAt = new Date().getSeconds();
-        cuObj.replyingTo =
         cuObj.score = 0;
         cuObj.user = this.jsonData.currentUser;
         cuObj.replies = [];
@@ -162,11 +162,6 @@ export class BuildSession {
                 break;
             case 'reply': 
                 isCurrentUser();
-                /*if(target === this.container) {
-                    target.append(comment);
-                    break;
-                }
-                else if(target.matches('.comment-reply-this')) {*/
                 if(target.matches('.comment-reply-this')) {
                     let cungc, replyCount = undefined;
 
@@ -277,7 +272,6 @@ export class BuildSession {
         else if(ect.matches('.add-reply-send-button')){ // && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
             commentTarget = document.querySelector('.comment-reply-this');
             cmtObj = this.createCommentReplyObj();
-            cmtObj.replyingTo = commentTarget.querySelector('.comment-uid').innerText;
             this.eventsStore(cmtObj, this.replyJsonTarget, 'reply');
             this.container.append(replyElement);
             this.buildElement(cmtObj, 'reply', commentTarget);

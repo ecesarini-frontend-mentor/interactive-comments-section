@@ -6,7 +6,11 @@
         - MAJOR issue: icsbuildsession.js doesn't draw up according to localStorage json data, you can verify it by refreshing page after
             you added 2-3 replies. Must investigate about: missing field "repliyingTo" (take advantage of this building HTML),
             in data.json, the triggering of drawUp passing 'reply' which appends 'juliusomo:id4:content:"I couldn't agree etc"' to 
-            'this.container' HTML. (\\DESKTOP:\debugging_refresh_localStorage: something interferes with '.comment-reply-this');
+            'this.container' HTML. (\\DESKTOP:\debugging_refresh_localStorage: something interferes with '.comment-reply-this'):
+                - '.comment-reply-this' depends on event trigger;
+                - bug comes from what icsbuildsession.js@170 triggers;
+                - uncomment previous code and you will see JSON doesn't nest itself after '.comment-user-nested-grid-container';
+                
         - \\DESKTOP:'ics_edit_response.jpg' screenshoot, css doesn't respect margins; // depends on 'implicit-grid' call
         - js/icsbuildsession.js@208: catching edit target, take a look;
         - added 2 debugger inside icsbulidsession.js to dig into edited element;
@@ -39,4 +43,3 @@ function ics() {
 
 //window.addEventListener('DOMContentLoaded', () => localStorage.clear());
 ics();
-
