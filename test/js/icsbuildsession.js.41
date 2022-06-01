@@ -136,13 +136,7 @@ export class BuildSession {
                 } else {
                    ['delete', 'edit'].forEach( i => this.createInteractButtons(i, currentUserFlexboxContainer));
                 }
-        }
-        , gridRowUpdater = function(tg) {
-            let replyCount = tg.querySelectorAll('.comment-user-main-grid-container').length + 1;
-
-            tg.firstChild.style.gridRow = `1 / ${++replyCount}`;
         };
-        
         const comment = this.buildComment(),
             commentRepliesGrid = document.createElement('div'),
             commentRepliesLine = document.createElement('div'),
@@ -168,17 +162,24 @@ export class BuildSession {
                 break;
             case 'reply': 
                 isCurrentUser();
-                let cungc = undefined;
+                /*if(target === this.container) {
+                    target.append(comment);
+                    break;
+                }
+                else if(target.matches('.comment-reply-this')) {*/
                 if(target.matches('.comment-reply-this')) {
+                    let cungc, replyCount = undefined;
 
                     if(target.nextElementSibling.matches(`.${crgClass}`)) {
-                        cungc = target.nextElementSibling;
-                        gridRowUpdater(cungc);
+                        cungc = target.nextElementSibling; 
+                        replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1;
+                        cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;
                         target.nextElementSibling.append(comment);
                     }
                     else if(target.closest(`.${crgClass}`)) {
                         cungc = target.closest(`.${crgClass}`),
-                        gridRowUpdater(cungc);
+                        replyCount = cungc.querySelectorAll('.comment-user-main-grid-container').length + 1;
+                        cungc.firstChild.style.gridRow = `1 / ${++replyCount}`;
                         target.after(comment);
                     } 
                     else if(!target.nextElementSibling.matches(`.${crgClass}`) && !target.closest(`.${crgClass}`)) { 
@@ -190,10 +191,7 @@ export class BuildSession {
                         commentRepliesGrid.append(commentRepliesLine, comment);
                         target.append(commentRepliesGrid);
                     } else {
-                        //target.querySelector(`.${crgClass}`).append(comment);
-                        cungc = [].at.call(target.querySelectorAll(`.${crgClass}`), -1);
-                        gridRowUpdater(cungc);
-                        cungc.append(comment);
+                        target.querySelector(`.${crgClass}`).append(comment);
                     }
                 }
                 break;
@@ -216,6 +214,7 @@ export class BuildSession {
             let cid = Number.parseInt(replyJsonTarget.getAttribute('cid')),
                 ljc = localJson.comments.find(c => c.id === cid),
                 ljr = localJson.comments.filter(c => c.replies.length > 0).forEach(cr => cr.replies.forEach(r => console.log(r.id === cid))); //here
+                //debugger;
             
             if(ljc) {
                 switch(sbat) {
