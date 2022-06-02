@@ -27,6 +27,7 @@
 
     TODO:
         - MAJOR: js/icsbuildsession.js@208: catching edit target, take a look; edit success on localStorage event;
+           --> start from 'icsbuildsession.js'@212, 'id' is not fuound about 'edit' case.
         - replies order mismatches between event time and localStorage on page reload. Related to 'this.eventsStore()'.
         - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);

@@ -211,20 +211,11 @@ export class BuildSession {
     }
     eventsStore(obj, replyJsonTarget, storeActionType) {
         let localJson = JSON.parse(localStorage['dataJson']);
+        
+        const storeByActionType = (sbat) => {
             let cid = Number.parseInt(replyJsonTarget.getAttribute('cid')),
                 ljc = localJson.comments.find(c => c.id === cid),
-                ljr = localJson.comments.filter(c => c.replies.length > 0)
-                    .map(cr => cr.replies.find(r => r.id === cid)); // 'foreEach' vs 'map' https://stackoverflow.com/questions/50165165/using-find-foreach-in-js-together, https://www.freecodecamp.org/news/4-main-differences-between-foreach-and-map/
-        const storeByActionType = (sbat) => {
-            function findReply(e) {
-                e.forEach(i => {
-                    if(i.replies.length > 0) {
-                        i.replies.forEach( r => {
-                            r.filter( flt => flt.cid === cid );
-                        }) 
-                    }
-                })
-            }
+                ljr = localJson.comments.filter(c => c.replies.length > 0).forEach(cr => cr.replies.forEach(r => console.log(r.id === cid))); //here
             
             if(ljc) {
                 switch(sbat) {
@@ -232,7 +223,7 @@ export class BuildSession {
                         ljc.replies.push(obj);
                         break;
                     case 'edit':
-                        ljc.content = replyJsonTarget.querySelector('.comment-content').innerText;
+                        debugger;
                         break;
                 }
             }
@@ -242,7 +233,7 @@ export class BuildSession {
                         ljr.push(obj);
                         break;
                     case 'edit':                                        
-                        ljr.content = replyJsonTarget.querySelector('.comment-content').innerText;
+                        debugger;
                         break;
                 }
             }
