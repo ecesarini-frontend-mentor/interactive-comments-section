@@ -200,18 +200,32 @@ export class BuildSession {
         }
     }
     // Events:
-    eventsStore(obj, replyJsonTarget, storeActionType) {
-        const localJson = JSON.parse(localStorage['dataJson']),
-            cid = Number.parseInt(replyJsonTarget.getAttribute('cid'));
-        let ljc = localJson.comments.find(c => c.id === cid),
-            ljr = undefined;
+    eventsListener() {
+        let editContent = document.querySelector('.comment-content-edit');
 
-        for(let c of localJson.comments) {
-            ljr = c.replies.find(r => r.id === cid);
-            if(ljr) break;
-        }
-        
+        this.btn = document.querySelectorAll('button');
+        this.commentBox = document.querySelector('.comment-user-add-response');
+        this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
+        this.btn.forEach( b => b.addEventListener('click', this));
+        if(editContent) editContent.addEventListener('click', this);
+    }
+    eventsStore(obj, replyJsonTarget, storeActionType) {
+        let localJson = JSON.parse(localStorage['dataJson']);
+            let cid = Number.parseInt(replyJsonTarget.getAttribute('cid')),
+                ljc = localJson.comments.find(c => c.id === cid),
+                ljr = localJson.comments.filter(c => c.replies.length > 0)
+                    .map(cr => cr.replies.find(r => r.id === cid)); // 'foreEach' vs 'map' https://stackoverflow.com/questions/50165165/using-find-foreach-in-js-together, https://www.freecodecamp.org/news/4-main-differences-between-foreach-and-map/
         const storeByActionType = (sbat) => {
+            function findReply(e) {
+                e.forEach(i => {
+                    if(i.replies.length > 0) {
+                        i.replies.forEach( r => {
+                            r.filter( flt => flt.cid === cid );
+                        }) 
+                    }
+                })
+            }
+            
             if(ljc) {
                 switch(sbat) {
                     case 'reply':
@@ -242,40 +256,6 @@ export class BuildSession {
         }
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
-    eventsListener() {
-        let editContent = document.querySelector('.comment-content-edit');
-
-        this.btn = document.querySelectorAll('button');
-        this.commentBox = document.querySelector('.comment-user-add-response');
-        this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
-        this.btn.forEach( b => b.addEventListener('click', this));
-        if(editContent) {
-            editContent.addEventListener('click', this);
-            // trigget event and 
-        }
-    }
-    //event handler
-    handleEvent(e) {
-        const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
-            editBtnClk = [
-                ['.comment-edit', 'edited'],
-                ['.edit-button-confirm', 'editConfirm'],
-                ['.edit-button-undo', 'editUndo']
-            ], 
-            deleteBtn = '.comment-delete';
-        let ect = e.currentTarget;
-
-        switch(e.type) {
-            case 'click':
-                responseBtn.map(r => {
-                    if(ect.matches(r)) this.responser(ect);
-                });
-                editBtnClk.map(e => {
-                    if(ect.matches(e[0])) this.editor(ect, e[1]);
-                });
-                break;
-        }
-    }
     // Buttons behaviour:
     responser(ect) {
         let cmtObj = null,
@@ -296,7 +276,6 @@ export class BuildSession {
                 commentTarget :
                 commentTarget.parentElement.previousElementSibling;
             const targetUserName = commentTarget.querySelector('.comment-uid').innerText;
-
             commentTarget.classList.toggle('comment-reply-this');
             replyElementBtn.classList.toggle('add-response-send-button');
             replyElementBtn.classList.toggle('add-reply-send-button');
@@ -327,14 +306,7 @@ export class BuildSession {
             editContent = editElement.querySelector('.comment-content'),
             editCommentRatefb = editElement.querySelector('.comment-rate'),
             editUndoContainer = editElement.lastElementChild;
-        
-        function editConfirmerUndoer() {
-            editElement.classList.remove('comment-user-main-grid-container-edit');
-            editContent.setAttribute('contentEditable', false);
-            editContent.classList.remove('comment-content-edit');
-            editCommentRatefb.classList.remove('comment-rate-edit');
-            editUndoContainer.remove();
-        }
+
                 
         switch(clk) {
             case 'edited':
@@ -361,11 +333,40 @@ export class BuildSession {
                 this.eventsListener();
             break;
             case 'editConfirm':
-                this.eventsStore(null, editContent.parentElement, 'edit');                
-                editConfirmerUndoer();
+                let newContent = editContent.innerText;
+
+
+                this.eventsStore(null, editContent.parentElement, 'edit');
+                editElement.classList.remove('comment-user-main-grid-container-edit');
+                editContent.setAttribute('contentEditable', false);
+                editContent.classList.remove('comment-content-edit');
+                editCommentRatefb.classList.remove('comment-rate-edit');
+                editUndoContainer.remove();
                 break;
             case 'editUndo':
-                editConfirmerUndoer();
+                //alert('ciao');
+                break;
+        }
+    }
+    //event handler
+    handleEvent(e) {
+        const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
+            editBtnClk = [
+                ['.comment-edit', 'edited'],
+                ['.edit-button-confirm', 'editConfirm'],
+                ['.edit-button-undo', 'editUndo']
+            ], 
+            deleteBtn = '.comment-delete';
+        let ect = e.currentTarget;
+
+        switch(e.type) {
+            case 'click':
+                responseBtn.map(r => {
+                    if(ect.matches(r)) this.responser(ect);
+                });
+                editBtnClk.map(e => {
+                    if(ect.matches(e[0])) this.editor(ect, e[1]);
+                });
                 break;
         }
     }

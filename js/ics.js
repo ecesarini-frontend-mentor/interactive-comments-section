@@ -24,11 +24,11 @@
             )
         - \\DESKTOP:'ics_edit_response.jpg' screenshoot, css doesn't respect margins; // depends on 'implicit-grid' call
             --> fix: changed '.comment-edited-fb-button-container .edit-button' margin
-
-    TODO:
         - MAJOR: js/icsbuildsession.js@208: catching edit target, take a look; edit success on localStorage event;
            --> start from 'icsbuildsession.js'@212, 'id' is not fuound about 'edit' case.
-        - replies order mismatches between event time and localStorage on page reload. Related to 'this.eventsStore()'.
+    TODO:
+        - MAJOR: you can edit more containers at a time: eventsListener & handleEvent are involved. Switch event after 'click' triggered. @~245
+            I fear, all btn event succes in the eventsListener could afflict this. Dig into class assigned.
         - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     

@@ -249,32 +249,7 @@ export class BuildSession {
         this.commentBox = document.querySelector('.comment-user-add-response');
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
-        if(editContent) {
-            editContent.addEventListener('click', this);
-            // trigget event and 
-        }
-    }
-    //event handler
-    handleEvent(e) {
-        const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
-            editBtnClk = [
-                ['.comment-edit', 'edited'],
-                ['.edit-button-confirm', 'editConfirm'],
-                ['.edit-button-undo', 'editUndo']
-            ], 
-            deleteBtn = '.comment-delete';
-        let ect = e.currentTarget;
-
-        switch(e.type) {
-            case 'click':
-                responseBtn.map(r => {
-                    if(ect.matches(r)) this.responser(ect);
-                });
-                editBtnClk.map(e => {
-                    if(ect.matches(e[0])) this.editor(ect, e[1]);
-                });
-                break;
-        }
+        if(editContent) editContent.addEventListener('click', this);
     }
     // Buttons behaviour:
     responser(ect) {
@@ -296,7 +271,6 @@ export class BuildSession {
                 commentTarget :
                 commentTarget.parentElement.previousElementSibling;
             const targetUserName = commentTarget.querySelector('.comment-uid').innerText;
-
             commentTarget.classList.toggle('comment-reply-this');
             replyElementBtn.classList.toggle('add-response-send-button');
             replyElementBtn.classList.toggle('add-reply-send-button');
@@ -366,6 +340,28 @@ export class BuildSession {
                 break;
             case 'editUndo':
                 editConfirmerUndoer();
+                break;
+        }
+    }
+    //event handler
+    handleEvent(e) {
+        const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
+            editBtnClk = [
+                ['.comment-edit', 'edited'],
+                ['.edit-button-confirm', 'editConfirm'],
+                ['.edit-button-undo', 'editUndo']
+            ], 
+            deleteBtn = '.comment-delete';
+        let ect = e.currentTarget;
+
+        switch(e.type) {
+            case 'click':
+                responseBtn.map(r => {
+                    if(ect.matches(r)) this.responser(ect);
+                });
+                editBtnClk.map(e => {
+                    if(ect.matches(e[0])) this.editor(ect, e[1]);
+                });
                 break;
         }
     }
