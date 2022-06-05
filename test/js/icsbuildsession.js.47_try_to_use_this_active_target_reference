@@ -244,16 +244,14 @@ export class BuildSession {
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
     eventsListener() {
-        let edited = document.querySelector('.comment-user-main-grid-container-edit'),
-            editContent = document.querySelector('.comment-content-edit');
+        let editContent = document.querySelector('.comment-content-edit');
 
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-response');
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
-        if(edited) {
-            edited.addEventListener('click', this);
-            if(editContent) editContent.addEventListener('click', this);
+        if(editContent) {
+            editContent.addEventListener('click', this);
             // trigget event and 
         }
     }
@@ -357,8 +355,7 @@ export class BuildSession {
                 editContent.setAttribute('contentEditable', true);
 
                 editFlexBtnContainer.append(editConfirm, editUndo);
-                if(!editElement.lastElementChild.matches('.comment-edited-fb-button-container') &&
-                    editElement.matches('.comment-user-main-grid-container-edit')) {
+                if(!editElement.lastElementChild.matches('.comment-edited-fb-button-container')) {
                     //editContent.classList.remove('comment-content-edit');
                     editElement.append(editFlexBtnContainer);
                 }

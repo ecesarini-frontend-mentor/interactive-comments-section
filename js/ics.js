@@ -29,13 +29,14 @@
     TODO:
         - MAJOR: you can edit more containers at a time: eventsListener & handleEvent are involved. Switch event after 'click' triggered. @~245
             I fear, all btn event succes in the eventsListener could afflict this. Dig into class assigned.
+            @eventsListener(e):@254,@361 filter out untriggered events ; 
         - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     
 */
 
-import {IcsStyle} from './js/icsstyle.js';
-import {BuildSession} from './js/icsbuildsession.js';
+import {IcsStyle} from './icsstyle.js';
+import {BuildSession} from './icsbuildsession.js';
 
 function ics() {
     //document.addEventListener('DOMContentLoaded', () => localStorage.clear());
