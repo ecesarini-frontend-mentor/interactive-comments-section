@@ -9,7 +9,10 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
-        - replies work;
+        - MAJOR: you can edit more containers at a time: eventsListener & handleEvent are involved. Switch event after 'click' triggered. @~245
+            I fear, all btn event succes in the eventsListener could afflict this. Dig into class assigned.
+            @eventsListener(e):@254,@361 filter out untriggered events ; 
+                - 'editFlexBtnContainer' is added onClick;
         - (MAJOR issue: icsbuildsession.js doesn't draw up according to localStorage json data, you can verify it by refreshing page after
             you added 2-3 replies. Must investigate about: missing field "repliyingTo" (take advantage of this building HTML),
             in data.json, the triggering of drawUp passing 'reply' which appends 'juliusomo:id4:content:"I couldn't agree etc"' to 
@@ -27,9 +30,7 @@
         - MAJOR: js/icsbuildsession.js@208: catching edit target, take a look; edit success on localStorage event;
            --> start from 'icsbuildsession.js'@212, 'id' is not fuound about 'edit' case.
     TODO:
-        - MAJOR: you can edit more containers at a time: eventsListener & handleEvent are involved. Switch event after 'click' triggered. @~245
-            I fear, all btn event succes in the eventsListener could afflict this. Dig into class assigned.
-            @eventsListener(e):@254,@361 filter out untriggered events ; 
+        - MAJOR: style doesn't change after you edit another 'edit-button' element. It depends on event trigger: debug @icsbuildession.js@309,331,364
         - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     

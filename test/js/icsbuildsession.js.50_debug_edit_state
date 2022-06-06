@@ -41,6 +41,7 @@ export class BuildSession {
         });
         this.container.append(this.responseSec());
     }
+
     // General
     buildComment() {
         //Create html elements
@@ -127,6 +128,7 @@ export class BuildSession {
         cuObj.replies = [];
         return cuObj;
     }
+    
     // Build on first load and on responses
     buildElement(obj, type, target) {
         const isCurrentUser = () => {
@@ -298,7 +300,8 @@ export class BuildSession {
         editFlexBtnContainer.append(editConfirm, editUndo);
 
         return editFlexBtnContainer;
-    }   
+    }
+    
     //event handler
     eventsListener(whoAmI) {
         if(!whoAmI){
@@ -307,9 +310,10 @@ export class BuildSession {
             this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
             this.btn.forEach( b => b.addEventListener('click', this));
         } else {
+
             whoAmI.classList.toggle('is-edited');
             whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
-
+            
         }
     }
     handleEvent(e) {
