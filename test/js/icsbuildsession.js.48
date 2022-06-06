@@ -5,7 +5,7 @@ export class BuildSession {
         this.container = document.querySelector('.comment-container');
         this.btn = this.commentBox = this.commentBoxTextarea = null;
         this.replyJsonTarget = null;
-        this.editUndoContainer = this.editorCreateEditConfirmUndo();
+        this.activeTarget = null;
         this.getJsonData();
     } 
     // FETCH data
@@ -153,7 +153,7 @@ export class BuildSession {
         commentRepliesGrid.classList.add('comment-user-nested-grid-container');
         commentRepliesLine.classList.add('comment-user-nested-grid-container-line');
         
-        comment.setAttribute('data-cid', obj.id);
+        comment.setAttribute('cid', obj.id);
         comment.querySelector('.comment-content').innerText = obj.content;
         comment.querySelector('.comment-date').innerText = obj.createdAt;
         comment.querySelector('.comment-rate-element-value').innerText = obj.score;
@@ -191,6 +191,7 @@ export class BuildSession {
                         commentRepliesGrid.append(commentRepliesLine, comment);
                         target.append(commentRepliesGrid);
                     } else {
+                        //target.querySelector(`.${crgClass}`).append(comment);
                         cungc = [].at.call(target.querySelectorAll(`.${crgClass}`), -1);
                         gridRowUpdater(cungc);
                         cungc.append(comment);
@@ -202,7 +203,7 @@ export class BuildSession {
     // Events:
     eventsStore(obj, replyJsonTarget, storeActionType) {
         const localJson = JSON.parse(localStorage['dataJson']),
-            cid = Number.parseInt(replyJsonTarget.getAttribute('data-cid'));
+            cid = Number.parseInt(replyJsonTarget.getAttribute('cid'));
         let ljc = localJson.comments.find(c => c.id === cid),
             ljr = undefined;
 
@@ -238,14 +239,23 @@ export class BuildSession {
             localJson.comments.push(obj);
         } else {
             storeByActionType(storeActionType);
+            //debugger;
         }
         localStorage['dataJson'] = JSON.stringify(localJson);
     }
     eventsListener() {
+        let edited = document.querySelector('.comment-user-main-grid-container-edit'),
+            editContent = document.querySelector('.comment-content-edit');
+
         this.btn = document.querySelectorAll('button');
         this.commentBox = document.querySelector('.comment-user-add-response');
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
+        if(edited) {
+            edited.addEventListener('click', this);
+            if(editContent) editContent.addEventListener('click', this);
+            // trigget event and 
+        }
     }
     //event handler
     handleEvent(e) {
@@ -315,49 +325,45 @@ export class BuildSession {
         }
 
     }
-    editorCreateEditConfirmUndo() {
-        const editFlexBtnContainer = document.createElement('div'),
-            editConfirm = document.createElement('button'),
-            editUndo = document.createElement('button');
-                
-        editFlexBtnContainer.classList.add('comment-edited-fb-button-container');
-        editConfirm.classList.add('edit-button', 'edit-button-confirm');
-        editUndo.classList.add('edit-button', 'edit-button-undo');
-        editConfirm.innerText = 'EDIT';
-        editUndo.innerText = 'UNDO';
-        editFlexBtnContainer.append(editConfirm, editUndo);
-
-        return editFlexBtnContainer;
-    }
     editor(ect, clk) {
         const editElement = ect.closest('.comment-user-main-grid-container'),
             editContent = editElement.querySelector('.comment-content'),
-            editCommentRatefb = editElement.querySelector('.comment-rate');
+            editCommentRatefb = editElement.querySelector('.comment-rate'),
+            editUndoContainer = editElement.lastElementChild;
         
         function editConfirmerUndoer() {
             editElement.classList.remove('comment-user-main-grid-container-edit');
             editContent.setAttribute('contentEditable', false);
             editContent.classList.remove('comment-content-edit');
             editCommentRatefb.classList.remove('comment-rate-edit');
-            editElement.lastElementChild.remove();
-        }
-        function checkIfEdited() {
-            let att = editContent.getAttribute('contentEditable');
-            if(editElement.lastElementChild.matches('.comment-edited-fb-button-container')) {
-                editElement.classList.toggle('comment-user-main-grid-container-edit');
-                editContent.classList.toggle('comment-content-edit');
-                editCommentRatefb.classList.toggle('comment-rate-edit');
-                editContent.setAttribute('contentEditable', !att);
-            }
+            editUndoContainer.remove();
         }
                 
         switch(clk) {
-            case 'edited': 
-                editElement.append(this.editUndoContainer);
-                checkIfEdited();
+            case 'edited':
+                const editFlexBtnContainer = document.createElement('div'),
+                    editConfirm = document.createElement('button'),
+                    editUndo = document.createElement('button');
+                
+                editElement.classList.add('comment-user-main-grid-container-edit');
+                editContent.classList.add('comment-content-edit');
+                editCommentRatefb.classList.add('comment-rate-edit');
+                editFlexBtnContainer.classList.add('comment-edited-fb-button-container');
+                editConfirm.classList.add('edit-button', 'edit-button-confirm');
+                editUndo.classList.add('edit-button', 'edit-button-undo');
+                editConfirm.innerText = 'EDIT';
+                editUndo.innerText = 'UNDO';
+
+                editContent.setAttribute('contentEditable', true);
+
+                editFlexBtnContainer.append(editConfirm, editUndo);
+                if(!editElement.lastElementChild.matches('.comment-edited-fb-button-container') &&
+                    editElement.matches('.comment-user-main-grid-container-edit')) {
+                    //editContent.classList.remove('comment-content-edit');
+                    editElement.append(editFlexBtnContainer);
+                }
                 this.eventsListener();
-                //checkIfEdited();
-                break;
+            break;
             case 'editConfirm':
                 this.eventsStore(null, editContent.parentElement, 'edit');                
                 editConfirmerUndoer();
