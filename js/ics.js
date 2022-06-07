@@ -9,6 +9,8 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
+        - MAJOR: style doesn't change after you edit another 'edit-button' element. It depends on event trigger: debug @icsbuildession.js@309,331,364 
+          (fixed @function elementsPropertiesRemover) 
         - MAJOR: you can edit more containers at a time: eventsListener & handleEvent are involved. Switch event after 'click' triggered. @~245
             I fear, all btn event succes in the eventsListener could afflict this. Dig into class assigned.
             @eventsListener(e):@254,@361 filter out untriggered events ; 
@@ -30,7 +32,12 @@
         - MAJOR: js/icsbuildsession.js@208: catching edit target, take a look; edit success on localStorage event;
            --> start from 'icsbuildsession.js'@212, 'id' is not fuound about 'edit' case.
     TODO:
-        - MAJOR: style doesn't change after you edit another 'edit-button' element. It depends on event trigger: debug @icsbuildession.js@309,331,364
+        - (@function elementsPropertiesRemover: 
+            DIG INTO: 
+             * WHY THIS FUNCTION DISCRIMINATES 'forEach' and 'map'?
+             * make 'attributeTarget' argument handleable to catch eventual attributes;
+             
+             )
         - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     

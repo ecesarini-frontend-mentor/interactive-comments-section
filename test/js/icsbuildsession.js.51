@@ -319,27 +319,8 @@ export class BuildSession {
                 ['.edit-button-confirm', 'editConfirm'],
                 ['.edit-button-undo', 'editUndo']
             ], 
-            classTarget = [
-                //'comment-edited-fb-button-container',
-                'comment-user-main-grid-container-edit',
-                'comment-rate-edit',
-                'comment-content-edit'
-            ],
             deleteBtn = '.comment-delete';
         let ect = e.currentTarget;
-        
-        function elementsPropertiesRemover(classTarget, attributeTarget) {
-            let elementTarget = classTarget.map(ct => document.querySelectorAll('.' + ct));
-            
-            for(let i = 0; i < classTarget.length; i++) {
-                elementTarget[i].forEach( et => {
-                    if(arguments.length > 1 && et.getAttribute(attributeTarget)) {
-                        et.setAttribute(attributeTarget, false);
-                    }
-                    et.classList.remove(classTarget[i]);
-                } );
-            }
-        }
 
         switch(e.type) {
             case 'click':
@@ -347,7 +328,7 @@ export class BuildSession {
                     if(ect.matches(r)) this.responser(ect);
                 });
                 editBtnClk.map(e => {
-                    if(e[1] === 'edited') elementsPropertiesRemover(classTarget, 'contentEditable');
+                    //if(e[1] === 'edited') ect.classList.toggle('is-edited');
                     if(ect.matches(e[0])) this.editor(ect, e[1]);
                 });
                 break;
@@ -367,20 +348,20 @@ export class BuildSession {
             editCommentRatefb.classList.remove('comment-rate-edit');
             editElement.lastElementChild.remove();
         }
-        function editClassAdder() {
-            //if(editElement.lastElementChild.matches('.comment-edited-fb-button-container')) {
-                editElement.classList.add('comment-user-main-grid-container-edit');
-                editContent.classList.add('comment-content-edit');
-                editCommentRatefb.classList.add('comment-rate-edit');
-                editContent.setAttribute('contentEditable', true);
-            //}
+        function checkIfEdited() {
+            let att = editContent.getAttribute('contentEditable');
+            if(editElement.lastElementChild.matches('.comment-edited-fb-button-container')) {
+                editElement.classList.toggle('comment-user-main-grid-container-edit');
+                editContent.classList.toggle('comment-content-edit');
+                editCommentRatefb.classList.toggle('comment-rate-edit');
+                editContent.setAttribute('contentEditable', !att);
+            }
         }
                 
         switch(clk) {
             case 'edited': 
                 editElement.append(this.editUndoContainer);
                 this.eventsListener(editElement);
-                editClassAdder();
                 break;
             case 'editConfirm':
                 this.eventsStore(null, editContent.parentElement, 'edit');                
