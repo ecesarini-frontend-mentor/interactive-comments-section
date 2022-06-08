@@ -10,34 +10,15 @@
 
     FIXED:
         - MAJOR: style doesn't change after you edit another 'edit-button' element. It depends on event trigger: debug @icsbuildession.js@309,331,364 
-          (fixed @function elementsPropertiesRemover) 
-        - MAJOR: you can edit more containers at a time: eventsListener & handleEvent are involved. Switch event after 'click' triggered. @~245
-            I fear, all btn event succes in the eventsListener could afflict this. Dig into class assigned.
-            @eventsListener(e):@254,@361 filter out untriggered events ; 
-                - 'editFlexBtnContainer' is added onClick;
-        - (MAJOR issue: icsbuildsession.js doesn't draw up according to localStorage json data, you can verify it by refreshing page after
-            you added 2-3 replies. Must investigate about: missing field "repliyingTo" (take advantage of this building HTML),
-            in data.json, the triggering of drawUp passing 'reply' which appends 'juliusomo:id4:content:"I couldn't agree etc"' to 
-            'this.container' HTML. (\\DESKTOP:\debugging_refresh_localStorage: something interferes with '.comment-reply-this'):
-                - '.comment-reply-this' depends on event trigger;
-                - bug comes from what icsbuildsession.js@170 triggers;
-                - uncomment previous code and you will see JSON doesn't nest itself after '.comment-user-nested-grid-container';):
-            --> fix: problem resided in the last if statement (filtering out '.comment-reply-this' which concerns event trigger) in 
-                     'buildComment' method. The last statement 'else' fired on "target.querySelector(`.${crgClass}`).append(comment);": 
-                      if you add replies mismatching 'localStorage' you'll get new 'comment-user-nested-grid-container', so 
-                      "target.querySelector(`.${crgClass}`).append(comment);" will catch the first element it founds.
-            )
-        - \\DESKTOP:'ics_edit_response.jpg' screenshoot, css doesn't respect margins; // depends on 'implicit-grid' call
-            --> fix: changed '.comment-edited-fb-button-container .edit-button' margin
-        - MAJOR: js/icsbuildsession.js@208: catching edit target, take a look; edit success on localStorage event;
-           --> start from 'icsbuildsession.js'@212, 'id' is not fuound about 'edit' case.
-    TODO:
+          (fixed @function elementsPropertiesRemover);
         - (@function elementsPropertiesRemover: 
             DIG INTO: 
-             * WHY THIS FUNCTION DISCRIMINATES 'forEach' and 'map'?
+             * WHY THIS FUNCTION DISCRIMINATES 'forEach' and 'map'? Read explaination in the comments of the function.
+            )
+    TODO:
+        - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
-             
-             )
+            )
         - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     

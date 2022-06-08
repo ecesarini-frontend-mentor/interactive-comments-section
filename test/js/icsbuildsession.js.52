@@ -329,10 +329,10 @@ export class BuildSession {
         let ect = e.currentTarget;
         
         function elementsPropertiesRemover(classTarget, attributeTarget) {
-            let elementTarget = classTarget.map(ct => document.querySelectorAll('.' + ct)); //forEach doesn't work because after the processing it doesn't return an array, but it handles each item indipendently. So you'll come up to an undefined.
+            let elementTarget = classTarget.map(ct => document.querySelectorAll('.' + ct));
             
             for(let i = 0; i < classTarget.length; i++) {
-                elementTarget[i].forEach( et => { // > NodeList.prototype.hasOwnProperty('forEach'); // true ||vs|| > NodeList.prototype.hasOwnProperty('map'); // false
+                elementTarget[i].forEach( et => {
                     if(arguments.length > 1 && et.getAttribute(attributeTarget)) {
                         et.setAttribute(attributeTarget, false);
                     }
