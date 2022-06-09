@@ -16,10 +16,10 @@
              * WHY THIS FUNCTION DISCRIMINATES 'forEach' and 'map'? Read explaination in the comments of the function.
             )
     TODO:
+        - handle createdAt by Date; get latest ID from jsonData; (@chrome: 'dater' snippet);
         - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
             )
-        - handle createdAt by Date; get latest ID from jsonData; 
         - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     
 */
