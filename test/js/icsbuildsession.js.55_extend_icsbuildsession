@@ -1,8 +1,5 @@
-import { IcsBuildTools } from "./icsbuildtools.js";
-
-export class BuildSession extends IcsBuildTools {
+export class BuildSession {
     constructor(jFile) {
-        super();
         this.jFile = jFile;
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
@@ -44,20 +41,104 @@ export class BuildSession extends IcsBuildTools {
         });
         this.container.append(this.responseSec());
     }
-    
+    // General
+    buildComment() {
+        //Create html elements
+        const comment = document.createElement('div'),
+            commentUserGrid = document.createElement('div'),
+            commentRate = document.createElement('div'),
+            commentRatePlus = document.createElement('button'),
+            commentRatePlusObj = document.createElement('object'),
+            commentRateValue = document.createElement('span'),
+            commentRateMinus = document.createElement('button'),
+            commentRateMinusObj = document.createElement('object'),
+            commentTopFb = document.createElement('div'),
+            commentTopFbAvatar = new Image(),
+            commentTopFbUid = document.createElement('span'),
+            commentTopFbDate = document.createElement('span'),
+            commentBottomContent = document.createElement('div');
+        //Assign classes
+        comment.classList.add('comment-user-main-grid-container');
+        commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
+        commentRate.classList.add('comment-rate-flexbox');
+        commentRatePlus.classList.add('comment-rate-element', 'comment-rate-element-plus');
+        commentRatePlusObj.classList.add('vote');
+        commentRatePlusObj.setAttribute('type', 'image/svg+xml');
+        commentRatePlusObj.setAttribute('data', 'images/icon-plus.svg');
+        commentRateValue.classList.add('comment-rate-element', 'comment-rate-element-value');
+        commentRateMinus.classList.add('comment-rate-element', 'comment-rate-element-minus');
+        commentRateMinusObj.classList.add('vote');
+        commentRateMinusObj.setAttribute('type', 'image/svg+xml');
+        commentRateMinusObj.setAttribute('data', 'images/icon-minus.svg');
+        commentTopFb.classList.add('comment-user-grid-element', 'comment-user-flexbox-container');
+        commentTopFbAvatar.classList.add('comment-user-flexbox-element', 'comment-avatar');
+        commentTopFbUid.classList.add('comment-user-flexbox-element', 'comment-uid');
+        commentTopFbDate.classList.add('comment-user-flexbox-element', 'comment-date');        
+        commentBottomContent.classList.add('comment-user-grid-element', 'comment-content');
+        //Connect elements
+        comment.append(commentUserGrid, commentTopFb, commentBottomContent);
+        commentUserGrid.append(commentRate);
+        commentRatePlus.append(commentRatePlusObj, commentRatePlusObj);
+        commentRateMinus.append(commentRateMinusObj, commentRateMinusObj);
+        commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
+        commentTopFb.append(commentTopFbAvatar, commentTopFbUid, commentTopFbDate);
+        
+        return comment;
+    }
+    createInteractButtons(type, target) {
+        const replyEditDeleteBtn = (btnType) => {
+            const commentTopFbBtn = document.createElement('button'),
+                commentTopFbBtnImage = document.createElement('object'),
+                commentTopFbBtnContent = document.createElement('span');
+
+            commentTopFbBtn.classList.add('comment-user-flexbox-element', `comment-${btnType}`);
+            commentTopFbBtnImage.classList.add('interact');
+            commentTopFbBtn.type = 'button';
+            commentTopFbBtnImage.type = 'image/svg+xml';
+            
+            commentTopFbBtnImage.data = `images/icon-${btnType}.svg`;
+            commentTopFbBtnContent.innerText = `${btnType[0].toUpperCase()}${btnType.slice(1)}`;
+            commentTopFbBtn.append(commentTopFbBtnImage, commentTopFbBtnContent);
+            
+            return commentTopFbBtn;
+        };
+        
+       return target.append(replyEditDeleteBtn(type));       
+    }
+    createCommentReplyObj() {
+        const getMaxId = (obj) => {
+            let a = [];
+            const getMax = (a, b) => Math.max(a, b);
+            obj.comments.forEach( c => {
+                a.push(c.id);
+                if(c.replies.length > 0) {
+                    c.replies.forEach( r => a.push(r.id) );
+                }
+            });
+            return a.reduce(getMax);
+        }
+        const cuObj = {};        
+        cuObj.id = getMaxId(JSON.parse(localStorage['dataJson'])) + 1; 
+        cuObj.content = this.commentBoxTextarea.value;
+        cuObj.createdAt = Date.now();
+        cuObj.replyingTo =
+        cuObj.score = 0;
+        cuObj.user = this.jsonData.currentUser;
+        cuObj.replies = [];
+        return cuObj;
+    }
     // Build on first load and on responses
     buildElement(obj, type, target) {
-        const byToolsDater = this.dater(obj.createdAt, Date.now());
-
         const isCurrentUser = () => {
-            if(obj.user.username !== currentUser) {
-                this.createInteractButtons('reply', currentUserFlexboxContainer);
-            } else {
-                ['delete', 'edit'].forEach( i => this.createInteractButtons(i, currentUserFlexboxContainer));
-            }
-        }, 
-        gridRowUpdater = function(tg) {
+                if(obj.user.username !== currentUser) {
+                    this.createInteractButtons('reply', currentUserFlexboxContainer);
+                } else {
+                   ['delete', 'edit'].forEach( i => this.createInteractButtons(i, currentUserFlexboxContainer));
+                }
+        }
+        , gridRowUpdater = function(tg) {
             let replyCount = tg.querySelectorAll('.comment-user-main-grid-container').length + 1;
+
             tg.firstChild.style.gridRow = `1 / ${++replyCount}`;
         };
         
@@ -72,7 +153,7 @@ export class BuildSession extends IcsBuildTools {
         
         comment.setAttribute('data-cid', obj.id);
         comment.querySelector('.comment-content').innerText = obj.content;
-        comment.querySelector('.comment-date').innerText = (byToolsDater)? byToolsDater: obj.createdAt;
+        comment.querySelector('.comment-date').innerText = obj.createdAt;
         comment.querySelector('.comment-rate-element-value').innerText = obj.score;
         comment.querySelector('.comment-uid').innerText = obj.user.username;
         comment.querySelector('.comment-avatar').src = obj.user.image.png;
@@ -169,7 +250,7 @@ export class BuildSession extends IcsBuildTools {
             commentTarget = null;
 
         if(ect.matches('.add-response-send-button')) {
-            cmtObj = this.createCommentReplyObj(this.commentBoxTextarea, this.jsonData);
+            cmtObj = this.createCommentReplyObj();
             this.eventsStore(cmtObj); // order matters to update textarea
             this.buildElement(cmtObj, 'comment', this.container);
             this.container.append(this.commentBox);
@@ -192,7 +273,7 @@ export class BuildSession extends IcsBuildTools {
         }
         else if(ect.matches('.add-reply-send-button')){ // && !ect.closest('.comment-user-main-grid-container').nextElementSibling.matches('.comment-reply-this')) {
             commentTarget = document.querySelector('.comment-reply-this');
-            cmtObj = this.createCommentReplyObj(this.commentBoxTextarea, this.jsonData);
+            cmtObj = this.createCommentReplyObj();
             cmtObj.replyingTo = commentTarget.querySelector('.comment-uid').innerText;
             this.eventsStore(cmtObj, this.replyJsonTarget, 'reply');
             this.container.append(replyElement);
@@ -207,7 +288,20 @@ export class BuildSession extends IcsBuildTools {
         }
 
     }
+    editorCreateEditConfirmUndo() {
+        const editFlexBtnContainer = document.createElement('div'),
+            editConfirm = document.createElement('button'),
+            editUndo = document.createElement('button');
+                
+        editFlexBtnContainer.classList.add('comment-edited-fb-button-container');
+        editConfirm.classList.add('edit-button', 'edit-button-confirm');
+        editUndo.classList.add('edit-button', 'edit-button-undo');
+        editConfirm.innerText = 'EDIT';
+        editUndo.innerText = 'UNDO';
+        editFlexBtnContainer.append(editConfirm, editUndo);
 
+        return editFlexBtnContainer;
+    }   
     //event handler
     eventsListener(whoAmI) {
         if(!whoAmI){
@@ -300,5 +394,31 @@ export class BuildSession extends IcsBuildTools {
                 break;
         }
     }
+
+    //responseSec(appendElement) {
+    responseSec() {
+        const commentContainer = document.createElement('div'),
+            commentContainerImg = new Image(),
+            commentContainerFb = document.createElement('div'),
+            commentContainerFbTextarea = document.createElement('textarea'),
+            commentContainerFbBtnSend = document.createElement('button');
+            
+        commentContainer.classList.add('comment-user-add-response');
+        commentContainerImg.classList.add('comment-user-add-response-avatar');
+        commentContainerFb.classList.add('comment-user-add-response-flexbox');
+        commentContainerFbTextarea.classList.add('add-response-textarea');
+        commentContainerFbTextarea.placeholder = ' Add a comment...';
+        commentContainerFbBtnSend.classList.add('add-response-send-button');
+
+        commentContainerImg.src = JSON.parse(localStorage['dataJson']).currentUser.image.png;
+        commentContainerFbBtnSend.type = 'button';
+        commentContainerFbBtnSend.innerText = 'SEND';
+
+        commentContainerFb.append(commentContainerFbTextarea, commentContainerFbBtnSend);
+        commentContainer.append(commentContainerImg, commentContainerFb);
+
+        return commentContainer;
+    }
+
 
 } 

@@ -9,13 +9,11 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
-        - MAJOR: style doesn't change after you edit another 'edit-button' element. It depends on event trigger: debug @icsbuildession.js@309,331,364 
-          (fixed @function elementsPropertiesRemover);
-        - (@function elementsPropertiesRemover: 
-            DIG INTO: 
-             * WHY THIS FUNCTION DISCRIMINATES 'forEach' and 'map'? Read explaination in the comments of the function.
-            )
+        - Neutral reply appending (@eventsStore);
+        - Created new class 'IcsBuildTools' on new file to handle functions that have 'return';
+        - Added Dater (look at TODO);
     TODO:
+        - MAJOR: mess around 'dater' to update user replies (@buildElement@icsbuildingsession.js:@50);
         - handle createdAt by Date; get latest ID from jsonData; (@chrome: 'dater' snippet);
         - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
@@ -24,8 +22,8 @@
     
 */
 
-import {IcsStyle} from './icsstyle.js';
-import {BuildSession} from './icsbuildsession.js';
+import { IcsStyle } from './icsstyle.js';
+import { BuildSession } from './icsbuildsession.js';
 
 function ics() {
     //document.addEventListener('DOMContentLoaded', () => localStorage.clear());
