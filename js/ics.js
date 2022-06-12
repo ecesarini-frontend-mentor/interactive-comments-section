@@ -9,12 +9,12 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
-        - Neutral reply appending (@eventsStore);
-        - Created new class 'IcsBuildTools' on new file to handle functions that have 'return';
-        - Added Dater (look at TODO);
-    TODO:
         - MAJOR: mess around 'dater' to update user replies (@buildElement@icsbuildingsession.js:@50);
         - handle createdAt by Date; get latest ID from jsonData; (@chrome: 'dater' snippet);
+    TODO:
+        - edit case about 'dater';
+        - remove comments;
+        - score handling;
         - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
             )

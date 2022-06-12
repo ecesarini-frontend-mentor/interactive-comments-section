@@ -123,6 +123,8 @@ export class IcsBuildTools {
         cuObj.replies = [];
         return cuObj;
     }
+
+
     dater(start, end, debug) {
         const ts = [60, 3600, 3600*24, 3600*24*7, 3600*24*7*28, 3600*24*365],
               tsInd = [' second', ' minute', ' hour', ' day', ' week', ' month', ' year'];              
@@ -130,8 +132,8 @@ export class IcsBuildTools {
             tgInd = null;     
         gap = Math.round(gap);
     
-        tgInd = ts.findIndex(e => { //always returns value provided by the function (here 'index found'). The same: ts.findIndex(e => gap < e);
-            if(gap < e) return true;               
+        tgInd = ts.findIndex((e) => {
+            if(gap < e) return true;  //always returns value provided by the function (here 'index found');
         });    
         function timeSlotDefiner(ind) {
             let cInd = (ind === -1)? tsInd.length: ind;
@@ -139,9 +141,9 @@ export class IcsBuildTools {
     
             gTmp = (ind === -1)? 
                 Math.round(gap/ts[ts.length - 1]): 
-                (ind === 0)? gap: Math.round(gap/ts[ind-1]);
+                (ind === 0)? gap: Math.round(gap/ts[ind - 1]);
             tailRes = (gTmp === 1)? ' ago' : 's ago';            
-            return gTmp + tsInd[cInd] + tailRes;
+            return gTmp + tsInd[cInd-1] + tailRes;
         }    
         return timeSlotDefiner(tgInd);
     }

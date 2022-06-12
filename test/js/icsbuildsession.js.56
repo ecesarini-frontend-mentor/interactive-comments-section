@@ -47,6 +47,8 @@ export class BuildSession extends IcsBuildTools {
     
     // Build on first load and on responses
     buildElement(obj, type, target) {
+        const byToolsDater = this.dater(obj.createdAt, Date.now());
+
         const isCurrentUser = () => {
             if(obj.user.username !== currentUser) {
                 this.createInteractButtons('reply', currentUserFlexboxContainer);
@@ -70,8 +72,7 @@ export class BuildSession extends IcsBuildTools {
         
         comment.setAttribute('data-cid', obj.id);
         comment.querySelector('.comment-content').innerText = obj.content;
-        comment.querySelector('.comment-date').innerText = (obj.id <= 4)? 
-            obj.createdAt: this.dater(obj.createdAt, Date.now());
+        comment.querySelector('.comment-date').innerText = (byToolsDater)? byToolsDater: obj.createdAt;
         comment.querySelector('.comment-rate-element-value').innerText = obj.score;
         comment.querySelector('.comment-uid').innerText = obj.user.username;
         comment.querySelector('.comment-avatar').src = obj.user.image.png;
@@ -276,10 +277,12 @@ export class BuildSession extends IcsBuildTools {
             editElement.lastElementChild.remove();
         }
         function editClassAdder() {
-            editElement.classList.add('comment-user-main-grid-container-edit');
-            editContent.classList.add('comment-content-edit');
-            editCommentRatefb.classList.add('comment-rate-edit');
-            editContent.setAttribute('contentEditable', true);
+            //if(editElement.lastElementChild.matches('.comment-edited-fb-button-container')) {
+                editElement.classList.add('comment-user-main-grid-container-edit');
+                editContent.classList.add('comment-content-edit');
+                editCommentRatefb.classList.add('comment-rate-edit');
+                editContent.setAttribute('contentEditable', true);
+            //}
         }
                 
         switch(clk) {
