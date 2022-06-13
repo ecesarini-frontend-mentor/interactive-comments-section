@@ -217,6 +217,7 @@ export class BuildSession extends IcsBuildTools {
         } else {
             whoAmI.classList.toggle('is-edited');
             whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
+
         }
     }
     handleEvent(e) {
@@ -257,10 +258,6 @@ export class BuildSession extends IcsBuildTools {
                     if(e[1] === 'edited') elementsPropertiesRemover(classTarget, 'contentEditable');
                     if(ect.matches(e[0])) this.editor(ect, e[1]);
                 });
-                if(ect.matches(deleteBtn)) {
-                    //this.container.style.display = 'none';                    
-                    //document.querySelector('main').append(this.modalCreator());
-                }
                 break;
         }
     }

@@ -28,7 +28,6 @@ button {
 }
 object {
   cursor: pointer;
-  pointer-events: none;
 }
 
 input {
@@ -113,10 +112,6 @@ span.comment-rate-element {
 }
 .comment-user-flexbox-container .comment-user-flexbox-element {
   padding-left: var(--gap);
-}
-.comment-user-flexbox-container .comment-user-flexbox-element:hover {
-  background-color: var(--light-grayish-blue);
-  border-radius: 3px;
 }
 .comment-user-flexbox-container .comment-avatar {
   width: 2em;
@@ -274,18 +269,4 @@ span.comment-rate-element {
   color: var(--moderate-blue);
   background-color: var(--soft-red);
   border: 2px solid var(--moderate-blue);
-}
-
-/* Modal container */
-.modal-container {
-  position: fixed;
-  z-index: 100;
-  max-width: 40%;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border-radius: 10px;
-}
-.modal-container .modal-button-container {
-  display: flex;
 }

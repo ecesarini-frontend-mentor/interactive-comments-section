@@ -11,9 +11,10 @@
     FIXED:
         - MAJOR: mess around 'dater' to update user replies (@buildElement@icsbuildingsession.js:@50);
         - handle createdAt by Date; get latest ID from jsonData; (@chrome: 'dater' snippet);
+        - reply/edit/delete button get event 'hover' "object{ pointer-events: none;}" did the trick;
+        - edit case about 'dater' (?);
     TODO:
-        - edit case about 'dater';
-        - remove comments;
+        - remove comments --> work in progress: icsbuildssession.js@handleEvent:260;
         - score handling;
         - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
