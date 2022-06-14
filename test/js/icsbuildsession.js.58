@@ -208,22 +208,15 @@ export class BuildSession extends IcsBuildTools {
     }
 
     //event handler
-    eventsListener(whoAmI, waiType) {
-        //const editedOrDeleted = 
-
-        if(arguments.length === 0){
+    eventsListener(whoAmI) {
+        if(!whoAmI){
             this.btn = document.querySelectorAll('button');
             this.commentBox = document.querySelector('.comment-user-add-response');
             this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
             this.btn.forEach( b => b.addEventListener('click', this));
-            return true;
         } else {
-            switch(waiType) {
-                case 'edit':
-                    whoAmI.classList.toggle('is-edited');
-                    whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
-                    break;
-            }
+            whoAmI.classList.toggle('is-edited');
+            whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
         }
     }
     handleEvent(e) {
@@ -265,29 +258,13 @@ export class BuildSession extends IcsBuildTools {
                     if(ect.matches(e[0])) this.editor(ect, e[1]);
                 });
                 if(ect.matches(deleteBtn)) {
-                    let ctmgc = ect.closest('.comment-user-main-grid-container');
-                    this.deleter(ctmgc);
+                    //this.container.style.display = 'none';                    
+                    //document.querySelector('main').append(this.modalCreator());
                 }
                 break;
         }
     }
-    //deleter
-    deleter(ctmgc) {
-        /*const deleterAction = () => {
-            alert(this);
-        }*/
-
-        const docMain = document.querySelector('main'),
-            cid = ctmgc.dataset.cid;
-        this.container.style.display = 'none';                    
-        docMain.append(this.modalCreator());
-
-        const modalBtns = document.querySelector('.modal-button-container').querySelectorAll('button');
-
-        //modalBtns.forEach( btn => btn.addEventListener('click', deleterAction));
-    }
     
-
     //editor
     editor(ect, clk) {
         const editElement = ect.closest('.comment-user-main-grid-container'),
@@ -311,7 +288,7 @@ export class BuildSession extends IcsBuildTools {
         switch(clk) {
             case 'edited': 
                 editElement.append(this.editUndoContainer);
-                this.eventsListener(editElement, 'edit');
+                this.eventsListener(editElement);
                 editClassAdder();
                 break;
             case 'editConfirm':

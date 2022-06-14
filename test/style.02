@@ -278,56 +278,14 @@ span.comment-rate-element {
 
 /* Modal container */
 .modal-container {
-  position: relative;
-  height: 70vh;
-}
-.modal-content {
-  /*position: fixed;*/
+  position: fixed;
   z-index: 100;
-  margin: 10vh auto;
-  height: 50%;
-  width: 45%;
-  text-align: center;
+  max-width: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   background-color: white;
-  border: 5px solid var(--grayish-blue);
   border-radius: 10px;
 }
-.modal-button-container {
+.modal-container .modal-button-container {
   display: flex;
-  justify-content: space-evenly;
-}
-.modal-message {
-  font-weight: 500;
-  font-size: 2em;
-  color: var(--moderate-blue);
-}
-.modal-button-container > button {
-  padding: 10px;
-  border: 3px solid;
-  border-radius: 5px;
-}
-.modal-button-container .modal-button-yes {
-  color: var(--white);
-  background-color: var(--soft-red); 
-  border-color: var(--grayish-blue)
-}
-.modal-button-container .modal-button-yes:hover {
-  font-weight: 700;
-  color: var(--soft-red);
-  background-color: var(--white); 
-  border-color: var(--pale-red);
-}
-.modal-button-container .modal-button-no {
-  color: var(--white);
-  background-color: var(--moderate-blue);
-  border-color: var(--moderate-blue);
-}
-.modal-button-container .modal-button-no:hover {
-  font-weight: 700;
-  color: var(--moderate-blue);
-  background-color: var(--white);
-  border-color: var(--light-grayish-blue);
 }

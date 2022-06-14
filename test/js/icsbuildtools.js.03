@@ -148,14 +148,12 @@ export class IcsBuildTools {
 
     modalCreator() {
         const modalContainer = document.createElement('div'),
-            modalContent = document.createElement('div'),
             modalMessage = document.createElement('p'),
             modalNestedBtnContainer = document.createElement('div'),
             modalNestedBtnYes = document.createElement('button'),
             modalNestedBtnNo = document.createElement('button');
 
         modalContainer.classList.add('modal-container');
-        modalContent.classList.add('modal-content');
         modalMessage.classList.add('modal-message');
         modalNestedBtnContainer.classList.add('modal-button-container');
         modalNestedBtnYes.classList.add('modal-button-yes');
@@ -163,11 +161,10 @@ export class IcsBuildTools {
 
         modalMessage.innerText = 'Are you sure?';
         modalNestedBtnYes.innerText = 'DELETE';
-        modalNestedBtnNo.innerText = 'SLIP OFF';
+        modalNestedBtnNo.innerText = 'OVERLOOK';
 
         modalNestedBtnContainer.append(modalNestedBtnYes, modalNestedBtnNo);
-        modalContent.append(modalMessage, modalNestedBtnContainer);
-        modalContainer.append(modalContent);
+        modalContainer.append(modalMessage, modalNestedBtnContainer);
 
         return modalContainer;
     }
