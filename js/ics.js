@@ -15,7 +15,8 @@
         - reply/edit/delete button get event 'hover' "object{ pointer-events: none;}" did the trick;
         - edit case about 'dater' (?);
     TODO:
-        MAJOR: 
+        MAJOR:
+            - icsbuildsession.js@161, remove the object triggered by 'this.eventsStoreDelete' and put into localStorage. It belongs to an array from json. 
             - remove comments --> icsbuildsession.js@275: method 'deleter' to remove comment/reply;
         - score handling;
         - (@function elementsPropertiesRemover: 

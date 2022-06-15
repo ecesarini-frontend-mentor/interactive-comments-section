@@ -9,7 +9,6 @@ export class BuildSession extends IcsBuildTools {
         this.btn = this.commentBox = this.commentBoxTextarea = null;
         this.replyJsonTarget = null;
         this.editUndoContainer = this.editorCreateEditConfirmUndo();
-        this.modalTarget = null;
         this.getJsonData();
     } 
     // FETCH data
@@ -117,7 +116,7 @@ export class BuildSession extends IcsBuildTools {
         }
     }
     // Events:
-    eventsStoreDelete(obj, replyJsonTarget, storeActionType) {
+    eventsStore(obj, replyJsonTarget, storeActionType) {
         const localJson = JSON.parse(localStorage['dataJson']);
 
         if(arguments.length === 1) {
@@ -144,9 +143,6 @@ export class BuildSession extends IcsBuildTools {
                     case 'edit':
                         ljc.content = replyJsonTarget.querySelector('.comment-content').innerText;
                         break;
-                    case 'delete':
-                        debugger;
-                        break;
                 }
             }
             else if(ljr) {
@@ -156,10 +152,6 @@ export class BuildSession extends IcsBuildTools {
                         break;
                     case 'edit':                                        
                         ljr.content = replyJsonTarget.querySelector('.comment-content').innerText;
-                        break;
-                    case 'delete':
-                        //delete ljr;
-                        debugger;
                         break;
                 }
             }
@@ -177,7 +169,7 @@ export class BuildSession extends IcsBuildTools {
 
         if(ect.matches('.add-response-send-button')) {
             cmtObj = this.createCommentReplyObj(this.commentBoxTextarea, this.jsonData);
-            this.eventsStoreDelete(cmtObj); // order matters to update textarea
+            this.eventsStore(cmtObj); // order matters to update textarea
             this.buildElement(cmtObj, 'comment', this.container);
             this.container.append(this.commentBox);
             this.commentBoxTextarea.value = '';
@@ -201,7 +193,7 @@ export class BuildSession extends IcsBuildTools {
             commentTarget = document.querySelector('.comment-reply-this');
             cmtObj = this.createCommentReplyObj(this.commentBoxTextarea, this.jsonData);
             cmtObj.replyingTo = commentTarget.querySelector('.comment-uid').innerText;
-            this.eventsStoreDelete(cmtObj, this.replyJsonTarget, 'reply');
+            this.eventsStore(cmtObj, this.replyJsonTarget, 'reply');
             this.container.append(replyElement);
             this.buildElement(cmtObj, 'reply', commentTarget);
             replyElementBtn.classList.toggle('add-reply-send-button');
@@ -216,7 +208,7 @@ export class BuildSession extends IcsBuildTools {
     }
 
     //event handler
-    eventsListener(waiType, whoAmI) {
+    eventsListener(whoAmI, waiType) {
         //const editedOrDeleted = 
 
         if(arguments.length === 0){
@@ -230,9 +222,6 @@ export class BuildSession extends IcsBuildTools {
                 case 'edit':
                     whoAmI.classList.toggle('is-edited');
                     whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
-                    break;
-                case 'delete':
-                    whoAmI.forEach( b => b.addEventListener('click', this));
                     break;
             }
         }
@@ -250,9 +239,7 @@ export class BuildSession extends IcsBuildTools {
                 'comment-rate-edit',
                 'comment-content-edit'
             ],
-            deleteBtn = '.comment-delete',
-            modalBtns =  ['.modal-button-yes', '.modal-button-no'];
-
+            deleteBtn = '.comment-delete';
         let ect = e.currentTarget;
         
         function elementsPropertiesRemover(classTarget, attributeTarget) {
@@ -278,39 +265,28 @@ export class BuildSession extends IcsBuildTools {
                     if(ect.matches(e[0])) this.editor(ect, e[1]);
                 });
                 if(ect.matches(deleteBtn)) {
-                    this.modalTarget = ect.closest('.comment-user-main-grid-container');
-                    this.modalOn();
+                    let ctmgc = ect.closest('.comment-user-main-grid-container');
+                    this.deleter(ctmgc);
                 }
-                modalBtns.forEach(m => {
-                    if(ect.matches(m)) this.modalAction(ect);
-                });
-                /*if(ect.matches(modalBtns[0])) {
-                    debugger;
-                }
-                else if(ect.matches(modalBtns[1])) {
-                    debugger;
-                }*/
                 break;
         }
     }
     //deleter
-    modalAction(ect) {
-        if(ect.matches('.modal-button-yes')) {
-            this.eventsStoreDelete(null, this.modalTarget, 'delete');
-        }
-        //this.modalTarget = null;
-    }
+    deleter(ctmgc) {
+        /*const deleterAction = () => {
+            alert(this);
+        }*/
 
-    modalOn() {
-        const docMain = document.querySelector('main');
-
-        this.container.style.display = 'none';
+        const docMain = document.querySelector('main'),
+            cid = ctmgc.dataset.cid;
+        this.container.style.display = 'none';                    
         docMain.append(this.modalCreator());
-        
+
         const modalBtns = document.querySelector('.modal-button-container').querySelectorAll('button');
 
-        this.eventsListener('delete', modalBtns);
-    }    
+        //modalBtns.forEach( btn => btn.addEventListener('click', deleterAction));
+    }
+    
 
     //editor
     editor(ect, clk) {
@@ -335,11 +311,11 @@ export class BuildSession extends IcsBuildTools {
         switch(clk) {
             case 'edited': 
                 editElement.append(this.editUndoContainer);
-                this.eventsListener('edit', editElement);
+                this.eventsListener(editElement, 'edit');
                 editClassAdder();
                 break;
             case 'editConfirm':
-                this.eventsStoreDelete(null, editContent.parentElement, 'edit');                
+                this.eventsStore(null, editContent.parentElement, 'edit');                
                 editConfirmerUndoer();
                 break;
             case 'editUndo':
