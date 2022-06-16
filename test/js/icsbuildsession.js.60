@@ -118,7 +118,7 @@ export class BuildSession extends IcsBuildTools {
     }
     // Events:
     eventsStoreDelete(obj, replyJsonTarget, storeActionType) {
-        let localJson = JSON.parse(localStorage['dataJson']);
+        const localJson = JSON.parse(localStorage['dataJson']);
 
         if(arguments.length === 1) {
             localJson.comments.push(obj);
@@ -128,14 +128,11 @@ export class BuildSession extends IcsBuildTools {
 
         const cid = Number.parseInt(replyJsonTarget.getAttribute('data-cid'));
         let ljc = localJson.comments.find(c => c.id === cid),
-            ljr, ljrcIndex = undefined;
+            ljr = undefined;
 
-        for(let i = 0; i < localJson.comments.length; i++) {
-            ljr = localJson.comments[i].replies.find(r => r.id === cid);
-            if(ljr) {
-                ljrcIndex = i;
-                break;
-            }
+        for(let c of localJson.comments) {
+            ljr = c.replies.find(r => r.id === cid);
+            if(ljr) break;
         }
         
         const storeByActionType = (sbat) => {
@@ -162,10 +159,7 @@ export class BuildSession extends IcsBuildTools {
                         break;
                     case 'delete':
                         //delete ljr;
-                        let rIndMatch = localJson.comments[ljrcIndex].replies.findIndex(r => r.id === ljr.id);
-                        localJson.comments[ljrcIndex].replies.splice(rIndMatch, 1);
-                        //alert(localJson);
-                        //debugger;
+                        debugger;
                         break;
                 }
             }
@@ -290,19 +284,21 @@ export class BuildSession extends IcsBuildTools {
                 modalBtns.forEach(m => {
                     if(ect.matches(m)) this.modalAction(ect);
                 });
+                /*if(ect.matches(modalBtns[0])) {
+                    debugger;
+                }
+                else if(ect.matches(modalBtns[1])) {
+                    debugger;
+                }*/
                 break;
         }
     }
     //deleter
     modalAction(ect) {
-        let mtCid = this.modalTarget.dataset.cid;
         if(ect.matches('.modal-button-yes')) {
             this.eventsStoreDelete(null, this.modalTarget, 'delete');
-            document.querySelector(`[data-cid='${mtCid}']`).remove();
         }
-        document.querySelector('.modal-container').remove();
-        this.container.style.display = '';
-        this.eventsListener();
+        //this.modalTarget = null;
     }
 
     modalOn() {

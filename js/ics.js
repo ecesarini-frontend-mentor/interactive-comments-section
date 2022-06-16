@@ -9,15 +9,16 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
-        - MAJOR: mess around 'dater' to update user replies (@buildElement@icsbuildingsession.js:@50);
+        - icsbuildsession.js@161, remove the object triggered by 'this.eventsStoreDelete' and put into localStorage. It belongs to an array from json. 
+        - remove comments --> icsbuildsession.js@275: method 'deleter' to remove comment/reply;
+        - mess around 'dater' to update user replies (@buildElement@icsbuildingsession.js:@50);
         - style about modal;
         - handle createdAt by Date; get latest ID from jsonData; (@chrome: 'dater' snippet);
         - reply/edit/delete button get event 'hover' "object{ pointer-events: none;}" did the trick;
         - edit case about 'dater' (?);
     TODO:
         MAJOR:
-            - icsbuildsession.js@161, remove the object triggered by 'this.eventsStoreDelete' and put into localStorage. It belongs to an array from json. 
-            - remove comments --> icsbuildsession.js@275: method 'deleter' to remove comment/reply;
+            - 'delete' and 'edit' actions don't work clicking on new added element: example@\\Desktop:/ics_debug_target_on_Click_new_element_created.jpg
         - score handling;
         - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
