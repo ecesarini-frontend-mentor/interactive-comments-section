@@ -282,11 +282,13 @@ span.comment-rate-element {
   height: 70vh;
 }
 .modal-content {
-  /*position: fixed;*/
+  position: fixed;
+  top: 50%;
+  left: 50%;
   z-index: 100;
-  margin: 10vh auto;
-  height: 50%;
-  width: 45%;
+  height: 300px;
+  width: 400px;
+  margin: -300px 0 0 -200px;
   text-align: center;
   display: flex;
   flex-direction: column;

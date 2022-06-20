@@ -45,6 +45,82 @@ export class BuildSession extends IcsBuildTools {
         });
         this.container.append(this.responseSec());
     }
+    //event handler
+    eventsListener(waiType, whoAmI) {
+        if(waiType) {
+            switch(waiType) {
+                case 'edit':
+                    whoAmI.classList.toggle('is-edited');
+                    whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
+                    break;
+                case 'delete':
+                    whoAmI.forEach( b => b.addEventListener('click', this));
+                    break;
+            }
+        }
+
+        this.btn = document.querySelectorAll('button');
+        this.commentBox = document.querySelector('.comment-user-add-response');
+        this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
+        this.btn.forEach( b => b.addEventListener('click', this));
+    }
+    handleEvent(e) {
+        const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
+            editBtnClk = [
+                ['.comment-edit', 'edited'],
+                ['.edit-button-confirm', 'editConfirm'],
+                ['.edit-button-undo', 'editUndo']
+            ], 
+            editClassTarget = [
+                'comment-user-main-grid-container-edit',
+                'comment-rate-edit',
+                'comment-content-edit'
+            ],
+            deleteBtn = '.comment-delete',
+            modalBtns =  ['.modal-button-yes', '.modal-button-no'],
+            scoreBtns = '.comment-rate-element';
+
+        let ect = e.currentTarget;
+        
+        function elementsPropertiesRemover(classTarget, attributeTarget) {
+            let elementTarget = classTarget.map(ct => document.querySelectorAll('.' + ct)); //forEach doesn't work because after the processing it doesn't return an array, but it handles each item indipendently. So you'll come up to an undefined.
+            
+            for(let i = 0; i < classTarget.length; i++) {
+                elementTarget[i].forEach( et => { // > NodeList.prototype.hasOwnProperty('forEach'); // true ||vs|| > NodeList.prototype.hasOwnProperty('map'); // false
+                    if(arguments.length > 1 && et.getAttribute(attributeTarget)) {
+                        et.setAttribute(attributeTarget, false);
+                    }
+                    et.classList.remove(classTarget[i]);
+                } );
+            }
+        }
+
+        switch(e.type) {
+            case 'click':
+                responseBtn.map(r => {
+                    if(ect.matches(r)) this.responser(ect);
+                });
+                editBtnClk.map(e => {
+                    if(e[1] === 'edited') elementsPropertiesRemover(editClassTarget, 'contentEditable');
+                    if(ect.matches(e[0])) this.editor(ect, e[1]);
+                });
+                if(ect.matches(deleteBtn)) {
+                    this.modalTarget = ect.closest('.comment-user-main-grid-container');
+                    let cefbc = this.modalTarget.lastElementChild;
+                    if(cefbc.matches('.comment-edited-fb-button-container')) {
+                        cefbc.remove();
+                    }
+                    this.modalOn();
+                }
+                modalBtns.forEach(m => {
+                    if(ect.matches(m)) this.modalAction(ect);
+                });
+                if(ect.matches(scoreBtns)) {
+                    this.score(ect);
+                }
+                break;
+        }
+    }
     
     // Build on first load and on responses
     buildElement(obj, type, target) {
@@ -72,7 +148,8 @@ export class BuildSession extends IcsBuildTools {
         comment.setAttribute('data-cid', obj.id);
         comment.querySelector('.comment-content').innerText = obj.content;
         comment.querySelector('.comment-date').innerText = (obj.id <= 4)? 
-            obj.createdAt: this.dater(obj.createdAt, Date.now());
+            obj.createdAt:
+            this.dater(obj.createdAt, Date.now());
         comment.querySelector('.comment-rate-element-value').innerText = obj.score;
         comment.querySelector('.comment-uid').innerText = obj.user.username;
         comment.querySelector('.comment-avatar').src = obj.user.image.png;
@@ -115,6 +192,7 @@ export class BuildSession extends IcsBuildTools {
                 }
                 break;
         }
+        this.eventsListener();
     }
     // Events:
     eventsStoreDelete(obj, replyJsonTarget, storeActionType) {
@@ -148,7 +226,9 @@ export class BuildSession extends IcsBuildTools {
                         ljc.content = replyJsonTarget.querySelector('.comment-content').innerText;
                         break;
                     case 'delete':
-                        debugger;
+                        let cIndMatch = localJson.comments.findIndex(c => c.id === ljc.id);
+                        localJson.comments.splice(cIndMatch, 1);
+                        //debugger;
                         break;
                 }
             }
@@ -161,10 +241,8 @@ export class BuildSession extends IcsBuildTools {
                         ljr.content = replyJsonTarget.querySelector('.comment-content').innerText;
                         break;
                     case 'delete':
-                        //delete ljr;
                         let rIndMatch = localJson.comments[ljrcIndex].replies.findIndex(r => r.id === ljr.id);
                         localJson.comments[ljrcIndex].replies.splice(rIndMatch, 1);
-                        //alert(localJson);
                         //debugger;
                         break;
                 }
@@ -221,101 +299,6 @@ export class BuildSession extends IcsBuildTools {
 
     }
 
-    //event handler
-    eventsListener(waiType, whoAmI) {
-        //const editedOrDeleted = 
-
-        if(arguments.length === 0){
-            this.btn = document.querySelectorAll('button');
-            this.commentBox = document.querySelector('.comment-user-add-response');
-            this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
-            this.btn.forEach( b => b.addEventListener('click', this));
-            return true;
-        } else {
-            switch(waiType) {
-                case 'edit':
-                    whoAmI.classList.toggle('is-edited');
-                    whoAmI.lastElementChild.querySelectorAll('button').forEach( b => b.addEventListener('click', this));
-                    break;
-                case 'delete':
-                    whoAmI.forEach( b => b.addEventListener('click', this));
-                    break;
-            }
-        }
-    }
-    handleEvent(e) {
-        const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
-            editBtnClk = [
-                ['.comment-edit', 'edited'],
-                ['.edit-button-confirm', 'editConfirm'],
-                ['.edit-button-undo', 'editUndo']
-            ], 
-            classTarget = [
-                //'comment-edited-fb-button-container',
-                'comment-user-main-grid-container-edit',
-                'comment-rate-edit',
-                'comment-content-edit'
-            ],
-            deleteBtn = '.comment-delete',
-            modalBtns =  ['.modal-button-yes', '.modal-button-no'];
-
-        let ect = e.currentTarget;
-        
-        function elementsPropertiesRemover(classTarget, attributeTarget) {
-            let elementTarget = classTarget.map(ct => document.querySelectorAll('.' + ct)); //forEach doesn't work because after the processing it doesn't return an array, but it handles each item indipendently. So you'll come up to an undefined.
-            
-            for(let i = 0; i < classTarget.length; i++) {
-                elementTarget[i].forEach( et => { // > NodeList.prototype.hasOwnProperty('forEach'); // true ||vs|| > NodeList.prototype.hasOwnProperty('map'); // false
-                    if(arguments.length > 1 && et.getAttribute(attributeTarget)) {
-                        et.setAttribute(attributeTarget, false);
-                    }
-                    et.classList.remove(classTarget[i]);
-                } );
-            }
-        }
-
-        switch(e.type) {
-            case 'click':
-                responseBtn.map(r => {
-                    if(ect.matches(r)) this.responser(ect);
-                });
-                editBtnClk.map(e => {
-                    if(e[1] === 'edited') elementsPropertiesRemover(classTarget, 'contentEditable');
-                    if(ect.matches(e[0])) this.editor(ect, e[1]);
-                });
-                if(ect.matches(deleteBtn)) {
-                    this.modalTarget = ect.closest('.comment-user-main-grid-container');
-                    this.modalOn();
-                }
-                modalBtns.forEach(m => {
-                    if(ect.matches(m)) this.modalAction(ect);
-                });
-                break;
-        }
-    }
-    //deleter
-    modalAction(ect) {
-        let mtCid = this.modalTarget.dataset.cid;
-        if(ect.matches('.modal-button-yes')) {
-            this.eventsStoreDelete(null, this.modalTarget, 'delete');
-            document.querySelector(`[data-cid='${mtCid}']`).remove();
-        }
-        document.querySelector('.modal-container').remove();
-        this.container.style.display = '';
-        this.eventsListener();
-    }
-
-    modalOn() {
-        const docMain = document.querySelector('main');
-
-        this.container.style.display = 'none';
-        docMain.append(this.modalCreator());
-        
-        const modalBtns = document.querySelector('.modal-button-container').querySelectorAll('button');
-
-        this.eventsListener('delete', modalBtns);
-    }    
-
     //editor
     editor(ect, clk) {
         const editElement = ect.closest('.comment-user-main-grid-container'),
@@ -351,5 +334,38 @@ export class BuildSession extends IcsBuildTools {
                 break;
         }
     }
+    //deleter
+    modalAction(ect) {
+        let mtCid = this.modalTarget.dataset.cid;
+        if(ect.matches('.modal-button-yes')) {
+            this.eventsStoreDelete(null, this.modalTarget, 'delete');
+            document.querySelector(`[data-cid='${mtCid}']`).remove();
+        }
+        document.querySelector('.modal-container').remove();
+        this.container.style.display = '';
+        this.eventsListener();
+    }
+    modalOn() {
+        const docMain = document.querySelector('main');
 
+        this.container.style.display = 'none';
+        docMain.append(this.modalCreator());
+        
+        const modalBtns = document.querySelector('.modal-button-container').querySelectorAll('button');
+
+        this.eventsListener('delete', modalBtns);
+    }    
+    //score
+    score(ect) {
+        let value = ect.closest('.comment-rate-flexbox').querySelector('.comment-rate-element-value');
+        const oScore = {
+            getScoreVal(v) {
+                let valInTxt = Number.parseInt(v.innerText);
+                v.innerText = ect.matches('.comment-rate-element-plus')?
+                    ++valInTxt:
+                    --valInTxt;
+            }
+        }
+        oScore.getScoreVal(value);
+    }
 } 

@@ -9,17 +9,16 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
-        - icsbuildsession.js@161, remove the object triggered by 'this.eventsStoreDelete' and put into localStorage. It belongs to an array from json. 
-        - remove comments --> icsbuildsession.js@275: method 'deleter' to remove comment/reply;
-        - mess around 'dater' to update user replies (@buildElement@icsbuildingsession.js:@50);
-        - style about modal;
-        - handle createdAt by Date; get latest ID from jsonData; (@chrome: 'dater' snippet);
-        - reply/edit/delete button get event 'hover' "object{ pointer-events: none;}" did the trick;
-        - edit case about 'dater' (?);
+        - 'delete' and 'edit' actions don't work clicking on new added element: example@\\Desktop:/ics_debug_target_on_Click_new_element_created.jpg (added this.eventsListener() after element building);
+        - removed .comment-edited-fb-button-container if you click delete without undo edit event
+        - updated css to center modal in fixed position
+        - deletion of comment (not reply) from localStorage 
+
     TODO:
         MAJOR:
-            - 'delete' and 'edit' actions don't work clicking on new added element: example@\\Desktop:/ics_debug_target_on_Click_new_element_created.jpg
-        - score handling;
+            - score handling: 
+                added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
+                - related: sorting replies;
         - (@function elementsPropertiesRemover: 
              * make 'attributeTarget' argument handleable to catch eventual attributes;
             )
