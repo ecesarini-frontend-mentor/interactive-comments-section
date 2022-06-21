@@ -17,6 +17,7 @@
     TODO:
         MAJOR:
             - score handling: 
+                - working on sorting: look at 'scoreSorter'@icsbuildsession.js,'debug-ics-sorter' chrome snippet ://Desktop/ics-score_debug.jpg;
                 added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
                 - related: sorting replies;
         - (@function elementsPropertiesRemover: 

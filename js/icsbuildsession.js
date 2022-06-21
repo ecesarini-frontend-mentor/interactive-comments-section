@@ -368,4 +368,30 @@ export class BuildSession extends IcsBuildTools {
         }
         oScore.getScoreVal(value);
     }
+    scoreSorter() {
+        function orderScoreBoxes(replyContainer) {
+            let arr = [];
+            const replies = replyContainer.querySelectorAll('.comment-rate-element-value');
+            replies.forEach( (v, i) => arr.push({val: v.innerText, ind: i}) );
+            return arr.sort( (a, b) => a.val - b.val );
+        }
+        /*function catchReply(replyBox) {
+            const cOrdered = orderScoreBoxes(replyBox);
+            replyBox.forEach( r => {
+                
+            });
+        }*/
+        
+        const cngc = document.querySelectorAll('.comment-user-nested-grid-container');    
+        
+        /*for(let i = 0; i < cngc.length; i++) {
+            //if(i === 1) {
+                let crev = cngc[i].querySelectorAll('.comment-rate-element-value'),
+                    cTarget = cngc.querySelectorAll(crev.closest('.comment-user-main-grid-container'))[];
+                crev.forEach( cr => cngc.append())
+            //    debugger;   
+            //}
+
+        }*/
+    }
 } 
