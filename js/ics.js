@@ -9,6 +9,10 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
+        - score handling: 
+            - working on sorting: look at 'scoreSorter'@icsbuildsession.js,'debug-ics-sorter' chrome snippet ://Desktop/ics-score_debug.jpg;
+            added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
+            - related: sorting replies;
         - 'delete' and 'edit' actions don't work clicking on new added element: example@\\Desktop:/ics_debug_target_on_Click_new_element_created.jpg (added this.eventsListener() after element building);
         - removed .comment-edited-fb-button-container if you click delete without undo edit event
         - updated css to center modal in fixed position
@@ -16,14 +20,11 @@
 
     TODO:
         MAJOR:
-            - score handling: 
-                - working on sorting: look at 'scoreSorter'@icsbuildsession.js,'debug-ics-sorter' chrome snippet ://Desktop/ics-score_debug.jpg;
-                added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
-                - related: sorting replies;
-        - (@function elementsPropertiesRemover: 
-             * make 'attributeTarget' argument handleable to catch eventual attributes;
-            )
-        - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
+            - time loading resource from server, look js/icsbuildtools.js@buildComment(). Same svg loaded more times.
+    - (@function elementsPropertiesRemover: 
+            * make 'attributeTarget' argument handleable to catch eventual attributes;
+        )
+    - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     
 */
 

@@ -1,11 +1,5 @@
 export class IcsBuildTools {
-    constructor() {
-        this.iconPlus = 'images/icon-plus.svg';
-        this.iconMinus = 'images/icon-minus.svg';
-        this.iconReply = 'images/icon-reply.svg';
-        this.iconEdit = 'images/icon-edit.svg';
-        this.iconDelete = 'images/icon-delete.svg';
-    };
+    constructor() {};
 
     responseSec() {
         const commentContainer = document.createElement('div'),
@@ -53,12 +47,12 @@ export class IcsBuildTools {
         commentRatePlus.classList.add('comment-rate-element', 'comment-rate-element-plus');
         commentRatePlusObj.classList.add('vote');
         commentRatePlusObj.setAttribute('type', 'image/svg+xml');
-        commentRatePlusObj.setAttribute('data', this.iconPlus);
+        commentRatePlusObj.setAttribute('data', 'images/icon-plus.svg');
         commentRateValue.classList.add('comment-rate-element', 'comment-rate-element-value');
         commentRateMinus.classList.add('comment-rate-element', 'comment-rate-element-minus');
         commentRateMinusObj.classList.add('vote');
         commentRateMinusObj.setAttribute('type', 'image/svg+xml');
-        commentRateMinusObj.setAttribute('data', this.iconMinus);
+        commentRateMinusObj.setAttribute('data', 'images/icon-minus.svg');
         commentTopFb.classList.add('comment-user-grid-element', 'comment-user-flexbox-container');
         commentTopFbAvatar.classList.add('comment-user-flexbox-element', 'comment-avatar');
         commentTopFbUid.classList.add('comment-user-flexbox-element', 'comment-uid');
@@ -86,7 +80,6 @@ export class IcsBuildTools {
             commentTopFbBtnImage.type = 'image/svg+xml';
             
             commentTopFbBtnImage.data = `images/icon-${btnType}.svg`;
-            //commentTopFbBtnImage.data = eval('this.icon-' + `${btnType}` + '.svg');
             commentTopFbBtnContent.innerText = `${btnType[0].toUpperCase()}${btnType.slice(1)}`;
             commentTopFbBtn.append(commentTopFbBtnImage, commentTopFbBtnContent);
             

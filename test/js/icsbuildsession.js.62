@@ -7,7 +7,7 @@ export class BuildSession extends IcsBuildTools {
         this.jsonData = null;
         this.container = document.querySelector('.comment-container');
         this.btn = this.commentBox = this.commentBoxTextarea = null;
-        this.jsonTarget = null;
+        this.replyJsonTarget = null;
         this.editUndoContainer = this.editorCreateEditConfirmUndo();
         this.modalTarget = null;
         this.getJsonData();
@@ -25,9 +25,8 @@ export class BuildSession extends IcsBuildTools {
                 console.log(error);
             }
         } else {
-            //this.container.innerHTML = "";
+            this.container.innerHTML = "";
             this.initBS(); 
-            this.eventsListener();
         }
     }
     //Initiator
@@ -64,8 +63,6 @@ export class BuildSession extends IcsBuildTools {
         this.commentBox = document.querySelector('.comment-user-add-response');
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
-        
-        ['DOMContentLoaded', 'load'].forEach(e => document.addEventListener(e, this));
     }
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
@@ -121,10 +118,6 @@ export class BuildSession extends IcsBuildTools {
                 if(ect.matches(scoreBtns)) {
                     this.score(ect);
                 }
-                break;
-            case 'DOMContentLoaded':
-            case 'loaded':
-                this.scoreSorter();
                 break;
         }
     }
@@ -202,7 +195,7 @@ export class BuildSession extends IcsBuildTools {
         this.eventsListener();
     }
     // Events:
-    eventsStore(obj, jsonTarget, storeActionType) {
+    eventsStoreDelete(obj, replyJsonTarget, storeActionType) {
         let localJson = JSON.parse(localStorage['dataJson']);
 
         if(arguments.length === 1) {
@@ -211,7 +204,7 @@ export class BuildSession extends IcsBuildTools {
             return;
         }
 
-        const cid = Number.parseInt(jsonTarget.getAttribute('data-cid'));
+        const cid = Number.parseInt(replyJsonTarget.getAttribute('data-cid'));
         let ljc = localJson.comments.find(c => c.id === cid),
             ljr, ljrcIndex = undefined;
 
@@ -230,14 +223,11 @@ export class BuildSession extends IcsBuildTools {
                         ljc.replies.push(obj);
                         break;
                     case 'edit':
-                        ljc.content = jsonTarget.querySelector('.comment-content').innerText;
+                        ljc.content = replyJsonTarget.querySelector('.comment-content').innerText;
                         break;
                     case 'delete':
                         let cIndMatch = localJson.comments.findIndex(c => c.id === ljc.id);
                         localJson.comments.splice(cIndMatch, 1);
-                        break;
-                    case 'score':
-                        ljc.score = Number.parseInt(jsonTarget.querySelector('.comment-rate-element-value').innerText);
                         //debugger;
                         break;
                 }
@@ -248,14 +238,12 @@ export class BuildSession extends IcsBuildTools {
                         ljr.push(obj);
                         break;
                     case 'edit':                                        
-                        ljr.content = jsonTarget.querySelector('.comment-content').innerText;
+                        ljr.content = replyJsonTarget.querySelector('.comment-content').innerText;
                         break;
                     case 'delete':
                         let rIndMatch = localJson.comments[ljrcIndex].replies.findIndex(r => r.id === ljr.id);
                         localJson.comments[ljrcIndex].replies.splice(rIndMatch, 1);
-                        break;
-                    case 'score':
-                        ljr.score = Number.parseInt(jsonTarget.querySelector('.comment-rate-element-value').innerText);
+                        //debugger;
                         break;
                 }
             }
@@ -273,14 +261,14 @@ export class BuildSession extends IcsBuildTools {
 
         if(ect.matches('.add-response-send-button')) {
             cmtObj = this.createCommentReplyObj(this.commentBoxTextarea, this.jsonData);
-            this.eventsStore(cmtObj); // order matters to update textarea
+            this.eventsStoreDelete(cmtObj); // order matters to update textarea
             this.buildElement(cmtObj, 'comment', this.container);
             this.container.append(this.commentBox);
             this.commentBoxTextarea.value = '';
         }
         else if(ect.matches('.comment-reply')) {
             commentTarget = ect.closest('.comment-user-main-grid-container');
-            this.jsonTarget = (!commentTarget.closest('.comment-user-nested-grid-container')) ? 
+            this.replyJsonTarget = (!commentTarget.closest('.comment-user-nested-grid-container')) ? 
                 commentTarget :
                 commentTarget.parentElement.previousElementSibling;
             const targetUserName = commentTarget.querySelector('.comment-uid').innerText;
@@ -297,7 +285,7 @@ export class BuildSession extends IcsBuildTools {
             commentTarget = document.querySelector('.comment-reply-this');
             cmtObj = this.createCommentReplyObj(this.commentBoxTextarea, this.jsonData);
             cmtObj.replyingTo = commentTarget.querySelector('.comment-uid').innerText;
-            this.eventsStore(cmtObj, this.jsonTarget, 'reply');
+            this.eventsStoreDelete(cmtObj, this.replyJsonTarget, 'reply');
             this.container.append(replyElement);
             this.buildElement(cmtObj, 'reply', commentTarget);
             replyElementBtn.classList.toggle('add-reply-send-button');
@@ -306,7 +294,7 @@ export class BuildSession extends IcsBuildTools {
             replyElement.querySelector('textarea').placeholder = ' Add a comment...';
             replyElementBtn.innerText = 'SEND';
             commentTarget.classList.toggle('comment-reply-this');
-            this.jsonTarget = null;
+            this.replyJsonTarget = null;
         }
 
     }
@@ -338,7 +326,7 @@ export class BuildSession extends IcsBuildTools {
                 editClassAdder();
                 break;
             case 'editConfirm':
-                this.eventsStore(null, editContent.parentElement, 'edit');                
+                this.eventsStoreDelete(null, editContent.parentElement, 'edit');                
                 editConfirmerUndoer();
                 break;
             case 'editUndo':
@@ -350,7 +338,7 @@ export class BuildSession extends IcsBuildTools {
     modalAction(ect) {
         let mtCid = this.modalTarget.dataset.cid;
         if(ect.matches('.modal-button-yes')) {
-            this.eventsStore(null, this.modalTarget, 'delete');
+            this.eventsStoreDelete(null, this.modalTarget, 'delete');
             document.querySelector(`[data-cid='${mtCid}']`).remove();
         }
         document.querySelector('.modal-container').remove();
@@ -369,8 +357,7 @@ export class BuildSession extends IcsBuildTools {
     }    
     //score
     score(ect) {
-        let value = ect.closest('.comment-rate-flexbox').querySelector('.comment-rate-element-value'),
-            jsonTarget =  ect.closest('.comment-user-main-grid-container');
+        let value = ect.closest('.comment-rate-flexbox').querySelector('.comment-rate-element-value');
         const oScore = {
             getScoreVal(v) {
                 let valInTxt = Number.parseInt(v.innerText);
@@ -380,7 +367,31 @@ export class BuildSession extends IcsBuildTools {
             }
         }
         oScore.getScoreVal(value);
-        this.eventsStore(null, jsonTarget, 'score');
-        this.scoreSorter();
+    }
+    scoreSorter() {
+        function orderScoreBoxes(replyContainer) {
+            let arr = [];
+            const replies = replyContainer.querySelectorAll('.comment-rate-element-value');
+            replies.forEach( (v, i) => arr.push({val: v.innerText, ind: i}) );
+            return arr.sort( (a, b) => a.val - b.val );
+        }
+        /*function catchReply(replyBox) {
+            const cOrdered = orderScoreBoxes(replyBox);
+            replyBox.forEach( r => {
+                
+            });
+        }*/
+        
+        const cngc = document.querySelectorAll('.comment-user-nested-grid-container');    
+        
+        /*for(let i = 0; i < cngc.length; i++) {
+            //if(i === 1) {
+                let crev = cngc[i].querySelectorAll('.comment-rate-element-value'),
+                    cTarget = cngc.querySelectorAll(crev.closest('.comment-user-main-grid-container'))[];
+                crev.forEach( cr => cngc.append())
+            //    debugger;   
+            //}
+
+        }*/
     }
 } 
