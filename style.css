@@ -145,7 +145,7 @@ span.comment-rate-element {
   color: var(--soft-red);
   font-weight: 700;
 }
-.comment-user-flexbox-container object {
+.comment-user-flexbox-container .interact {
   margin-right: 3px;
 }
 

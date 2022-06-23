@@ -1,5 +1,10 @@
 export class IcsBuildTools {
     constructor() {
+        this.iconPlus = 'images/icon-plus.svg';
+        this.iconMinus = 'images/icon-minus.svg';
+        this.iconReply = 'images/icon-reply.svg';
+        this.iconEdit = 'images/icon-edit.svg';
+        this.iconDelete = 'images/icon-delete.svg';
     };
 
     responseSec() {
@@ -32,10 +37,10 @@ export class IcsBuildTools {
             commentUserGrid = document.createElement('div'),
             commentRate = document.createElement('div'),
             commentRatePlus = document.createElement('button'),
-            commentRatePlusImg = document.createElement('img'),
+            commentRatePlusObj = document.createElement('object'),
             commentRateValue = document.createElement('span'),
             commentRateMinus = document.createElement('button'),
-            commentRateMinusImg = document.createElement('img'),
+            commentRateMinusObj = document.createElement('object'),
             commentTopFb = document.createElement('div'),
             commentTopFbAvatar = new Image(),
             commentTopFbUid = document.createElement('span'),
@@ -46,14 +51,14 @@ export class IcsBuildTools {
         commentUserGrid.classList.add('comment-user-grid-element', 'comment-rate');
         commentRate.classList.add('comment-rate-flexbox');
         commentRatePlus.classList.add('comment-rate-element', 'comment-rate-element-plus');
-        commentRatePlusImg.classList.add('vote');
-        commentRatePlusImg.setAttribute('src', 'images/icon-plus.svg');
-        commentRatePlusImg.setAttribute('alt', 'Vote up');
+        commentRatePlusObj.classList.add('vote');
+        commentRatePlusObj.setAttribute('type', 'image/svg+xml');
+        commentRatePlusObj.setAttribute('data', this.iconPlus);
         commentRateValue.classList.add('comment-rate-element', 'comment-rate-element-value');
         commentRateMinus.classList.add('comment-rate-element', 'comment-rate-element-minus');
-        commentRateMinusImg.classList.add('vote');
-        commentRateMinusImg.setAttribute('src', 'images/icon-minus.svg');
-        commentRateMinusImg.setAttribute('alt', 'Vote down');
+        commentRateMinusObj.classList.add('vote');
+        commentRateMinusObj.setAttribute('type', 'image/svg+xml');
+        commentRateMinusObj.setAttribute('data', this.iconMinus);
         commentTopFb.classList.add('comment-user-grid-element', 'comment-user-flexbox-container');
         commentTopFbAvatar.classList.add('comment-user-flexbox-element', 'comment-avatar');
         commentTopFbUid.classList.add('comment-user-flexbox-element', 'comment-uid');
@@ -62,8 +67,8 @@ export class IcsBuildTools {
         //Connect elements
         comment.append(commentUserGrid, commentTopFb, commentBottomContent);
         commentUserGrid.append(commentRate);
-        commentRatePlus.append(commentRatePlusImg, commentRatePlusImg);
-        commentRateMinus.append(commentRateMinusImg, commentRateMinusImg);
+        commentRatePlus.append(commentRatePlusObj, commentRatePlusObj);
+        commentRateMinus.append(commentRateMinusObj, commentRateMinusObj);
         commentRate.append(commentRatePlus, commentRateValue, commentRateMinus);
         commentTopFb.append(commentTopFbAvatar, commentTopFbUid, commentTopFbDate);
         
@@ -72,14 +77,16 @@ export class IcsBuildTools {
     createInteractButtons(type, target) {
         const replyEditDeleteBtn = (btnType) => {
             const commentTopFbBtn = document.createElement('button'),
-                commentTopFbBtnImage = document.createElement('img'),
+                commentTopFbBtnImage = document.createElement('object'),
                 commentTopFbBtnContent = document.createElement('span');
 
             commentTopFbBtn.classList.add('comment-user-flexbox-element', `comment-${btnType}`);
             commentTopFbBtnImage.classList.add('interact');
             commentTopFbBtn.type = 'button';
-            commentTopFbBtnImage.src = `images/icon-${btnType}.svg`;
-            commentTopFbBtnImage.alt = `${btnType} action`;
+            commentTopFbBtnImage.type = 'image/svg+xml';
+            
+            commentTopFbBtnImage.data = `images/icon-${btnType}.svg`;
+            //commentTopFbBtnImage.data = eval('this.icon-' + `${btnType}` + '.svg');
             commentTopFbBtnContent.innerText = `${btnType[0].toUpperCase()}${btnType.slice(1)}`;
             commentTopFbBtn.append(commentTopFbBtnImage, commentTopFbBtnContent);
             
@@ -172,38 +179,23 @@ export class IcsBuildTools {
         return modalContainer;
     }
     scoreSorter() {
-        function orderScoreBoxes(commentsContainer) {
+        function orderScoreBoxes(replyContainer) {
             let arr = [];
-            //const comments = commentsContainer.querySelectorAll('.comment-rate-element-value');
-            //commentsContainer.forEach((c, i) => c.querySelector('.comment-rate-element-value'))
-            //    cA = commentsContainer[0].querySelector('.comment-rate-element-value').innerText;
-            //comments.forEach( (v, i) => arr.push({val: Number.parseInt(v.innerText), ind: i}) );
-            commentsContainer.forEach( (c,i) => {
-                let cVal = Number.parseInt(c.querySelector('.comment-rate-element-value').innerText);
-                arr.push({val: cVal, ind: i});
-            });
+            const replies = replyContainer.querySelectorAll('.comment-rate-element-value');
+            replies.forEach( (v, i) => arr.push({val: Number.parseInt(v.innerText), ind: i}) );
             return arr.sort( (a, b) => b.val - a.val );
         }
-        /*function catchReply(replyBox) {
+        function catchReply(replyBox) {
             const cOrdered = orderScoreBoxes(replyBox);
             let targetNestedContainer = replyBox.querySelectorAll('.comment-user-main-grid-container'); // make the reply container independent by append inside forEach loop
             cOrdered.forEach( 
                 c => replyBox.append(targetNestedContainer[c.ind])
             );
-        }*/
-
-        let ccnt = document.querySelector('.comment-conatainer');
-        const cngc = document.querySelectorAll('.comment-container > .comment-user-main-grid-container');
-            cOrdered = orderScoreBoxes(cngc);
-            
-            /*cOrdered.forEach( 
-                c => document.append(targetNestedContainer[c.ind])
-            );*/
+        }
         
-        debugger;
-        //const cngc = document.querySelectorAll('.comment-user-nested-grid-container');    
-        //cngc.forEach(c => catchReply(c));
-
+        const cngc = document.querySelectorAll('.comment-user-nested-grid-container');    
+        
+        cngc.forEach(c => catchReply(c));
     }
 
 }

@@ -9,6 +9,9 @@
         - You can only edit or delete your own comments and replies.
 
     FIXED:
+        MAJOR:
+            - time loading resource from server, look js/icsbuildtools.js@buildComment(). Same svg loaded more times.
+                - Change svg to img html container prevents http request.
         - score handling: 
             - working on sorting: look at 'scoreSorter'@icsbuildsession.js,'debug-ics-sorter' chrome snippet ://Desktop/ics-score_debug.jpg;
             added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
@@ -19,8 +22,7 @@
         - deletion of comment (not reply) from localStorage 
 
     TODO:
-        MAJOR:
-            - time loading resource from server, look js/icsbuildtools.js@buildComment(). Same svg loaded more times.
+    - Sorting by comment instead replies: icsbuildtools.js@scoreSorter();
     - (@function elementsPropertiesRemover: 
             * make 'attributeTarget' argument handleable to catch eventual attributes;
         )
