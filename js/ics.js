@@ -10,6 +10,7 @@
 
     FIXED:
         MAJOR:
+            - Sorting by comment instead replies: icsbuildtools.js@scoreSorter();
             - time loading resource from server, look js/icsbuildtools.js@buildComment(). Same svg loaded more times.
                 - Change svg to img html container prevents http request.
         - score handling: 
@@ -22,7 +23,7 @@
         - deletion of comment (not reply) from localStorage 
 
     TODO:
-    - Sorting by comment instead replies: icsbuildtools.js@scoreSorter();
+    - get into mobile desing: new class added 'icsmq' to handle JS and CSS relating.
     - (@function elementsPropertiesRemover: 
             * make 'attributeTarget' argument handleable to catch eventual attributes;
         )

@@ -1,8 +1,5 @@
-import { IcsMq } from "./icsmq.js";
-
-export class IcsBuildTools extends IcsMq {
+export class IcsBuildTools {
     constructor() {
-        super();
     };
 
     responseSec() {
@@ -177,27 +174,36 @@ export class IcsBuildTools extends IcsMq {
     scoreSorter() {
         function orderScoreBoxes(commentsContainer) {
             let arr = [];
+            //const comments = commentsContainer.querySelectorAll('.comment-rate-element-value');
+            //commentsContainer.forEach((c, i) => c.querySelector('.comment-rate-element-value'))
+            //    cA = commentsContainer[0].querySelector('.comment-rate-element-value').innerText;
+            //comments.forEach( (v, i) => arr.push({val: Number.parseInt(v.innerText), ind: i}) );
             commentsContainer.forEach( (c,i) => {
                 let cVal = Number.parseInt(c.querySelector('.comment-rate-element-value').innerText);
                 arr.push({val: cVal, ind: i});
             });
             return arr.sort( (a, b) => b.val - a.val );
         }
+        /*function catchReply(replyBox) {
+            const cOrdered = orderScoreBoxes(replyBox);
+            let targetNestedContainer = replyBox.querySelectorAll('.comment-user-main-grid-container'); // make the reply container independent by append inside forEach loop
+            cOrdered.forEach( 
+                c => replyBox.append(targetNestedContainer[c.ind])
+            );
+        }*/
 
-        const ccnt = document.querySelector('.comment-container'),
-            cngc = ccnt.querySelectorAll('.comment-container > .comment-user-main-grid-container'),
-            cuar = ccnt.querySelector('.comment-user-add-response'),
+        let ccnt = document.querySelector('.comment-conatainer');
+        const cngc = document.querySelectorAll('.comment-container > .comment-user-main-grid-container');
             cOrdered = orderScoreBoxes(cngc);
+            
+            /*cOrdered.forEach( 
+                c => document.append(targetNestedContainer[c.ind])
+            );*/
+        
+        debugger;
+        //const cngc = document.querySelectorAll('.comment-user-nested-grid-container');    
+        //cngc.forEach(c => catchReply(c));
 
-        cOrdered.forEach(c => {
-            let cind = c.ind;
-            if(cngc[cind].nextElementSibling.matches('.comment-user-nested-grid-container')) {
-                ccnt.append(cngc[cind], cngc[cind].nextElementSibling);
-            } else {
-                ccnt.append(cngc[cind]);
-            }
-        });
-        ccnt.append(cuar);
     }
 
 }

@@ -10,7 +10,6 @@ export class BuildSession extends IcsBuildTools {
         this.jsonTarget = null;
         this.editUndoContainer = this.editorCreateEditConfirmUndo();
         this.modalTarget = null;
-        this.mediaQuery = window.matchMedia('(max-width: 700px)');
         this.getJsonData();
     } 
     // FETCH data
@@ -35,7 +34,6 @@ export class BuildSession extends IcsBuildTools {
     initBS() {
         this.drawUp();
         this.eventsListener();
-        if(this.mediaQuery.matches) this.rearrangeCommentContainer();
     }
     drawUp() {
         this.jsonData.comments.forEach( c => {
