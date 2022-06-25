@@ -1,8 +1,8 @@
-//import { IcsMq } from "./icsmq.js";
+import { IcsMq } from "./icsmq.js";
 
-export class IcsBuildTools {
+export class IcsBuildTools extends IcsMq {
     constructor() {
-        //super();
+        super();
     };
 
     responseSec() {

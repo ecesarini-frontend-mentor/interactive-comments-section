@@ -23,7 +23,6 @@
         - deletion of comment (not reply) from localStorage 
 
     TODO:
-    - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'.
     - get into mobile desing: new class added 'icsmq' to handle JS and CSS relating.
     - (@function elementsPropertiesRemover: 
             * make 'attributeTarget' argument handleable to catch eventual attributes;
@@ -65,9 +64,7 @@ function ics() {
 
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
     new BuildSession('./data.json');
-    document.addEventListener('load', () => {
-        if(this.mediaQuery.matches) rearrangeCommentContainer();
-    });
+    document.addEventListener('load', rearrangeCommentContainer);
 }
 
 //window.addEventListener('DOMContentLoaded', () => localStorage.clear());

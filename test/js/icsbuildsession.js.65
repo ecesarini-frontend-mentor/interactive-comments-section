@@ -35,6 +35,7 @@ export class BuildSession extends IcsBuildTools {
     initBS() {
         this.drawUp();
         this.eventsListener();
+        if(this.mediaQuery.matches) this.rearrangeCommentContainer();
     }
     drawUp() {
         this.jsonData.comments.forEach( c => {
@@ -123,12 +124,7 @@ export class BuildSession extends IcsBuildTools {
                     this.score(ect);
                 }
                 break;
-            /*case 'DOMContentLoaded':
-                if(this.mediaQuery.matches) { 
-                    this.drawUp();
-                    this.rearrangeCommentContainer();
-                }
-                break;*/
+            case 'DOMContentLoaded':
             case 'loaded':
                 this.scoreSorter();
                 break;
@@ -389,20 +385,4 @@ export class BuildSession extends IcsBuildTools {
         this.eventsStore(null, jsonTarget, 'score');
         this.scoreSorter();
     }
-    //media query
-    /*rearrangeCommentContainer() {
-        const cumgcTail = document.createElement('div');
-        let cumgc = document.querySelectorAll('.comment-user-main-grid-container');
-
-        cumgcTail.classList.add('comment-user-tail-container');
-        debugger;
-        cumgc.forEach(c => {
-            let cScore = c.querySelector('.comment-rate'),
-                cFbBtn = c.querySelectorAll('.comment-user-flexbox-container button');
-
-            c.append(cumgcTail);
-            cumgcTail.append(cScore);
-            cFbBtn.forEach(cfb => cumgcTail.append(cfb));
-        });
-    }*/
 } 

@@ -345,18 +345,4 @@ span.comment-rate-element {
   body {
     max-width: 95%;
   }
-  .comment-container {
-    display: block;
-  }
-  .comment-user-main-grid-container {
-    display: flex;
-    flex-direction: column;
-  }
-  .comment-rate-flexbox {
-    flex-direction: row;
-  }
-  .comment-user-tail-container {
-    display: flex;
-    justify-content: space-between;
-  }
 }
