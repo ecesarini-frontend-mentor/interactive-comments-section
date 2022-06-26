@@ -1,0 +1,74 @@
+/*
+    --> README.md
+        ### Expected behaviour
+
+        - First-level comments should be ordered by their score, whereas nested replies are ordered by time added.
+        - Replying to a comment adds the new reply to the bottom of the nested replies within that comment.
+        - A confirmation modal should pop up before a comment or reply is deleted.
+        - Adding a new comment or reply uses the `currentUser` object from within the `data.json` file.
+        - You can only edit or delete your own comments and replies.
+
+    FIXED:
+        MAJOR:
+            - Sorting by comment instead replies: icsbuildtools.js@scoreSorter();
+            - time loading resource from server, look js/icsbuildtools.js@buildComment(). Same svg loaded more times.
+                - Change svg to img html container prevents http request.
+        - score handling: 
+            - working on sorting: look at 'scoreSorter'@icsbuildsession.js,'debug-ics-sorter' chrome snippet ://Desktop/ics-score_debug.jpg;
+            added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
+            - related: sorting replies;
+        - 'delete' and 'edit' actions don't work clicking on new added element: example@\\Desktop:/ics_debug_target_on_Click_new_element_created.jpg (added this.eventsListener() after element building);
+        - removed .comment-edited-fb-button-container if you click delete without undo edit event
+        - updated css to center modal in fixed position
+        - deletion of comment (not reply) from localStorage 
+
+    TODO:
+    - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'.
+    - get into mobile desing: new class added 'icsmq' to handle JS and CSS relating.
+    - (@function elementsPropertiesRemover: 
+            * make 'attributeTarget' argument handleable to catch eventual attributes;
+        )
+    - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
+    
+*/
+
+import { IcsStyle } from './icsstyle.js';
+import { BuildSession } from './icsbuildsession.js';
+
+
+//media query
+function rearrangeCommentContainer() {
+    const cumgcTail = document.createElement('div');
+    let cumgc = document.querySelectorAll('.comment-user-main-grid-container');
+
+    cumgcTail.classList.add('comment-user-tail-container');
+    debugger;
+    cumgc.forEach(c => {
+        let cScore = c.querySelector('.comment-rate'),
+            cFbBtn = c.querySelectorAll('.comment-user-flexbox-container button');
+
+        c.append(cumgcTail);
+        cumgcTail.append(cScore);
+        cFbBtn.forEach(cfb => cumgcTail.append(cfb));
+    });
+}    
+
+function ics() {
+    //document.addEventListener('DOMContentLoaded', () => localStorage.clear());
+
+    let elClk = document.querySelectorAll('button'),
+        evClk = ['mouseover', 'mouseout', 'mousedown', 'mouseup'],
+        moderateBlue = 'hsl(238, 40%, 52%)',
+        grayishBlue = 'hsl(211, 10%, 45%)',
+        deepPink = 'hsl(328, 100%, 54%)',
+        events = ['click', 'mouseout'];
+
+    new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
+    new BuildSession('./data.json');
+    document.addEventListener('load', () => {
+        if(this.mediaQuery.matches) rearrangeCommentContainer();
+    });
+}
+
+//window.addEventListener('DOMContentLoaded', () => localStorage.clear());
+ics();

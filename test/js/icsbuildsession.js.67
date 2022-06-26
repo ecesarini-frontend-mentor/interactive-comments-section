@@ -66,9 +66,7 @@ export class BuildSession extends IcsBuildTools {
         this.commentBoxTextarea = document.querySelector('.add-response-textarea');        
         this.btn.forEach( b => b.addEventListener('click', this));
         
-        //['DOMContentLoaded', 'load'].forEach(e => document.addEventListener(e, this));
-        window.addEventListener('load', this);
-        this.mediaQuery.addEventListener('change', this);
+        ['DOMContentLoaded', 'load'].forEach(e => document.addEventListener(e, this));
     }
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
@@ -125,19 +123,14 @@ export class BuildSession extends IcsBuildTools {
                     this.score(ect);
                 }
                 break;
-            case 'load':
-                this.scoreSorter();
+            /*case 'DOMContentLoaded':
                 if(this.mediaQuery.matches) { 
-                    this.rearrangeCommentContainer();
-                }
-                break;
-            case 'change':
-                if(this.mediaQuery.matches) {
-                    this.rearrangeCommentContainer();
-                } else {
-                    this.container.innerHTML = "";
                     this.drawUp();
+                    this.rearrangeCommentContainer();
                 }
+                break;*/
+            case 'loaded':
+                this.scoreSorter();
                 break;
         }
     }

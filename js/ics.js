@@ -10,48 +10,23 @@
 
     FIXED:
         MAJOR:
-            - Sorting by comment instead replies: icsbuildtools.js@scoreSorter();
-            - time loading resource from server, look js/icsbuildtools.js@buildComment(). Same svg loaded more times.
-                - Change svg to img html container prevents http request.
-        - score handling: 
-            - working on sorting: look at 'scoreSorter'@icsbuildsession.js,'debug-ics-sorter' chrome snippet ://Desktop/ics-score_debug.jpg;
-            added 'score' method to icsbuildsession.js class --> find a way to update localStorage on event (maybe by 'eventsStoreDelete()' method?)?
-            - related: sorting replies;
-        - 'delete' and 'edit' actions don't work clicking on new added element: example@\\Desktop:/ics_debug_target_on_Click_new_element_created.jpg (added this.eventsListener() after element building);
-        - removed .comment-edited-fb-button-container if you click delete without undo edit event
-        - updated css to center modal in fixed position
-        - deletion of comment (not reply) from localStorage 
+            - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'. // Create div element inside rearrangeCommentContainer's foreEach loop.
 
     TODO:
-    - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'.
-    - get into mobile desing: new class added 'icsmq' to handle JS and CSS relating.
-    - (@function elementsPropertiesRemover: 
+        - Adjust css for responsive design:
+            - Margins of 'comment-user-tail-container-actions';
+            - Comment line across replies;
+        - get into mobile desing: new class added 'icsmq' to handle JS and CSS relating.
+        - (@function elementsPropertiesRemover: 
             * make 'attributeTarget' argument handleable to catch eventual attributes;
         )
-    - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
+        - (appereance: https://jeth0214.github.io/FE-interactive-comments-section/);
     
 */
 
 import { IcsStyle } from './icsstyle.js';
 import { BuildSession } from './icsbuildsession.js';
 
-
-//media query
-function rearrangeCommentContainer() {
-    const cumgcTail = document.createElement('div');
-    let cumgc = document.querySelectorAll('.comment-user-main-grid-container');
-
-    cumgcTail.classList.add('comment-user-tail-container');
-    debugger;
-    cumgc.forEach(c => {
-        let cScore = c.querySelector('.comment-rate'),
-            cFbBtn = c.querySelectorAll('.comment-user-flexbox-container button');
-
-        c.append(cumgcTail);
-        cumgcTail.append(cScore);
-        cFbBtn.forEach(cfb => cumgcTail.append(cfb));
-    });
-}    
 
 function ics() {
     //document.addEventListener('DOMContentLoaded', () => localStorage.clear());
@@ -65,9 +40,9 @@ function ics() {
 
     new IcsStyle(elClk, evClk, moderateBlue, grayishBlue, deepPink);
     new BuildSession('./data.json');
-    document.addEventListener('load', () => {
+    /*document.addEventListener('load', () => {
         if(this.mediaQuery.matches) rearrangeCommentContainer();
-    });
+    });*/
 }
 
 //window.addEventListener('DOMContentLoaded', () => localStorage.clear());
