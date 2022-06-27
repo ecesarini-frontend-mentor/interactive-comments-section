@@ -13,6 +13,9 @@
             - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'. // Create div element inside rearrangeCommentContainer's foreEach loop.
 
     TODO:
+        MAJOR:
+            - Edit events in mobile design. Match tail-container with desktop case confirm-undo events: error@icsbuildession.js@338.
+            
         - Adjust css for responsive design:
             - Margins of 'comment-user-tail-container-actions';
             - Comment line across replies;

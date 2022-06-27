@@ -11,7 +11,6 @@ export class BuildSession extends IcsBuildTools {
         this.editUndoContainer = this.editorCreateEditConfirmUndo();
         this.modalTarget = null;
         this.mediaQuery = window.matchMedia('(max-width: 700px)');
-        this.mediaQueryCutc = null;
         this.getJsonData();
     } 
     // FETCH data
@@ -347,14 +346,7 @@ export class BuildSession extends IcsBuildTools {
                 
         switch(clk) {
             case 'edited': 
-                if(this.mediaQuery.matches) {
-                    this.mediaQueryCutc = editElement.lastElementChild;
-                    editElement.querySelector('.comment-user-tail-container').replaceWith(this.editUndoContainer);
-                    debugger;
-                } else {
-                    editElement.append(this.editUndoContainer);
-                }
-                
+                editElement.append(this.editUndoContainer);
                 this.eventsListener('edit', editElement);
                 editClassAdder();
                 break;
@@ -404,4 +396,20 @@ export class BuildSession extends IcsBuildTools {
         this.eventsStore(null, jsonTarget, 'score');
         this.scoreSorter();
     }
+    //media query
+    /*rearrangeCommentContainer() {
+        const cumgcTail = document.createElement('div');
+        let cumgc = document.querySelectorAll('.comment-user-main-grid-container');
+
+        cumgcTail.classList.add('comment-user-tail-container');
+        debugger;
+        cumgc.forEach(c => {
+            let cScore = c.querySelector('.comment-rate'),
+                cFbBtn = c.querySelectorAll('.comment-user-flexbox-container button');
+
+            c.append(cumgcTail);
+            cumgcTail.append(cScore);
+            cFbBtn.forEach(cfb => cumgcTail.append(cfb));
+        });
+    }*/
 } 
