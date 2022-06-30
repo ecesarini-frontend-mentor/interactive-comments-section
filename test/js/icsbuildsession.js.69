@@ -69,7 +69,7 @@ export class BuildSession extends IcsBuildTools {
         
         //['DOMContentLoaded', 'load'].forEach(e => document.addEventListener(e, this));
         window.addEventListener('load', this);
-        //this.mediaQuery.addEventListener('change', this);
+        this.mediaQuery.addEventListener('change', this);
     }
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
@@ -104,7 +104,6 @@ export class BuildSession extends IcsBuildTools {
 
         switch(e.type) {
             case 'click':
-                const mqTgt = ect.closest('.comment-user-main-grid-container');
                 responseBtn.map(r => {
                     if(ect.matches(r)) this.responser(ect);
                 });
@@ -125,11 +124,6 @@ export class BuildSession extends IcsBuildTools {
                 });
                 if(ect.matches(scoreBtns)) {
                     this.score(ect);
-                };
-                if(this.mediaQuery.matches) {
-                    //this.container.innerHTML = "";
-                    //this.drawUp();
-                    this.rearrangeCommentContainer();
                 }
                 break;
             case 'load':
@@ -335,20 +329,14 @@ export class BuildSession extends IcsBuildTools {
     editor(ect, clk) {
         const editElement = ect.closest('.comment-user-main-grid-container'),
             editContent = editElement.querySelector('.comment-content'),
-            editCommentRatefb = editElement.querySelector('.comment-rate'),
-            tailContainer = editElement.querySelector('.comment-user-tail-container');
+            editCommentRatefb = editElement.querySelector('.comment-rate');
         
-        //function editConfirmerUndoer() {
-        const editConfirmerUndoer = () => {
+        function editConfirmerUndoer() {
             editElement.classList.remove('comment-user-main-grid-container-edit');
             editContent.setAttribute('contentEditable', false);
             editContent.classList.remove('comment-content-edit');
-            if(this.mediaQuery.matches) {
-                //editElement.lastElementChild.replaceWith(this.mediaQueryCutc);
-                tailContainer.style.display = '';
-            } /*else { }*/
-                editCommentRatefb.classList.remove('comment-rate-edit');
-                editElement.lastElementChild.remove();
+            editCommentRatefb.classList.remove('comment-rate-edit');
+            editElement.lastElementChild.remove();
         }
         function editClassAdder() {
             editElement.classList.add('comment-user-main-grid-container-edit');
@@ -360,13 +348,12 @@ export class BuildSession extends IcsBuildTools {
         switch(clk) {
             case 'edited': 
                 if(this.mediaQuery.matches) {
-                    //this.mediaQueryCutc = tailContainer.cloneNode(true);
-                    //tailContainer.replaceWith(this.editUndoContainer);
-                    tailContainer.style.display = 'none';
+                    this.mediaQueryCutc = editElement.lastElementChild;
+                    editElement.querySelector('.comment-user-tail-container').replaceWith(this.editUndoContainer);
+                    debugger;
                 } else {
-                    //editElement.append(this.editUndoContainer);
+                    editElement.append(this.editUndoContainer);
                 }
-                editElement.append(this.editUndoContainer);
                 
                 this.eventsListener('edit', editElement);
                 editClassAdder();
@@ -379,7 +366,6 @@ export class BuildSession extends IcsBuildTools {
                 editConfirmerUndoer();
                 break;
         }
-        this.eventsListener();
     }
     //deleter
     modalAction(ect) {

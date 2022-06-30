@@ -201,27 +201,20 @@ export class IcsBuildTools {
     }
 
     rearrangeCommentContainer() {
-        const cumgc = document.querySelectorAll('.comment-user-main-grid-container');
-        let cumgcTail = undefined;
+        let cumgc = document.querySelectorAll('.comment-user-main-grid-container');
 
         cumgc.forEach(c => {
-            const tailContainer = c.querySelector('.comment-user-tail-container');
-                cFires = c.contains(tailContainer),
-                cumgcTail = (cFires)? tailContainer: document.createElement('div'), 
-                cumgcTailActions = document.createElement('div'),
-                cScore = c.querySelector('.comment-rate'),
+            const cumgcTail = document.createElement('div'),
+                cumgcTailActions = document.createElement('div');
+            let cScore = c.querySelector('.comment-rate'),
                 cFbBtn = c.querySelectorAll('.comment-user-flexbox-container button');
             
-            //if(!c.lastElementChild.matches('.comment-user-tail-container')) {
-            //if(!c.contains(c.querySelector('.comment-user-tail-container'))) {
-            if(!cFires) {
-                cumgcTail.classList.add('comment-user-tail-container');
-                cumgcTailActions.classList.add('comment-user-tail-container-actions');
-                c.append(cumgcTail);
-            }
-            cumgcTail.append(cScore, cumgcTailActions);
+            cumgcTail.classList.add('comment-user-tail-container');
+            cumgcTailActions.classList.add('comment-user-tail-container-actions');
+            c.append(cumgcTail);
+            cumgcTail.append(cScore,cumgcTailActions);
             cFbBtn.forEach(cfb => cumgcTailActions.append(cfb));
         });
-    }
+    }    
 
 }

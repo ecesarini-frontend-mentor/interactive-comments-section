@@ -1,21 +1,15 @@
 /*
     --> README.md
         ### Expected behaviour
-
-        - First-level comments should be ordered by their score, whereas nested replies are ordered by time added.
-        - Replying to a comment adds the new reply to the bottom of the nested replies within that comment.
-        - A confirmation modal should pop up before a comment or reply is deleted.
-        - Adding a new comment or reply uses the `currentUser` object from within the `data.json` file.
-        - You can only edit or delete your own comments and replies.
-
     FIXED:
         MAJOR:
             - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'. // Create div element inside rearrangeCommentContainer's foreEach loop.
+            - Edit events in mobile design. Match tail-container with desktop case confirm-undo events: error@icsbuildession.js@338.
 
     TODO:
         MAJOR:
-            - Edit events in mobile design. Match tail-container with desktop case confirm-undo events: error@icsbuildession.js@338.
-            
+        - Events (e.g. add reply, vote, add response) on mobile design problem. (icsbuildtools:rearrangeCommentContainer()@203);
+        
         - Adjust css for responsive design:
             - Margins of 'comment-user-tail-container-actions';
             - Comment line across replies;
