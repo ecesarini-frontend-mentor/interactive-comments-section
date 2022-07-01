@@ -5,11 +5,12 @@
         MAJOR:
             - fire mediaquery on page load or event, lot of mess. Try to trigger 'load' event in 'ics.js'. // Create div element inside rearrangeCommentContainer's foreEach loop.
             - Edit events in mobile design. Match tail-container with desktop case confirm-undo events: error@icsbuildession.js@338.
+            - Events (e.g. add reply, vote, add response) on mobile design problem. (icsbuildtools:rearrangeCommentContainer()@203);
 
     TODO:
         MAJOR:
-        - Events (e.g. add reply, vote, add response) on mobile design problem. (icsbuildtools:rearrangeCommentContainer()@203);
-        
+        - arrange viewport switching from desktop to mobile and viceversa.
+
         - Adjust css for responsive design:
             - Margins of 'comment-user-tail-container-actions';
             - Comment line across replies;

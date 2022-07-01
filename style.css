@@ -395,5 +395,8 @@ span.comment-rate-element {
   .comment-user-tail-container .vote {
     vertical-align: middle;
   }
+  .comment-edited-fb-button-container {
+    margin-bottom: 10px;
+  }
 
 }

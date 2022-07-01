@@ -1,7 +1,6 @@
-//import { IcsBuildTools } from "./icsbuildtools.js";
-import { IcsMq } from "./icsmq.js";
+import { IcsBuildTools } from "./icsbuildtools.js";
 
-export class BuildSession extends IcsMq {
+export class BuildSession extends IcsBuildTools {
     constructor(jFile) {
         super();
         this.jFile = jFile;
@@ -12,6 +11,7 @@ export class BuildSession extends IcsMq {
         this.editUndoContainer = this.editorCreateEditConfirmUndo();
         this.modalTarget = null;
         this.mediaQuery = window.matchMedia('(max-width: 700px)');
+        this.mediaQueryCutc = null;
         this.getJsonData();
     } 
     // FETCH data
@@ -34,7 +34,6 @@ export class BuildSession extends IcsMq {
     }
     //Initiator
     initBS() {
-        window.addEventListener('load', this);
         this.drawUp();
         this.eventsListener();
     }
@@ -69,6 +68,7 @@ export class BuildSession extends IcsMq {
         this.btn.forEach( b => b.addEventListener('click', this));
         
         //['DOMContentLoaded', 'load'].forEach(e => document.addEventListener(e, this));
+        window.addEventListener('load', this);
         //this.mediaQuery.addEventListener('change', this);
     }
     handleEvent(e) {
@@ -127,7 +127,9 @@ export class BuildSession extends IcsMq {
                     this.score(ect);
                 };
                 if(this.mediaQuery.matches) {
-                    this.rearrangeCommentContainer(ect);
+                    //this.container.innerHTML = "";
+                    //this.drawUp();
+                    this.rearrangeCommentContainer();
                 }
                 break;
             case 'load':
@@ -136,14 +138,14 @@ export class BuildSession extends IcsMq {
                     this.rearrangeCommentContainer();
                 }
                 break;
-            /*case 'change':
+            case 'change':
                 if(this.mediaQuery.matches) {
                     this.rearrangeCommentContainer();
                 } else {
                     this.container.innerHTML = "";
                     this.drawUp();
                 }
-                break;*/
+                break;
         }
     }
     
@@ -342,10 +344,11 @@ export class BuildSession extends IcsMq {
             editContent.setAttribute('contentEditable', false);
             editContent.classList.remove('comment-content-edit');
             if(this.mediaQuery.matches) {
+                //editElement.lastElementChild.replaceWith(this.mediaQueryCutc);
                 tailContainer.style.display = '';
-            }
-            editCommentRatefb.classList.remove('comment-rate-edit');
-            editElement.lastElementChild.remove();
+            } /*else { }*/
+                editCommentRatefb.classList.remove('comment-rate-edit');
+                editElement.lastElementChild.remove();
         }
         function editClassAdder() {
             editElement.classList.add('comment-user-main-grid-container-edit');
@@ -357,7 +360,11 @@ export class BuildSession extends IcsMq {
         switch(clk) {
             case 'edited': 
                 if(this.mediaQuery.matches) {
+                    //this.mediaQueryCutc = tailContainer.cloneNode(true);
+                    //tailContainer.replaceWith(this.editUndoContainer);
                     tailContainer.style.display = 'none';
+                } else {
+                    //editElement.append(this.editUndoContainer);
                 }
                 editElement.append(this.editUndoContainer);
                 
