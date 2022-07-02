@@ -354,6 +354,12 @@ span.comment-rate-element {
   .comment-user-main-grid-container .comment-content {
     margin: 0;
   }
+  .comment-user-nested-grid-container {
+    grid-template-columns: max-content;
+  }
+  .comment-user-nested-grid-container .comment-user-nested-grid-container-line {
+    margin: var(--gap) 10px var(--gap) 3px;
+  }
   .comment-user-tail-container {
     display: flex;
     flex-direction: row;
@@ -397,6 +403,28 @@ span.comment-rate-element {
   }
   .comment-edited-fb-button-container {
     margin-bottom: 10px;
+  }
+
+  .comment-user-add-response {
+    display: flex;
+    flex-direction: column;
+  }
+  .comment-user-add-response .add-response-textarea {
+    margin: 0;
+  }
+  .comment-user-add-response-tail {
+    display: flex;
+    justify-content: space-between;
+  }
+  .comment-user-add-response-tail .comment-user-add-response-avatar {
+    max-width: 2.3em;
+    height: 2.3em;
+    margin: 0;
+  }
+  .comment-user-add-response-tail .add-response-send-button {
+    width: 30%;
+    height: 3em;
+    border-radius: 7px;
   }
 
 }

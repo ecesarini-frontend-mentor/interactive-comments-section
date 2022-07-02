@@ -69,7 +69,7 @@ export class BuildSession extends IcsMq {
         this.btn.forEach( b => b.addEventListener('click', this));
         
         //['DOMContentLoaded', 'load'].forEach(e => document.addEventListener(e, this));
-        this.mediaQuery.addEventListener('change', this);
+        //this.mediaQuery.addEventListener('change', this);
     }
     handleEvent(e) {
         const responseBtn = ['.add-response-send-button', '.comment-reply', '.add-reply-send-button'],
@@ -136,15 +136,14 @@ export class BuildSession extends IcsMq {
                     this.rearrangeCommentContainer();
                 }
                 break;
-            case 'change':
+            /*case 'change':
                 if(this.mediaQuery.matches) {
                     this.rearrangeCommentContainer();
                 } else {
                     this.container.innerHTML = "";
                     this.drawUp();
                 }
-                this.eventsListener();
-                break;
+                break;*/
         }
     }
     

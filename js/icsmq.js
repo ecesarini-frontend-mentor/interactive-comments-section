@@ -5,7 +5,8 @@ export class IcsMq extends IcsBuildTools {
         super();
     }
     rearrangeCommentContainer() {
-        let cumgc = document.querySelectorAll('.comment-user-main-grid-container');
+        const cumgc = document.querySelectorAll('.comment-user-main-grid-container'),
+            cuar = document.querySelector('.comment-user-add-response');
 
         cumgc.forEach(c => {
             if(!c.lastElementChild.matches('.comment-user-tail-container, .comment-edited-fb-button-container')) {
@@ -21,5 +22,12 @@ export class IcsMq extends IcsBuildTools {
                 cFbBtn.forEach(cfb => cumgcTailActions.append(cfb));
             }
         });
+
+        const cuarTail = document.createElement('div');
+        cuarTail.classList.add('comment-user-add-response-tail');
+        
+        cuarTail.append(cuar.querySelector('img'), cuar.querySelector('button'));
+        cuar.append(cuarTail);
+        
     } 
 }
